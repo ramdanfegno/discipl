@@ -41,11 +41,7 @@ class AuthenticationBloc
   }
 
   Stream<AuthenticationState> _mapAuthenticationStartedToState() async* {
-    Response? response = await _userRepository.isLoggedIn();
-    print('AuthenticationBloc _mapAuthenticationStartedToState isLoggedIn 1');
-    print(response!.statusMessage);
-    print(response.statusCode);
-    print(response.data);
+    bool? isLogged = await _userRepository.isLogged();
     UserData userData;
     // check if home api is called successfully
     if (response.statusCode == 200) {
@@ -82,7 +78,7 @@ class AuthenticationBloc
 
   Stream<AuthenticationState> _authFailed(String message) async* {
     bool? isNotNewUser = await _userRepository.isNotNewUser();
-    bool? isSkipped = await _userRepository.isSkipped();
+    bool? isSkipped = await _userRepository.isGuest();
     if (!(isNotNewUser!)) {
       print('AuthenticationBloc _authFailed isNotNewUser false ');
       yield AuthenticationNewUserOnBoarding(message: message);
@@ -139,7 +135,7 @@ class AuthenticationBloc
   }
 
   Stream<AuthenticationState> _mapAuthenticationSkipToState() async* {
-    _userRepository.setSkipped(true);
+    _userRepository.setGuestFlag(true);
     _userRepository.setIsLogged(false);
     print('AuthenticationBloc _mapAuthenticationSkipToState');
 
