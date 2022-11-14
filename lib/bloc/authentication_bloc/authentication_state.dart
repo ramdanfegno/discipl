@@ -1,3 +1,4 @@
+/*
 part of 'authentication_bloc.dart';
 
 abstract class AuthenticationState extends Equatable {
@@ -86,3 +87,4 @@ class UnAuthenticated extends AuthenticationState {
   @override
   String toString() => 'UnAuthenticated';
 }
+*/

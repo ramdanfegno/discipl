@@ -1,3 +1,4 @@
+/*
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -143,7 +144,8 @@ class AuthenticationBloc
     _userRepository.setIsLogged(false);
     print('AuthenticationBloc _mapAuthenticationSkipToState');
 
-    /* Response? response = await _userRepository.setPinCode('000000');
+    */
+/* Response? response = await _userRepository.setPinCode('000000');
     print("============ \n\n\n $response \n\n\n===========");
     if(response!.statusCode == 200){
       PinCodeData pinCodeResponse = PinCodeData.fromJson(response.data);
@@ -151,7 +153,9 @@ class AuthenticationBloc
         _userRepository.storePinCode(pinCodeResponse);
         _userRepository.setHasPinCode(true);
       }
-    }*/
+    }*//*
+
     yield AuthenticationSkipped();
   }
 }
+*/

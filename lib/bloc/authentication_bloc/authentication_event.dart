@@ -1,3 +1,4 @@
+/*
 part of 'authentication_bloc.dart';
 
 abstract class AuthenticationEvent extends Equatable {
@@ -18,3 +19,4 @@ class AuthenticationRetry extends AuthenticationEvent {}
 class AuthenticationLoading extends AuthenticationEvent {}
 
 class AuthenticationNewUser extends AuthenticationEvent {}
+*/

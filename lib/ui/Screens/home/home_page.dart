@@ -1,0 +1,33 @@
+import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/utils/size_config.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Container(
+                height: SizeConfig.blockSizeHorizontal * 13,
+                width: SizeConfig.blockSizeHorizontal * 35,
+                color: Colors.red,
+                child: const Center(child: Text('Gym List Page')),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
