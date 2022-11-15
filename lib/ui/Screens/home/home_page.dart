@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/ui/Screens/gym/fitness_center_list/fitness_center_list_view.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,11 +19,19 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
-              child: Container(
-                height: SizeConfig.blockSizeHorizontal * 13,
-                width: SizeConfig.blockSizeHorizontal * 35,
-                color: Colors.red,
-                child: const Center(child: Text('Gym List Page')),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FitnessCenterListView()));
+                },
+                child: Container(
+                  height: SizeConfig.blockSizeHorizontal * 13,
+                  width: SizeConfig.blockSizeHorizontal * 35,
+                  color: Colors.red,
+                  child: const Center(child: Text('Gym List Page')),
+                ),
               ),
             )
           ],

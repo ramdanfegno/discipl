@@ -104,18 +104,21 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Barlow-Regular
+    - family: HabitozIcons
       fonts:
-        - asset: assets/fonts/Barlow-Regular.ttf
-    - family: Barlow-Medium
+        - asset: assets/icons/HabitozIcons.ttf
+    - family: Inter-Regular
       fonts:
-        - asset: assets/fonts/Barlow-Medium.ttf
-    - family: Barlow-Bold
+        - asset: assets/fonts/Inter-Regular.ttf
+    - family: Inter-Medium
       fonts:
-        - asset: assets/fonts/Barlow-Bold.ttf
-    - family: Barlow-SemiBold
+        - asset: assets/fonts/Inter-Medium.ttf
+    - family: Inter-Bold
       fonts:
-        - asset: assets/fonts/Barlow-SemiBold.ttf
+        - asset: assets/fonts/Inter-Bold.ttf
+    - family: Inter-SemiBold
+      fonts:
+        - asset: assets/fonts/Inter-SemiBold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -19,42 +19,30 @@ class Constants {
   static const String apiFitnessCenterList = 'fitness_center/fc/';
 
 
-  static const String placeHolderImg =
-      'assets/png/shopprix-placeholder-image.png';
-  static const String placeHolderImg2 =
-      'assets/png/shopprix-placeholder-image2.png';
-
   //fonts styles
-  static const String fontRegular = 'Barlow-Regular';
-  static const String fontSemiBold = 'Barlow-SemiBold';
-  static const String fontMedium = 'Barlow-Medium';
-  static const String fontBold = 'Barlow-Bold';
+  static const String fontRegular = 'Inter-Regular';
+  static const String fontSemiBold = 'Inter-SemiBold';
+  static const String fontMedium = 'Inter-Medium';
+  static const String fontBold = 'Inter-Bold';
 
-  static const double fontSize1 = 15.0;
-  static const Color fontColor1 = Color.fromRGBO(94, 114, 228, 1);
+  static const Color fontColor1 = Color.fromRGBO(34, 34, 34, 1);
+  static const Color fontColor2 = Color.fromRGBO(233, 30, 35, 1);
+  static const Color fontColor3 = Color.fromRGBO(0, 142, 40, 1);
 
-  static const double fontSize2 = 15.0;
-  static const Color fontColor2 = Color.fromRGBO(94, 114, 228, 1);
-
-  static const double fontSize3 = 15.0;
-  static const Color fontColor3 = Color.fromRGBO(94, 114, 228, 1);
-  static const Color fontColor4 = Color.fromRGBO(23, 43, 77, 1);
 
   // static const Color primaryColor = Color.fromRGBO(31, 167, 90, 1);
-  static const primaryColor = Color.fromRGBO(255, 186, 0, 1);
+  static const primaryColor = Color.fromRGBO(233, 30, 35, 1);
   static const Color primaryButtonColor = Color.fromRGBO(0, 0, 0, 1);
   static const Color secondaryButtonColor = Color.fromRGBO(255, 92, 0, 1);
-
+  static const Color secondaryColor = Color.fromRGBO(136, 136, 136, 1);
   static const Color buttonColor = Color.fromRGBO(94, 114, 228, 1);
   static const Color errorColor = Color.fromRGBO(239, 83, 80, 1);
   static const Color disabledTextColor = Color.fromRGBO(238, 238, 238, 1);
   static const Color appbarColor = Color.fromRGBO(102, 102, 102, 1);
+  static const Color starColor = Color.fromRGBO(255, 168, 0, 1);
 
-  static const Color backgroundColor1 = Color.fromRGBO(242, 242, 242, 1);
-  static const Color backgroundColor2 = Color.fromRGBO(239, 239, 239, 1);
 
-  static const Color reviewColor = Color.fromRGBO(31, 167, 90, 1);
-  static const Color cartTextColor = Color.fromRGBO(244, 145, 42, 1);
+  static const Color backgroundColor1 = Color.fromRGBO(243, 243, 243, 1);
 
   static const TextStyle titleTextStyle = TextStyle(
       color: Color.fromRGBO(40, 40, 40, 1),
