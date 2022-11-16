@@ -7,11 +7,11 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: const Color(0xffededed),
+      backgroundColor: Colors.white,
       body: Center(
         child: Image.asset(
           "assets/images/jpg/logo.jpg",
-          width: size.width * 0.4,
+          width: size.width * 0.7,
         ),
       ),
     );

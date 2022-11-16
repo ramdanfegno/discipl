@@ -4,10 +4,12 @@ import 'package:habitoz_fitness_app/ui/Screens/home/home_page.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habitoz_fitness_app/ui/screens/home/home_screen.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'bloc/authentication_bloc/authentication_bloc.dart';
 import 'repositories/user_repo.dart';
+import 'ui/screens/auth/login/login_screen.dart';
 import 'ui/splash_screen.dart';
 
 void main() async {
@@ -60,7 +62,7 @@ class App extends StatelessWidget {
                 fontSize: 16)),
         secondaryHeaderColor: Colors.black,
         dividerColor: const Color(0xff707070),
-        fontFamily: "Barlow",
+        fontFamily: "Inter",
         inputDecorationTheme: const InputDecorationTheme(),
         disabledColor: const Color(0xffF2F2F2),
         backgroundColor: const Color(0xffFFFFFF),
@@ -76,6 +78,7 @@ class App extends StatelessWidget {
         buildWhen: (previous, current) => (previous != current),
         builder: (context, state) {
           if (state is AuthenticationSuccess) {
+<<<<<<< HEAD
           }
           if (state is AuthenticationNewUserOnBoarding) {
 
@@ -85,13 +88,26 @@ class App extends StatelessWidget {
           }
           if (state is UnAuthenticated) {
 
+=======
+            // go to home screen
+            print('AuthenticationSuccess');
+            return const HomeScreen();
+>>>>>>> 7926dd9585ff3968d6b93f95abdadb53b0cf03eb
           }
           if (state is AuthenticationFailure) {
-
+            // logged out user - redirect to login page
+            print('AuthenticationFailure');
+            return LoginScreen(
+              userRepository: _userRepository,
+              message: state.message,
+            );
           }
-          if (state is AuthenticationRetrying) {
-
+          if (state is AuthenticationGuest) {
+            // guest user - redirect to home screen as guest
+            print('AuthenticationGuest');
+            return const HomeScreen();
           }
+          print('else SplashScreen');
           return const SplashScreen();
         },
       ),

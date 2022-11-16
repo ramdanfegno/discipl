@@ -47,8 +47,13 @@ android {
         applicationId "com.example.habitoz_fitness_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
+<<<<<<< HEAD
         minSdkVersion 19
         targetSdkVersion 33
+=======
+        minSdkVersion 21
+        targetSdkVersion 32
+>>>>>>> 7926dd9585ff3968d6b93f95abdadb53b0cf03eb
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
