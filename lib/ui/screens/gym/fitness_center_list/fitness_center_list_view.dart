@@ -96,12 +96,14 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                     place: 'Vazhakala',
                     distance: '5',
                     onListTilePressed: () {
+
+                      /*============Gym detail Page===============*/
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   const FitnessCenterListDetailPage(
-                                    gymName: 'Name of Gymnasium',
                                   )));
                     },
                   );

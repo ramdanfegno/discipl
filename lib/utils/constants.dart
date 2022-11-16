@@ -7,6 +7,7 @@ class Constants {
 
   static const String appTitle = 'Black Squad';
   static const String currencySymbol = '\u20B9';
+  static const String bulletinSymbol = '\u2022';
 
   //api names
   static const String apiSendOtp = 'user/enter_mobile/';
@@ -40,6 +41,12 @@ class Constants {
   static const Color disabledTextColor = Color.fromRGBO(238, 238, 238, 1);
   static const Color appbarColor = Color.fromRGBO(102, 102, 102, 1);
   static const Color starColor = Color.fromRGBO(255, 168, 0, 1);
+  static const Color timeContainerColor = Color.fromRGBO(241, 241, 241, 1);
+  static const Color bulletinColor = Color.fromRGBO(179, 179, 179, 1);
+  static const Color tickColor = Color.fromRGBO(4, 181, 0, 1);
+
+
+  static const Color blackLowerShade = Color.fromRGBO(68, 68, 68, 1);
 
 
   static const Color backgroundColor1 = Color.fromRGBO(243, 243, 243, 1);
