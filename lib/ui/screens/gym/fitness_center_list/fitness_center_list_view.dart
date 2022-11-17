@@ -103,8 +103,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  const FitnessCenterListDetailPage(
-                                  )));
+                                  const FitnessCenterDetailPage()));
                     },
                   );
                 }),
