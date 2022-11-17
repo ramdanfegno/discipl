@@ -107,7 +107,9 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                                   )));
                     },
                   );
-                })
+                }),
+
+
           ],
         ),
       ),
