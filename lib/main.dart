@@ -84,6 +84,16 @@ class App extends StatelessWidget {
             print('AuthenticationGuest');
             return const HomeScreen();
           }
+          if (state is AuthenticationCompleteProfile) {
+            // complete profile page
+            print('AuthenticationCompleteProfile');
+            return const HomeScreen();
+          }
+          if (state is AuthenticationProfileSkipped) {
+            // skipped profile page
+            print('AuthenticationCompleteProfile');
+            return const HomeScreen();
+          }
           print('else SplashScreen');
           return const SplashScreen();
         },

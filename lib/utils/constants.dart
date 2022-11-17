@@ -11,7 +11,7 @@ class Constants {
   //api names
   static const String apiSendOtp = 'user/enter_mobile/';
   static const String apiResendOtp = 'user/resend-otp/';  /// need to verify
-  static const String apiLoginWithOtp = 'user/enter_otp/';
+  static const String apiLoginWithOtp = 'user/token/login/';
   static const String apiUserProfile = 'user/profile/';
   static const String apiLogout = 'user/logout/';
   static const String apiHome = 'user/index/';

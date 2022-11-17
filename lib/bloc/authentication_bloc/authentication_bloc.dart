@@ -35,6 +35,12 @@ class AuthenticationBloc
     else if (event is AuthenticationSkip) {
       yield* _mapAuthenticationSkipToState();
     }
+    else if (event is AuthenticationCheckProfile) {
+      yield* _mapCheckProfileState();
+    }
+    else if (event is AuthenticationSkipProfile) {
+      yield* _mapSkipCheckProfileState();
+    }
   }
 
 
@@ -100,5 +106,15 @@ class AuthenticationBloc
     _userRepository.setGuestFlag(true);
     _userRepository.setIsLogged(false);
     yield AuthenticationGuest();
+  }
+
+  Stream<AuthenticationState> _mapCheckProfileState() async* {
+   //write logic to get profile details
+
+  }
+
+  Stream<AuthenticationState> _mapSkipCheckProfileState() async* {
+    //write logic to get profile details
+
   }
 }

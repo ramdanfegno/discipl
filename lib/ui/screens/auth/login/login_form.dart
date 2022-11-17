@@ -272,10 +272,10 @@ class _LoginFormState extends State<LoginForm> {
                   EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 4),
               errorStyle: const TextStyle(color: Colors.red),
               enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                   borderSide: BorderSide(color: Colors.transparent, width: 1)),
               focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                   borderSide: BorderSide(color: Colors.transparent, width: 1)),
             ),
             onFieldSubmitted: (val) {

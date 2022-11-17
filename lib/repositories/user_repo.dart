@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:habitoz_fitness_app/models/login_response.dart';
+import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/utils/api_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -55,10 +56,9 @@ class UserRepository{
   }
 
   Future<Response?> loginWithOtp(
-      String phoneNumber, String id, String code) async {
+      String phoneNumber, String code) async {
     Map<String, String> body = {
       "mobile": phoneNumber,
-      "id": id,
       "otp": code,
     };
     try {
@@ -97,6 +97,31 @@ class UserRepository{
     }
   }
 
+  Future<Response?> updateName(String name) async {
+
+    LoginResponse? loginResponse = await getLoginResponse();
+    String? token = loginResponse!.token;
+
+    Map<String, String> body = {
+      "first_name": name,
+    };
+
+    Map<String,String> headers = {
+      'Authorization' : 'Token $token'
+    };
+
+    print('body');
+    print(body);
+
+    try {
+      Response? response = await apiQuery.postQuery(Constants.apiUserProfile,headers,body, 'UpdateProfile');
+      return response;
+    } catch (exception) {
+      print(exception.toString());
+      return null;
+    }
+  }
+
   setLoginResponse(LoginResponse userData) async {
     // ignore: unnecessary_null_comparison
     if (userData != null) {
@@ -116,6 +141,24 @@ class UserRepository{
     }
   }
 
+  storeProfileDetails(UserProfile userData) async {
+    // ignore: unnecessary_null_comparison
+    if (userData != null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String userProfileJson = json.encode(userData);
+      prefs.setString(PROFILE_DETAILS, userProfileJson);
+    }
+  }
+
+  Future<UserProfile?> getProfileDetailsLocal() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString(PROFILE_DETAILS) == null) {
+      return null;
+    } else {
+      String? userResponse = prefs.getString(PROFILE_DETAILS);
+      return UserProfile.fromJson(json.decode(userResponse!));
+    }
+  }
 
   Future<bool?> isLogged() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -18,3 +18,7 @@ class AuthenticationRetry extends AuthenticationEvent {}
 class AuthenticationLoading extends AuthenticationEvent {}
 
 class AuthenticationNewUser extends AuthenticationEvent {}
+
+class AuthenticationCheckProfile extends AuthenticationEvent {}
+
+class AuthenticationSkipProfile extends AuthenticationEvent {}

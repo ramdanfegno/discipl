@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habitoz_fitness_app/models/login_response.dart';
+import 'package:habitoz_fitness_app/ui/screens/bmi/fill_profile.dart';
 import 'package:habitoz_fitness_app/utils/routes.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:pinput/pinput.dart';
@@ -46,7 +47,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
     width: SizeConfig.blockSizeHorizontal * 10,
     height: SizeConfig.blockSizeHorizontal * 10,
     textStyle: const TextStyle(
-      fontSize: 20,
+      fontSize: 16,
       fontFamily: Constants.fontSemiBold,
       color: Colors.black,
     ),
@@ -110,7 +111,6 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
     SizeConfig().init(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -217,7 +217,6 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
     );
   }
 
-
   Widget displayMobile() {
     return SizedBox(
       //width: SizeConfig.blockSizeHorizontal * 50,
@@ -287,7 +286,6 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
   }
 
   Widget resendOtpUI(){
-
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -394,29 +392,33 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         isLoading = true;
       });
       Response? response = await widget.userRepository.loginWithOtp(
-          otpResponseModel!.mobile!, "${otpResponseModel.id}", pin);
+          otpResponseModel!.mobile!, pin);
       print(response!.data);
+      print(response.statusCode);
 
       LoginResponse loginResponse = LoginResponse.fromJson(response.data);
       //store login response
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 202) {
         // getCartFromApi(cart);
         _timer.cancel();
         currentText = '';
         textEditingController.text = '';
         await widget.userRepository.setLoginResponse(loginResponse);
-        _authBloc.add(AuthenticationLoggedIn());
+        //_authBloc.add(AuthenticationLoggedIn());
 
-        Future.delayed(const Duration(milliseconds: 400),(){
+        /*Future.delayed(const Duration(milliseconds: 400),(){
           Navigator.pushNamedAndRemoveUntil(
               context, HabitozRoutes.app, (route) => false);
-        });
+        });*/
+
+       moveToNextPage();
 
         setState(() {
           isLoading = false;
         });
-      } else {
+      }
+      else {
         String errorMsg = '';
 
         setState(() {
@@ -429,22 +431,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         } else {
           errorMsg = 'Wrong OTP';
         }
-
-        ScaffoldMessenger.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  errorMsg,
-                  style: const TextStyle(color: Colors.black),
-                ),
-                const Icon(Icons.error)
-              ],
-            ),
-            backgroundColor: Colors.red,
-          ));
+        showSnackBar(errorMsg);
       }
     } catch (e) {
       print(e.toString());
@@ -465,5 +452,29 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         "${widget.otpResponseModel!.id}");
     textEditingController.text = currentText;
     if (response!.statusCode == 200) {}
+  }
+
+  moveToNextPage(){
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return const FillProfileDetails();
+    }));
+  }
+
+  showSnackBar(String msg){
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              msg,
+              style: const TextStyle(color: Colors.black),
+            ),
+            const Icon(Icons.error)
+          ],
+        ),
+        backgroundColor: Colors.red,
+      ));
   }
 }

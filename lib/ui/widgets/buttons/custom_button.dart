@@ -7,7 +7,7 @@ class CustomButton extends StatelessWidget {
   final Function() onPressed;
 
   final String title;
-
+  final double? width,height;
   final Color backgroundColor;
   final Color borderColor;
   final Color titleColor;
@@ -17,6 +17,7 @@ class CustomButton extends StatelessWidget {
         required this.borderColor,
         required this.title,
         required this.titleColor,
+        this.width,this.height,
         required this.onPressed});
 
   @override
@@ -27,8 +28,8 @@ class CustomButton extends StatelessWidget {
         onPressed();
       },
       child: Container(
-        height: SizeConfig.blockSizeHorizontal * 12,
-        width: SizeConfig.blockSizeHorizontal * 25,
+        height: (height != null) ? height : SizeConfig.blockSizeHorizontal * 12,
+        width: (width != null) ? width : SizeConfig.blockSizeHorizontal * 25,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             border: Border.all(color: borderColor),

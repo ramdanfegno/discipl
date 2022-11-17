@@ -14,18 +14,24 @@ class OtpResponse {
     this.mobile,
     this.otp,
     this.id,
+    this.isRegistered,
+    this.appSign
   });
 
   String? user;
   String? mobile;
   int? otp;
   int? id;
+  bool? isRegistered;
+  String? appSign;
 
   factory OtpResponse.fromJson(Map<String, dynamic> json) => OtpResponse(
     user: json["user"],
     mobile: json["mobile"],
     otp: json["otp"],
     id: json["id"],
+    appSign: json["app_sign"],
+    isRegistered: json["is_registered"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -33,5 +39,7 @@ class OtpResponse {
     "mobile": mobile,
     "otp": otp,
     "id": id,
+    "is_registered": isRegistered,
+    "app_sign": appSign
   };
 }

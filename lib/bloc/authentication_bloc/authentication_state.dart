@@ -27,3 +27,7 @@ class AuthenticationFailure extends AuthenticationState {
 class AuthenticationOnLoading extends AuthenticationState {}
 
 class AuthenticationGuest extends AuthenticationState {}
+
+class AuthenticationCompleteProfile extends AuthenticationState {}
+
+class AuthenticationProfileSkipped extends AuthenticationState {}
