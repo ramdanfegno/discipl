@@ -13,6 +13,8 @@ import 'ui/screens/auth/login/login_screen.dart';
 import 'ui/splash_screen.dart';
 
 void main() async {
+
+
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -70,7 +72,7 @@ class App extends StatelessWidget {
             textTheme: ButtonTextTheme.normal, buttonColor: Color(0xffFFFFFF)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const HomePage(),
+      home: const HomeScreen(),
     );
   }
 }

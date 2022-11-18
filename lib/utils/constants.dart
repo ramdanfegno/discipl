@@ -45,7 +45,6 @@ class Constants {
   static const Color bulletinColor = Color.fromRGBO(179, 179, 179, 1);
   static const Color tickColor = Color.fromRGBO(4, 181, 0, 1);
 
-
   static const Color blackLowerShade = Color.fromRGBO(68, 68, 68, 1);
 
 

@@ -22,12 +22,12 @@ class CircularSlidingTile extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: (hasHeading) ? SizeConfig.blockSizeHorizontal * 10 : 0,
+            height: (hasHeading) ? SizeConfig.blockSizeHorizontal * 10 : SizeConfig.blockSizeHorizontal * 1,
           ),
           Row(
             children: [
               SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 3,
+                width: SizeConfig.blockSizeHorizontal * 4,
               ),
               Text(
                 (hasHeading) ? heading : '',
@@ -36,12 +36,12 @@ class CircularSlidingTile extends StatelessWidget {
             ],
           ),
           SizedBox(
-            height: SizeConfig.blockSizeHorizontal * 4,
+            height:(hasHeading) ?SizeConfig.blockSizeHorizontal * 4:0,
           ),
           Row(
             children: [
               SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 1,
+                width: SizeConfig.blockSizeHorizontal * 2.5,
               ),
               Expanded(
                 child: SizedBox(
@@ -58,8 +58,8 @@ class CircularSlidingTile extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                height: SizeConfig.blockSizeHorizontal*20,
-                                width: SizeConfig.blockSizeHorizontal * 20,
+                                height: SizeConfig.blockSizeHorizontal*19.5,
+                                width: SizeConfig.blockSizeHorizontal * 19.5,
                                 decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Constants.primaryColor),
@@ -74,7 +74,7 @@ class CircularSlidingTile extends StatelessWidget {
                                 height: SizeConfig.blockSizeHorizontal*2,
                               ),
                               Text(iconTitle,style: TextStyle(
-                                fontFamily: Constants.fontMedium
+                                fontFamily: Constants.fontRegular
                               ),),
                             ],
                           ),
