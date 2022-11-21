@@ -1,51 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
-class FeedListViewPage extends StatefulWidget {
-  const FeedListViewPage({Key? key}) : super(key: key);
+class SquareBannerTile extends StatelessWidget {
+  final String description, fitnessCenter;
 
-  @override
-  State<FeedListViewPage> createState() => _FeedListViewPageState();
-}
+  const SquareBannerTile(
+      {Key? key, required this.description, required this.fitnessCenter})
+      : super(key: key);
 
-class _FeedListViewPageState extends State<FeedListViewPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(
-        isHomeAppBar: false,
-        appBarTitle: 'Transformation',
+    return Column(children: [
+      SizedBox(
+        height: SizeConfig.blockSizeHorizontal * 2,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: SizeConfig.blockSizeHorizontal * 5,
+      Stack(
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding:
+                    EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 4),
+                child: SizedBox(
+                  width: SizeConfig.blockSizeHorizontal * 75,
+                  child: Text(
+                    'Featured Transformation',
+                    style: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 6,
+                        fontFamily: Constants.fontMedium),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+              right: SizeConfig.blockSizeHorizontal * 4,
+              top: SizeConfig.blockSizeHorizontal * 1,
+              child: Text(
+                'See all',
+                style: TextStyle(
+                    fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                    fontFamily: Constants.fontMedium,
+                    color: Constants.primaryColor),
+              ))
+        ],
+      ),
+      SizedBox(
+        height: SizeConfig.blockSizeHorizontal * 3,
+      ),
+      Row(
+        children: [
+          Expanded(
+              child: Padding(
+            padding: EdgeInsets.only(
+              left: SizeConfig.blockSizeHorizontal * 4,
             ),
-            Expanded(
+            child: SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 75,
+              width: MediaQuery.of(context).size.width,
               child: ListView.builder(
                   shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
                   itemCount: 4,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: EdgeInsets.only(
-                          left: SizeConfig.blockSizeHorizontal * 4,
                           right: SizeConfig.blockSizeHorizontal * 4,
                           top: SizeConfig.blockSizeHorizontal * 2,
                           bottom: SizeConfig.blockSizeHorizontal * 2),
                       child: Container(
-                        height: SizeConfig.blockSizeHorizontal * 75,
-                        width: MediaQuery.of(context).size.width,
+                        height: SizeConfig.blockSizeHorizontal * 50,
+                        width: SizeConfig.blockSizeHorizontal * 75,
                         decoration: BoxDecoration(
                             color: Constants.fontColor1,
                             borderRadius: BorderRadius.circular(
                                 SizeConfig.blockSizeHorizontal * 3)),
                         child: Column(children: [
                           Container(
-                            height: SizeConfig.blockSizeHorizontal * 55,
-                            width: MediaQuery.of(context).size.width,
+                            height: SizeConfig.blockSizeHorizontal * 50,
+                            width: SizeConfig.blockSizeHorizontal * 75,
                             decoration: BoxDecoration(
                                 color: Constants.appbarColor,
                                 borderRadius: BorderRadius.circular(
@@ -69,7 +103,7 @@ class _FeedListViewPageState extends State<FeedListViewPage> {
                                 width: SizeConfig.blockSizeHorizontal * 4,
                               ),
                               Text(
-                                'Lost 8 kg in 2 months',
+                                description,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: Constants.fontRegular,
@@ -86,7 +120,7 @@ class _FeedListViewPageState extends State<FeedListViewPage> {
                               SizedBox(
                                 width: SizeConfig.blockSizeHorizontal * 4,
                               ),
-                              Text('Name of Fitness Center',
+                              Text(fitnessCenter,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: Constants.fontRegular,
@@ -99,9 +133,9 @@ class _FeedListViewPageState extends State<FeedListViewPage> {
                     );
                   }),
             ),
-          ],
-        ),
-      ),
-    );
+          )),
+        ],
+      )
+    ]);
   }
 }
