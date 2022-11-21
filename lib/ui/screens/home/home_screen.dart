@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/components/banner_tile.dart';
+import 'package:habitoz_fitness_app/ui/screens/home/components/invite_tile.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/components/percentage_tile.dart';
+import 'package:habitoz_fitness_app/ui/screens/home/components/rectangle_banner_tile.dart';
+import 'package:habitoz_fitness_app/ui/screens/home/components/square_banner_tile.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/circular_sliding_tile.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
@@ -46,51 +49,60 @@ class _HomeScreenState extends State<HomeScreen> {
         isHomeAppBar: true,
       ),
       body: SafeArea(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              SizedBox(
-                height: SizeConfig.blockSizeHorizontal * 6,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: SizeConfig.blockSizeHorizontal * 6,
+                      ),
+
+                      /*========Location Widget==========*/
+
+                      locationWidget()!,
+                      SizedBox(
+                        height: SizeConfig.blockSizeHorizontal * 4,
+                      ),
+
+                      /*========Percentage Widget==========*/
+
+                      (!isProfileCompleted)
+                          ? const PercentageTIile(
+                              value: 0.3,
+                            )
+                          : Container(),
+
+                      /*========Workout type  Widget==========*/
+
+                      const CircularSlidingTile(
+                          hasHeading: false,
+                          heading: '',
+                          circularIcons: HabitozIcons.fb,
+                          iconTitle: 'Gym'),
+                      SizedBox(
+                        height: SizeConfig.blockSizeHorizontal * 4,
+                      ),
+                      BannerTile(hasTitle: false),
+                      RectangleBannerTile(),
+                      SquareBannerTile(
+                        description: 'Lost 8 kg in 2 months',
+                        fitnessCenter: 'Name of fitness center',
+                      ),
+                      BannerTile(
+                        hasTitle: true,
+                        title: 'Best Offers',
+                      ),
+                      InviteTile()
+                    ],
+                  ),
+                ),
               ),
-
-              /*========Location Widget==========*/
-
-              locationWidget()!,
-              SizedBox(
-                height: SizeConfig.blockSizeHorizontal * 4,
-              ),
-
-              /*========Percentage Widget==========*/
-
-              (!isProfileCompleted)
-                  ? const PercentageTIile(
-                      value: 0.3,
-                    )
-                  : Container(),
-
-              /*========Workout type  Widget==========*/
-
-              const CircularSlidingTile(
-                  hasHeading: false,
-                  heading: '',
-                  circularIcons: HabitozIcons.fb,
-                  iconTitle: 'Gym'),
-              SizedBox(
-                height: SizeConfig.blockSizeHorizontal * 4,
-              ),
-
-              /*========Banner  Widget==========*/
-
-              BannerTile()
-
-              /*========Gyms near  Widget==========*/
-
-
-
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

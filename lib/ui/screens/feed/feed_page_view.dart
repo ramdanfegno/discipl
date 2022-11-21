@@ -3,14 +3,13 @@ import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
-class FeedListViewPage extends StatefulWidget {
-  const FeedListViewPage({Key? key}) : super(key: key);
+class FeedListViewPage extends StatelessWidget {
+  final String description, fitnessCenter;
 
-  @override
-  State<FeedListViewPage> createState() => _FeedListViewPageState();
-}
+  const FeedListViewPage(
+      {Key? key, required this.description, required this.fitnessCenter})
+      : super(key: key);
 
-class _FeedListViewPageState extends State<FeedListViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +68,7 @@ class _FeedListViewPageState extends State<FeedListViewPage> {
                                 width: SizeConfig.blockSizeHorizontal * 4,
                               ),
                               Text(
-                                'Lost 8 kg in 2 months',
+                                description,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: Constants.fontRegular,
@@ -86,7 +85,7 @@ class _FeedListViewPageState extends State<FeedListViewPage> {
                               SizedBox(
                                 width: SizeConfig.blockSizeHorizontal * 4,
                               ),
-                              Text('Name of Fitness Center',
+                              Text(fitnessCenter,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: Constants.fontRegular,

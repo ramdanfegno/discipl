@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
         userName: 'Ramdan Salim',
       ),
       appBar: CustomAppBar(
-        drawerClicked: (){
+        drawerClicked: () {
           _scaffoldKey.currentState!.openDrawer();
         },
         appBarTitle: '',
@@ -60,7 +60,10 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => FeedListViewPage()));
+                          builder: (context) => const FeedListViewPage(
+                                description: 'Lost 8 kg in 2 months',
+                                fitnessCenter: 'Name of fitness center',
+                              )));
                 },
                 child: Container(
                   height: SizeConfig.blockSizeHorizontal * 13,

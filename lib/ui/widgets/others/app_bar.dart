@@ -8,20 +8,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? appBarTitle;
   final Function()? drawerClicked;
 
-  const CustomAppBar(
-      {Key? key,
-      required this.isHomeAppBar,
-      required this.appBarTitle,
-      this.drawerClicked})
-      : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-    return Scaffold(
-      key: _scaffoldKey,
-      body: Container(
+    return Container(
         decoration: BoxDecoration(color: Colors.white, boxShadow: [
           BoxShadow(
               offset: const Offset(0, 4),
@@ -127,9 +118,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 : Container()
           ],
         ),
-      ),
-    );
+      );
   }
+
+  const CustomAppBar(
+      {Key? key,
+      required this.isHomeAppBar,
+      required this.appBarTitle,
+      this.drawerClicked})
+      : super(key: key);
 
   @override
   // TODO: implement preferredSize
