@@ -7,7 +7,12 @@ abstract class AuthenticationEvent extends Equatable {
 
 class AuthenticationStarted extends AuthenticationEvent {}
 
-class AuthenticationLoggedIn extends AuthenticationEvent {}
+class AuthenticationLoggedIn extends AuthenticationEvent {
+  OtpResponse otpResponse;
+  LoginResponse loginResponse;
+
+  AuthenticationLoggedIn({required this.loginResponse,required this.otpResponse});
+}
 
 class AuthenticationLoggedOut extends AuthenticationEvent {}
 
@@ -15,10 +20,15 @@ class AuthenticationSkip extends AuthenticationEvent {}
 
 class AuthenticationRetry extends AuthenticationEvent {}
 
-class AuthenticationLoading extends AuthenticationEvent {}
+class AuthenticationSkipProfile extends AuthenticationEvent {
+  final Map<String,dynamic> data;
+  AuthenticationSkipProfile({required this.data});
+}
 
-class AuthenticationNewUser extends AuthenticationEvent {}
+class AuthenticationProfileFilled extends AuthenticationEvent {
+  final Map<String,dynamic> data;
+  AuthenticationProfileFilled({required this.data});
+}
 
-class AuthenticationCheckProfile extends AuthenticationEvent {}
+class AuthenticationMoveToHomeScreen extends AuthenticationEvent {}
 
-class AuthenticationSkipProfile extends AuthenticationEvent {}

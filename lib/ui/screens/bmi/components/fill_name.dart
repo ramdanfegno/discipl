@@ -29,14 +29,17 @@ class _FillNameState extends State<FillName> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Column(
-      children: [
-        subTitle(),
-        SizedBox(height: SizeConfig.blockSizeHorizontal * 30),
-        nameHeading(),
-        SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-        buildTextField(),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*3),
+      child: Column(
+        children: [
+          subTitle(),
+          SizedBox(height: SizeConfig.blockSizeHorizontal * 30),
+          nameHeading(),
+          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
+          buildTextField(),
+        ],
+      ),
     );
   }
 
@@ -72,6 +75,7 @@ class _FillNameState extends State<FillName> {
       autofocus: false,
       onFieldSubmitted: (v) {
         name = v ;
+        widget.onFilled(v);
       },
       onChanged: (v){
         name = v;

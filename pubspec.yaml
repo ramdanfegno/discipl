@@ -65,6 +65,7 @@ dependencies:
   scroll_date_picker: ^3.6.0
   wheel_chooser: ^1.0.0
   flutter_ruler_picker: ^1.0.2
+  syncfusion_flutter_gauges: ^20.3.57
 
 dev_dependencies:
   flutter_test:
@@ -93,6 +94,7 @@ flutter:
     - assets/images/
     - assets/images/jpg/
     - assets/images/svg/
+    - assets/images/png/
     - assets/fonts/
     - assets/anim/
     - assets/icons/

@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:habitoz_fitness_app/models/login_response.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/utils/api_query.dart';
+import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
@@ -31,6 +32,7 @@ class UserRepository{
   static const String LOCATION_MSG = "LOCATION_MSG";
 
 
+  //send otp
   Future<Response?> sendOtp(String phoneNumber) async {
     String appSignature;
     appSignature = await SmsAutoFill().getAppSignature;
@@ -55,6 +57,7 @@ class UserRepository{
     }
   }
 
+  //verify otp - login
   Future<Response?> loginWithOtp(
       String phoneNumber, String code) async {
     Map<String, String> body = {
@@ -71,11 +74,18 @@ class UserRepository{
     }
   }
 
-  Future<Response?> reSendOtp(String phoneNumber, String id) async {
+  //resend otp
+  Future<Response?> reSendOtp(String id) async {
+
+    String appSignature;
+    appSignature = await SmsAutoFill().getAppSignature;
+    appSignature = appSignature;
+
     Map<String, String> body = {
-      "id": id,
-      "mobile_number": phoneNumber,
+      "otp_id": id,
+      "app_sign": appSignature,
     };
+
     try {
       Response? response =
       await apiQuery.postQuery(Constants.apiResendOtp,{}, body, 'ReSendOtp');
@@ -86,6 +96,7 @@ class UserRepository{
     }
   }
 
+  //logout
   Future<Response?> logOut() async {
     try {
       Response? response =
@@ -97,14 +108,65 @@ class UserRepository{
     }
   }
 
-  Future<Response?> updateName(String name) async {
+  //get user profile
+  Future<Response?> getUserProfile(bool forceRefresh) async {
+    try {
+      LoginResponse? loginResponse = await getLoginResponse();
+      String? token = loginResponse!.token;
+
+      Map<String,String> headers = {
+        'Authorization' : 'Token $token'
+      };
+
+      Response? response = await apiQuery.getQuery(
+          Constants.apiUserProfile, headers, {},
+          'UserProfileApi', true, true, forceRefresh);
+      return response;
+    }
+    catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+
+  //calculate bmi
+  Future<Response?> fitnessCalculate(Map<String,dynamic> details) async {
+    try {
+
+      LoginResponse? loginResponse = await getLoginResponse();
+      String? token = loginResponse!.token;
+
+      Map<String,String> headers = {
+        'Authorization' : 'Token $token'
+      };
+
+      Map<String, dynamic> body = {};
+      if(details.isNotEmpty){
+        body = details;
+      }
+
+      print(body);
+
+      Response? response = await apiQuery.postQuery(
+          Constants.apiFitnessCalculate,headers, body, 'FitnessCalculate');
+      return response;
+    } catch (exception) {
+      print(exception.toString());
+      return null;
+    }
+  }
+
+  //update user details
+  Future<Response?> updateUserDetails(Map<String,dynamic> details) async {
 
     LoginResponse? loginResponse = await getLoginResponse();
     String? token = loginResponse!.token;
 
-    Map<String, String> body = {
-      "first_name": name,
-    };
+    Map<String, dynamic> body = {};
+
+    if(details.isNotEmpty){
+      body = details;
+    }
 
     Map<String,String> headers = {
       'Authorization' : 'Token $token'
@@ -121,6 +183,8 @@ class UserRepository{
       return null;
     }
   }
+
+  /// Local storage
 
   setLoginResponse(LoginResponse userData) async {
     // ignore: unnecessary_null_comparison

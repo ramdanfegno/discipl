@@ -2,6 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:habitoz_fitness_app/models/login_response.dart';
+import 'package:habitoz_fitness_app/models/otp_response_model.dart';
+import 'package:habitoz_fitness_app/models/user_profile_model.dart';
+import '../../models/fitness_response.dart';
 import '../../repositories/user_repo.dart';
 
 part 'authentication_event.dart';
@@ -18,16 +21,13 @@ class AuthenticationBloc
   AuthenticationState get initialState => AuthenticationInitial();
 
   @override
-  Stream<AuthenticationState> mapEventToState(
-      AuthenticationEvent event,
-      ) async* {
-    print('mapEventToState');
+  Stream<AuthenticationState> mapEventToState(AuthenticationEvent event) async* {
     if (event is AuthenticationStarted) {
-      print('mapEventToState');
       yield* _mapAuthenticationStartedToState();
     }
     else if (event is AuthenticationLoggedIn) {
-      yield* _mapAuthenticationLoggedInToState();
+      print('AuthenticationLoggedIn');
+      yield* _mapAuthenticationLoggedInToState(event.otpResponse,event.loginResponse);
     }
     else if (event is AuthenticationLoggedOut) {
       yield* _mapAuthenticationLoggedOutToState();
@@ -35,18 +35,22 @@ class AuthenticationBloc
     else if (event is AuthenticationSkip) {
       yield* _mapAuthenticationSkipToState();
     }
-    else if (event is AuthenticationCheckProfile) {
-      yield* _mapCheckProfileState();
-    }
     else if (event is AuthenticationSkipProfile) {
-      yield* _mapSkipCheckProfileState();
+      yield* _mapSkipCheckProfileState(event.data);
+    }
+    else if (event is AuthenticationProfileFilled) {
+      yield* _mapProfileFilledToState(event.data);
+    }
+    else if (event is AuthenticationMoveToHomeScreen) {
+      yield* _mapMoveToHomeState();
     }
   }
 
-
   Stream<AuthenticationState> _mapAuthenticationStartedToState() async* {
     try{
-      yield AuthenticationOnLoading();
+      yield AuthenticationLoadSplashScreen();
+      await Future.delayed(const Duration(seconds: 2),() {});
+
       bool? isLogged = await _userRepository.isLogged();
       bool? isGuest = await _userRepository.isGuest();
       LoginResponse? userData = await _userRepository.getLoginResponse();
@@ -56,7 +60,7 @@ class AuthenticationBloc
         // if expired yield authFailed
 
         if(userData != null && userData.token != null){
-          yield AuthenticationSuccess();
+          yield const AuthenticationSuccess();
         }
         else{
           yield const AuthenticationFailure(message: 'Token Expired');
@@ -80,11 +84,21 @@ class AuthenticationBloc
     }
   }
 
-  Stream<AuthenticationState> _mapAuthenticationLoggedInToState() async* {
+  Stream<AuthenticationState> _mapAuthenticationLoggedInToState(OtpResponse otpResponse,LoginResponse loginResponse) async* {
     try{
       _userRepository.setGuestFlag(false);
       _userRepository.setIsLogged(true);
-      yield AuthenticationSuccess();
+
+      // check if profile is empty or is new user
+      //if new user redirect to profile fill screen
+      //if not redirect to home screen
+     /* if(otpResponse.isRegistered != null && otpResponse.isRegistered!){
+        yield const AuthenticationSuccess();
+      }
+      else{
+        yield AuthenticationCompleteProfile();
+      }*/
+      yield AuthenticationCompleteProfile();
     }
     catch(e){
       yield AuthenticationFailure(message: 'AuthenticationFailure: ${e.toString()}');
@@ -98,7 +112,7 @@ class AuthenticationBloc
     _userRepository.setIsLogged(false);
     _userRepository.setGuestFlag(false);
     if (response!.statusCode == 200) {
-      yield const AuthenticationFailure(message: ' AuthenticationFailure');
+      yield const AuthenticationFailure(message: ' Logged out');
     }
   }
 
@@ -108,13 +122,94 @@ class AuthenticationBloc
     yield AuthenticationGuest();
   }
 
-  Stream<AuthenticationState> _mapCheckProfileState() async* {
-   //write logic to get profile details
-
+  Stream<AuthenticationState> _mapSkipCheckProfileState(Map<String,dynamic> data) async* {
+    //check how much is filled
+    //post details that are filled
+    //store profile details
+    if(data.isNotEmpty){
+      try{
+        yield AuthenticationOnLoading();
+        Response? response = await _userRepository.fitnessCalculate(data);
+        if(response != null){
+          if(response.statusCode == 200){
+            //store profile details
+            Response? response2 = await _userRepository.getUserProfile(true);
+            if(response2 != null && response2.statusCode == 200){
+              UserProfile userProfile = UserProfile.fromJson(response2.data);
+              await _userRepository.storeProfileDetails(userProfile);
+            }
+          }
+        }
+      }
+      catch(e){
+        print(e.toString());
+      }
+    }
+    _userRepository.setGuestFlag(false);
+    _userRepository.setIsLogged(true);
+    yield const AuthenticationSuccess();
   }
 
-  Stream<AuthenticationState> _mapSkipCheckProfileState() async* {
-    //write logic to get profile details
+  Stream<AuthenticationState> _mapProfileFilledToState(Map<String,dynamic> data) async* {
+    //post details that are filled
+    //fitness calculation
+    //store profile details
+    //route to show result
+    try{
+      print('_mapProfileFilledToState');
+      yield AuthenticationOnLoading();
+      Response? response = await _userRepository.fitnessCalculate(data);
+      if(response != null){
+        print(response.statusCode);
+        print(response.statusMessage);
+        print(response.data);
 
+        if(response.statusCode == 200){
+          print('response fitnessCalculate');
+          print(response.data);
+
+          _userRepository.setGuestFlag(false);
+          _userRepository.setIsLogged(true);
+          FitnessResponse result = FitnessResponse.fromJson(response.data);
+          //store profile details
+          try{
+            Response? response2 = await _userRepository.getUserProfile(true);
+            if(response2 != null && response2.statusCode == 200){
+              UserProfile userProfile = UserProfile.fromJson(response2.data);
+              await _userRepository.storeProfileDetails(userProfile);
+            }
+          }
+          catch(e){
+            print(e.toString());
+          }
+          yield AuthenticationShowResult(result: result);
+        }
+        else{
+          print('Unable to calculate fitness details 1');
+          yield* _showError('Unable to calculate fitness details');
+        }
+      }
+      else{
+        print('Unable to calculate fitness details 2');
+        yield* _showError('Unable to calculate fitness details');
+      }
+    }
+    catch(e){
+      print(e.toString());
+      yield* _showError('Unable to calculate fitness details');
+    }
   }
+
+  Stream<AuthenticationState> _showError(String msg) async*{
+    _userRepository.setGuestFlag(false);
+    _userRepository.setIsLogged(true);
+    yield AuthenticationSuccess(message: msg);
+  }
+
+  Stream<AuthenticationState> _mapMoveToHomeState() async*{
+    _userRepository.setGuestFlag(false);
+    _userRepository.setIsLogged(true);
+    yield const AuthenticationSuccess();
+  }
+
 }

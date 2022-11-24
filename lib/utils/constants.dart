@@ -10,13 +10,17 @@ class Constants {
 
   //api names
   static const String apiSendOtp = 'user/enter_mobile/';
-  static const String apiResendOtp = 'user/resend-otp/';  /// need to verify
+  static const String apiResendOtp = 'user/resent_otp/';
   static const String apiLoginWithOtp = 'user/token/login/';
   static const String apiUserProfile = 'user/profile/';
   static const String apiLogout = 'user/logout/';
   static const String apiHome = 'user/index/';
   static const String apiCustomerRegister = 'user/register/customer/';
   static const String apiFitnessCenterList = 'fitness_center/fc/';
+  static const String apiFitnessCalculate = 'user/fit-calculator/';
+  static const String apiPostEnquiry = '';
+  static const String apiFeedList = '';
+  static const String apiSetLocation = '';
 
 
   //fonts styles

@@ -25,8 +25,8 @@ class _FillWeightState extends State<FillWeight> {
     // TODO: implement initState
     super.initState();
     if(widget.weight != null){
+      print(widget.weight);
       _weight = widget.weight;
-
     }
     else{
       _weight = 60.0;
@@ -40,7 +40,7 @@ class _FillWeightState extends State<FillWeight> {
     SizeConfig().init(context);
     return Column(
       children: [
-        chooseWeight(),
+        title(),
         SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
         chooseWeight(),
       ],
@@ -72,15 +72,15 @@ class _FillWeightState extends State<FillWeight> {
 
   Widget buildKg(){
     return SizedBox(
-      width: SizeConfig.blockSizeHorizontal*50,
-      height: SizeConfig.blockSizeHorizontal*70,
+      width: SizeConfig.blockSizeHorizontal*35,
+      height: SizeConfig.blockSizeHorizontal*90,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: SizeConfig.blockSizeHorizontal*20,
-            height: SizeConfig.blockSizeHorizontal*60,
+            width: SizeConfig.blockSizeHorizontal*15,
+            height: SizeConfig.blockSizeHorizontal*80,
             child: WheelChooser.integer(
               onValueChanged: (v){
                 _kg = v;
@@ -90,6 +90,7 @@ class _FillWeightState extends State<FillWeight> {
                 setState(() {});
                 print('_weight');
                 print(_weight);
+                widget.onFilled(_weight!);
               },
               maxValue: 250,
               minValue: 20,
@@ -111,13 +112,16 @@ class _FillWeightState extends State<FillWeight> {
             width: 10,
           ),
 
-          const Text(
-            'Kg',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Constants.fontColor1,
-                fontSize: 18,
-                fontFamily: Constants.fontSemiBold
+          const Padding(
+            padding: EdgeInsets.only(top: 4.0),
+            child: Text(
+              'Kg',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Constants.fontColor1,
+                  fontSize: 17,
+                  fontFamily: Constants.fontRegular
+              ),
             ),
           )
         ],
@@ -127,14 +131,14 @@ class _FillWeightState extends State<FillWeight> {
 
   Widget buildGm(){
     return SizedBox(
-      width: SizeConfig.blockSizeHorizontal*50,
+      width: SizeConfig.blockSizeHorizontal*35,
       height: SizeConfig.blockSizeHorizontal*60,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: SizeConfig.blockSizeHorizontal*20,
+            width: SizeConfig.blockSizeHorizontal*15,
             height: SizeConfig.blockSizeHorizontal*60,
             child: WheelChooser(
               datas: const [
@@ -143,14 +147,17 @@ class _FillWeightState extends State<FillWeight> {
               onValueChanged: (v){
                 _gm = v;
                 int i = _weight!.round();
+                print('i');
+                print(i);
                 _weight = i + (_gm!/1000);
                 setState(() {});
                 print('_weight');
                 print(_weight);
+                widget.onFilled(_weight!);
               },
               selectTextStyle: const TextStyle(
                   color: Constants.fontColor1,
-                  fontSize: 20,
+                  fontSize: 14,
                   fontFamily: Constants.fontSemiBold
               ),
               unSelectTextStyle: const TextStyle(
@@ -165,13 +172,16 @@ class _FillWeightState extends State<FillWeight> {
             width: 10,
           ),
 
-          const Text(
-            'gm',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Constants.fontColor1,
-                fontSize: 18,
-                fontFamily: Constants.fontSemiBold
+          const Padding(
+            padding: EdgeInsets.only(top: 4.0),
+            child: Text(
+              'gm',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Constants.fontColor1,
+                  fontSize: 18,
+                  fontFamily: Constants.fontRegular
+              ),
             ),
           )
         ],

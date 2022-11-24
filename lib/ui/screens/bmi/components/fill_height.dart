@@ -1,4 +1,3 @@
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 import 'package:wheel_chooser/wheel_chooser.dart';
@@ -7,10 +6,10 @@ import '../../../../utils/constants.dart';
 
 class FillHeight extends StatefulWidget {
 
-  final int? height;
+  final int? heightCM;
   final Function(int) onFilled;
 
-  const FillHeight({Key? key,required this.height,required this.onFilled}) : super(key: key);
+  const FillHeight({Key? key,required this.heightCM,required this.onFilled}) : super(key: key);
 
   @override
   State<FillHeight> createState() => _FillHeightState();
@@ -18,13 +17,18 @@ class FillHeight extends StatefulWidget {
 
 class _FillHeightState extends State<FillHeight> {
 
-  int? _height;
+  int? _heightCM;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _height = widget.height;
+    if(widget.heightCM != null){
+      _heightCM = widget.heightCM;
+    }
+    else{
+      _heightCM = 160;
+    }
   }
 
   @override
@@ -34,7 +38,7 @@ class _FillHeightState extends State<FillHeight> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        chooseHeight(),
+        title(),
         SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
         chooseHeight(),
       ],
@@ -56,29 +60,31 @@ class _FillHeightState extends State<FillHeight> {
   Widget chooseHeight(){
     return SizedBox(
       width: SizeConfig.blockSizeHorizontal*50,
-      height: SizeConfig.blockSizeHorizontal*70,
+      height: SizeConfig.blockSizeHorizontal*90,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: SizeConfig.blockSizeHorizontal*20,
-            height: SizeConfig.blockSizeHorizontal*60,
+            width: SizeConfig.blockSizeHorizontal*25,
+            height: SizeConfig.blockSizeHorizontal*90,
             child: WheelChooser.integer(
               onValueChanged: (v){
-                _height = v;
+                _heightCM = v;
                 print('_height');
-                print(_height);
+                print(_heightCM);
                 setState(() {});
+                widget.onFilled(_heightCM!);
               },
-              maxValue: 250,
+              maxValue: 300,
               minValue: 20,
-              initValue: _height,
+              initValue: _heightCM,
               selectTextStyle: const TextStyle(
                   color: Constants.fontColor1,
-                  fontSize: 20,
+                  fontSize: 24,
                   fontFamily: Constants.fontSemiBold
               ),
+              listHeight: SizeConfig.blockSizeHorizontal*90,
               unSelectTextStyle: const TextStyle(
                   color: Color.fromRGBO(204, 204, 204, 1),
                   fontSize: 15,
@@ -88,22 +94,23 @@ class _FillHeightState extends State<FillHeight> {
           ),
 
           const SizedBox(
-            width: 10,
+            width: 1,
           ),
 
-          const Text(
-            'Cm',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Constants.fontColor1,
-                fontSize: 18,
-                fontFamily: Constants.fontSemiBold
+          const Padding(
+            padding: EdgeInsets.only(top: 4.0),
+            child: Text(
+              'Cm',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Constants.fontColor1,
+                  fontSize: 18,
+                  fontFamily: Constants.fontRegular
+              ),
             ),
           )
         ],
       ),
     );
   }
-
-
 }

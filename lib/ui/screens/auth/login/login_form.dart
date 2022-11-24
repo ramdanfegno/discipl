@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
+import '../../../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../../../bloc/login_bloc/login_bloc.dart';
 import '../../../../bloc/login_bloc/login_event.dart';
 import '../../../../bloc/login_bloc/login_state.dart';
 import '../../../../repositories/user_repo.dart';
 import '../../../../utils/constants.dart';
+import '../../../../utils/routes.dart';
 import '../../../../utils/scroll_setting.dart';
 import '../../../../utils/size_config.dart';
 import '../../../widgets/buttons/auth_button.dart';
@@ -37,6 +39,7 @@ class _LoginFormState extends State<LoginForm> {
   late LoginBloc _loginBloc;
 
   UserRepository get _userRepository => widget._userRepository;
+  late AuthenticationBloc _authBloc;
 
   bool isLoginButtonEnabled(LoginState state) {
     return (state.isPhoneValid) && isPopulated && !(state.isSubmitting);
@@ -61,6 +64,8 @@ class _LoginFormState extends State<LoginForm> {
             duration: const Duration(milliseconds: 300));
       }
     });
+    _authBloc = BlocProvider.of<AuthenticationBloc>(context);
+    print(DateTime.now());
   }
 
   @override
@@ -379,7 +384,9 @@ class _LoginFormState extends State<LoginForm> {
     return InkWell(
       onTap: () async {
         //skip login process
-
+        _authBloc.add(AuthenticationSkip());
+        Navigator.pushNamedAndRemoveUntil(
+            context, HabitozRoutes.app, (route) => false);
       },
       child: SizedBox(
         height: SizeConfig.blockSizeHorizontal * 12,

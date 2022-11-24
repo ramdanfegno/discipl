@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/home_screen.dart';
+import 'package:habitoz_fitness_app/ui/widgets/others/loading_screen.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'bloc/authentication_bloc/authentication_bloc.dart';
 import 'repositories/user_repo.dart';
 import 'ui/screens/auth/login/login_screen.dart';
+import 'ui/screens/bmi/fill_profile.dart';
+import 'ui/screens/bmi/result_display.dart';
 import 'ui/splash_screen.dart';
 
 
@@ -63,17 +66,18 @@ class App extends StatelessWidget {
             buttonColor: Color(0xffFFFFFF)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      routes: {
+        '/fillProfile': (context) => const FillProfileDetails(),
+      },
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         buildWhen: (previous, current) => (previous != current),
         builder: (context, state) {
           if (state is AuthenticationSuccess) {
             // go to home screen
-            print('AuthenticationSuccess');
             return const HomeScreen();
           }
           if (state is AuthenticationFailure) {
             // logged out user - redirect to login page
-            print('AuthenticationFailure');
             return LoginScreen(
               userRepository: _userRepository,
               message: state.message,
@@ -81,20 +85,25 @@ class App extends StatelessWidget {
           }
           if (state is AuthenticationGuest) {
             // guest user - redirect to home screen as guest
-            print('AuthenticationGuest');
             return const HomeScreen();
           }
           if (state is AuthenticationCompleteProfile) {
             // complete profile page
-            print('AuthenticationCompleteProfile');
-            return const HomeScreen();
+            return const FillProfileDetails();
           }
-          if (state is AuthenticationProfileSkipped) {
-            // skipped profile page
-            print('AuthenticationCompleteProfile');
-            return const HomeScreen();
+          if (state is AuthenticationShowResult) {
+            // complete profile page
+            return ResultView(
+              fitnessResponse: state.result,
+              resultType: 'BMI',
+            );
           }
-          print('else SplashScreen');
+          if (state is AuthenticationOnLoading) {
+            return const LoadingWidget();
+          }
+          if (state is AuthenticationLoadSplashScreen) {
+            return const SplashScreen();
+          }
           return const SplashScreen();
         },
       ),

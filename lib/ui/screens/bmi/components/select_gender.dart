@@ -28,7 +28,7 @@ class _FillGenderState extends State<FillGender> {
       gender = widget.gender;
     }
     else{
-      gender = 'MALE';
+      gender = 'M';
     }
   }
 
@@ -63,39 +63,39 @@ class _FillGenderState extends State<FillGender> {
       children: [
 
         GenderTile(
-            isSelected: (gender == 'MALE'),
-            iconData: HabitozIcons.male,
+            isSelected: (gender == 'M'),
+            iconData: Icons.male,
             title: 'MALE',
             onPressed: (){
-              gender = 'MALE';
+              gender = 'M';
               setState(() {});
               widget.onFilled(gender!);
             }),
 
         const SizedBox(
-          height: 10,
+          height: 15,
         ),
 
         GenderTile(
-            isSelected: (gender == 'FEMALE'),
-            iconData: HabitozIcons.female,
+            isSelected: (gender == 'F'),
+            iconData: Icons.female,
             title: 'FEMALE',
             onPressed: (){
-              gender = 'FEMALE';
+              gender = 'F';
               setState(() {});
               widget.onFilled(gender!);
             }),
 
         const SizedBox(
-          height: 10,
+          height: 15,
         ),
 
         GenderTile(
-            isSelected: (gender == 'OTHERS'),
-            iconData: HabitozIcons.others,
+            isSelected: (gender == 'O'),
+            iconData: Icons.transgender,
             title: 'OTHERS',
             onPressed: (){
-              gender = 'OTHERS';
+              gender = 'O';
               setState(() {});
               widget.onFilled(gender!);
             }),
@@ -118,13 +118,48 @@ class GenderTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Container(
-      height: SizeConfig.blockSizeHorizontal*25,
-      width: SizeConfig.blockSizeHorizontal*25,
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(243, 243, 243, 1),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        border: Border.all(color: (isSelected) ? Colors.red : Colors.transparent, width: 1)
+    return InkWell(
+      onTap: (){
+        onPressed();
+      },
+      child: Container(
+        height: SizeConfig.blockSizeHorizontal*30,
+        width: SizeConfig.blockSizeHorizontal*30,
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(243, 243, 243, 1),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(color: (isSelected) ? Colors.red : Colors.transparent, width: 1)
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(width: 1,color: Constants.fontColor1),
+                shape: BoxShape.circle
+              ),
+              padding: const EdgeInsets.all(5),
+              child: Icon(
+                iconData,
+                color: Colors.grey[600],
+                size: 22,
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Text(
+              title,
+              style: const TextStyle(
+                color: Constants.fontColor1,
+                fontSize: 14,
+                fontFamily: Constants.fontRegular
+              ),
+            )
+          ],
+        ),
+
       ),
     );
   }

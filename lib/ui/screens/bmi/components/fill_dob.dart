@@ -37,7 +37,7 @@ class _FillDobState extends State<FillDob> {
     SizeConfig().init(context);
     return Column(
       children: [
-        chooseDate(),
+        title(),
         SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
         chooseDate(),
       ],
@@ -58,7 +58,7 @@ class _FillDobState extends State<FillDob> {
 
   Widget chooseDate(){
     return SizedBox(
-      height: SizeConfig.blockSizeHorizontal*30,
+      height: SizeConfig.blockSizeHorizontal*90,
       child: ScrollDatePicker(
         selectedDate: _dob,
         locale: const Locale('en'),
@@ -66,7 +66,53 @@ class _FillDobState extends State<FillDob> {
           setState(() {
             _dob = value;
           });
+          widget.onFilled(_dob);
         },
+        scrollViewOptions: const DatePickerScrollViewOptions(
+            year: ScrollViewDetailOptions(
+              selectedTextStyle: TextStyle(
+                  color: Constants.fontColor1,
+                  fontSize: 25,
+                  fontFamily: Constants.fontSemiBold
+              ),
+              textStyle: TextStyle(
+                  fontSize: 15,
+                  fontFamily: Constants.fontRegular
+              ),
+              alignment: Alignment.center,
+              margin: EdgeInsets.symmetric(vertical: 15,horizontal: 10),
+            ),
+            month: ScrollViewDetailOptions(
+              selectedTextStyle: TextStyle(
+                  color: Constants.fontColor1,
+                  fontSize: 25,
+                  fontFamily: Constants.fontSemiBold
+              ),
+              textStyle: TextStyle(
+                  fontSize: 15,
+                  fontFamily: Constants.fontRegular
+              ),
+              margin: EdgeInsets.symmetric(vertical: 15,horizontal: 0),
+              alignment: Alignment.centerLeft,
+            ),
+            day: ScrollViewDetailOptions(
+              selectedTextStyle: TextStyle(
+                  color: Constants.fontColor1,
+                  fontSize: 25,
+                  fontFamily: Constants.fontSemiBold
+              ),
+              textStyle: TextStyle(
+                  fontSize: 15,
+                  fontFamily: Constants.fontRegular
+              ),
+              margin: EdgeInsets.symmetric(vertical: 15,horizontal: 15),
+              alignment: Alignment.centerLeft,
+            )
+        ),
+        options: DatePickerOptions(
+          itemExtent: 50,
+          diameterRatio: 50
+        ),
       ),
     );
   }

@@ -1,18 +1,25 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/fill_dob.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/fill_height.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/fill_name.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/fill_wieght.dart';
+import 'package:habitoz_fitness_app/ui/screens/bmi/components/measure_view.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/select_gender.dart';
 import 'package:habitoz_fitness_app/ui/widgets/buttons/custom_button.dart';
+import 'package:intl/intl.dart';
 
+import '../../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../../utils/constants.dart';
+import '../../../utils/routes.dart';
 import '../../../utils/scroll_setting.dart';
 import '../../../utils/size_config.dart';
 import '../../widgets/buttons/auth_button.dart';
+import '../../widgets/dialog/custom_dialog.dart';
+import 'profile_screen.dart';
 
 class FillProfileDetails extends StatefulWidget {
   const FillProfileDetails({Key? key}) : super(key: key);
@@ -24,7 +31,6 @@ class FillProfileDetails extends StatefulWidget {
 class _FillProfileDetailsState extends State<FillProfileDetails> {
 
   late bool isLoading;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _name,_gender;
   DateTime? _dob;
   double? _weight;
@@ -32,73 +38,84 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
   late int _currentTab;
   final UserRepository userRepository = UserRepository();
 
+  late AuthenticationBloc _authBloc;
+  late Map<String,dynamic> _profileDetails;
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     isLoading = false;
     _currentTab = 0;
+    _gender = "M";
+    _height = 160;
+    _weight = 60.0;
+    _profileDetails = {};
+    _authBloc = BlocProvider.of<AuthenticationBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: Colors.white,
-        child: Stack(
-          children: <Widget>[
-            //verification form
-            Positioned(
-                top: SizeConfig.blockSizeVertical * 3,
-                left: SizeConfig.blockSizeHorizontal * 6,
-                right: SizeConfig.blockSizeHorizontal * 6,
-                child: fillForm()),
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.white,
+            child: Stack(
+              children: <Widget>[
+                //verification form
+                Positioned(
+                    top: SizeConfig.blockSizeVertical * 3,
+                    left: SizeConfig.blockSizeHorizontal * 0,
+                    right: SizeConfig.blockSizeHorizontal * 0,
+                    child: fillForm()),
 
-            //verify button
-            Positioned(
-                bottom: SizeConfig.blockSizeHorizontal * 7,
-                right: SizeConfig.blockSizeHorizontal * 7,
-                child: verifyButton()),
+                //verify button
+                Positioned(
+                    bottom: SizeConfig.blockSizeHorizontal * 7,
+                    right: SizeConfig.blockSizeHorizontal * 7,
+                    child: nextButton()),
 
-            //skip button
-            Positioned(
-                bottom: SizeConfig.blockSizeHorizontal * 7,
-                left: SizeConfig.blockSizeHorizontal * 7,
-                child: skipButton()),
+                //skip button
+                (_currentTab > 2) ? Positioned(
+                    bottom: SizeConfig.blockSizeHorizontal * 7,
+                    left: SizeConfig.blockSizeHorizontal * 7,
+                    child: skipButton()) : Container(),
 
-          ],
+              ],
+            ),
+          ),
+          // This trailing comma makes auto-formatting nicer for build methods.
         ),
       ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
   Widget fillForm() {
-    return Form(
-      key: _formKey,
-      child: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-        child: ScrollConfiguration(
-          behavior: ScrollDefaultBehaviour(),
-          child: ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            children: [
-              buildCurrentTab(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
-              (_currentTab == 0) ? titleLine1() : Container(),
-              (_currentTab == 0) ? SizedBox(height: SizeConfig.blockSizeHorizontal * 5) : Container(),
-              titleLine2(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
-              selectTab(),
-            ],
-          ),
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+      child: ScrollConfiguration(
+        behavior: ScrollDefaultBehaviour(),
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          children: [
+            buildCurrentTab(),
+            SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
+            (_currentTab == 0) ? titleLine1() : Container(),
+            (_currentTab == 0) ? SizedBox(height: SizeConfig.blockSizeHorizontal * 5) : Container(),
+            titleLine2(),
+            SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
+            selectTab(),
+          ],
         ),
       ),
     );
@@ -107,24 +124,22 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
   Widget buildCurrentTab(){
     return SizedBox(
       width: SizeConfig.screenWidth,
-      height: SizeConfig.blockSizeHorizontal*10,
-      child: Center(
-        child: ListView.builder(
-            itemCount: 5,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*1.5),
-                child: Container(
-                  width: SizeConfig.blockSizeHorizontal*15,
-                  height: 5,
-                  color: (_currentTab == index) ? Colors.red : const Color.fromRGBO(243, 243, 243, 1),
-                ),
-              );
-            }),
-      ),
+      height: SizeConfig.blockSizeHorizontal*1,
+      child: ListView.builder(
+          itemCount: 5,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*2),
+              child: Container(
+                width: SizeConfig.blockSizeHorizontal*15,
+                height: 1,
+                color: (_currentTab == index) ? Colors.red : const Color.fromRGBO(243, 243, 243, 1),
+              ),
+            );
+          }),
     );
   }
 
@@ -135,6 +150,7 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
             name: _name,
             onFilled: (v){
               _name = v;
+              _profileDetails['name'] = v;
             }
         );
       case 1:
@@ -142,6 +158,7 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
             dob: _dob,
             onFilled: (v){
               _dob = v;
+              _profileDetails['date'] = DateFormat('yyyy-MM-dd').format(v);
             }
         );
       case 2:
@@ -149,20 +166,26 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
             gender: _gender,
             onFilled: (v){
               _gender = v;
+              _profileDetails['gender'] = v;
             }
         );
       case 3:
-        return FillHeight(
-            height: _height,
-            onFilled: (v){
-              _height = v;
-            }
-        );
-      case 4:
         return FillWeight(
             weight: _weight,
             onFilled: (v){
               _weight = v;
+              _profileDetails['weight'] = v;
+            }
+        );
+      case 4:
+        return FillHeight(
+            heightCM: _height,
+            onFilled: (v){
+              _height = v;
+              if(_height != null){
+                _profileDetails['height_cm'] = v;
+                _profileDetails['height_ft'] = (v*0.0328084).toStringAsFixed(2);
+              }
             }
         );
     }
@@ -193,19 +216,55 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
     );
   }
 
-  Widget verifyButton() {
+  Widget nextButton() {
     return AuthButton(
       title: 'Next',
       color: Constants.primaryColor,
       onPressed: () {
-
-        if(_currentTab <4){
-          _currentTab++;
+        if(_currentTab == 0){
+          if(_name == null || _name == ""){
+            Fluttertoast.showToast(msg: 'Please fill your name');
+          }
+          else{
+            _currentTab++;
+            setState(() {});
+          }
         }
-        setState(() {});
-       /* if (!(isLoading)) {
-          _onFormSubmitted();
-        }*/
+        else if(_currentTab == 1){
+          if(_dob == null){
+            Fluttertoast.showToast(msg: 'Please fill your date of birth');
+          }
+          else{
+            _currentTab++;
+            setState(() {});
+          }
+        }
+        else if(_currentTab == 2){
+          if(_gender == null || _gender == ""){
+            Fluttertoast.showToast(msg: 'Please select your gender');
+          }
+          else{
+            _currentTab++;
+            setState(() {});
+          }
+        }
+        else if(_currentTab == 3){
+          if(_weight == null || _weight! < 10){
+            Fluttertoast.showToast(msg: 'Please select a valid weight');
+          }
+          else{
+            _currentTab++;
+            setState(() {});
+          }
+        }
+        else if(_currentTab == 4){
+          if(_height == null || _height! < 10){
+            Fluttertoast.showToast(msg: 'Please select a valid height');
+          }
+          else{
+            _submit();
+          }
+        }
       },
       height: SizeConfig.blockSizeHorizontal * 13,
       width: SizeConfig.blockSizeHorizontal* 40,
@@ -221,19 +280,19 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
       borderColor: Colors.transparent,
       titleColor: const Color.fromRGBO(153, 153, 153, 1),
       onPressed: () {
-
+        _skip();
       },
       height: SizeConfig.blockSizeHorizontal * 13,
       width: SizeConfig.blockSizeHorizontal* 40,
     );
   }
 
-  void _onFormSubmitted() {
+  void _skip() {
     try{
-      if ( _formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
-        submitNameApi();
-      }
+      //check if any details are provided
+      _authBloc.add(AuthenticationSkipProfile(data: _profileDetails));
+      Navigator.pushNamedAndRemoveUntil(
+          context, HabitozRoutes.app, (route) => false);
     }
     catch(e){
       print(e.toString());
@@ -243,37 +302,38 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
     }
   }
 
-  submitNameApi() async{
+  _submit() async{
     try{
-      setState(() {
-        isLoading = true;
-      });
-      FocusScope.of(context).requestFocus(FocusNode());
-
-      Response? response = await userRepository.updateName(_name!);
-
-      if(response != null){
-        if(response.statusCode == 200){
-          // next page
-
-        }
-        else{
-          Fluttertoast.showToast(msg: 'Error submitting name');
-        }
-      }
-      else{
-        Fluttertoast.showToast(msg: 'Error submitting name');
-      }
-      setState(() {
-        isLoading = false;
-      });
+      _profileDetails['neck'] = 0;
+      _authBloc.add(AuthenticationProfileFilled(data: _profileDetails));
+      Navigator.pushNamedAndRemoveUntil(
+          context, HabitozRoutes.app, (route) => false);
     }catch(e){
       print(e.toString());
       Fluttertoast.showToast(msg: 'Error ${e.toString()}');
-      setState(() {
-        isLoading = false;
-      });
     }
+  }
+
+  Future<bool> _onBackPressed() async {
+    return showDialog(
+        context: context,
+        //barrierDismissible: false,
+        builder: (_) {
+          return CustomDialog(
+            title: 'Exit Login',
+            subtitle: 'Do you want to exit login process?',
+            yesTitle: 'Yes',
+            noTitle: 'No',
+            yes: () {
+              _skip();
+              return false;
+            },
+            no: () {
+              Navigator.pop(context, false);
+              return false;
+            },
+          );
+        }).then((x) => x ?? false);
   }
 
 }
