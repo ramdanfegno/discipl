@@ -145,6 +145,19 @@ class UserRepository{
         body = details;
       }
 
+      if(details['weight'] == null){
+        body['weight'] = 0.0;
+      }
+      if(details['height_cm'] == null){
+        body['height_cm'] = 0.0;
+      }
+      if(details['height_ft'] == null){
+        body['height_ft'] = 0.0;
+      }
+      if(details['neck'] == null){
+        body['neck'] = 0.0;
+      }
+
       print(body);
 
       Response? response = await apiQuery.postQuery(

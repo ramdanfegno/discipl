@@ -52,6 +52,7 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
     _height = 160;
     _weight = 60.0;
     _profileDetails = {};
+    _profileDetails['gender'] = _gender;
     _authBloc = BlocProvider.of<AuthenticationBloc>(context);
   }
 
@@ -158,7 +159,7 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
             dob: _dob,
             onFilled: (v){
               _dob = v;
-              _profileDetails['date'] = DateFormat('yyyy-MM-dd').format(v);
+              _profileDetails['date'] = DateFormat('yyyy-MM-dd').format(v).toString();
             }
         );
       case 2:

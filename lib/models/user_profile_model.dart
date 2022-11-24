@@ -24,10 +24,10 @@ class UserProfile {
     this.leftForearmsExtended,
     this.rightForearmsRelaxed,
     this.rightForearmsExtended,
-    this.leftUpperarmsRelaxed,
-    this.leftUpperarmsExtended,
-    this.rightUpperarmsRelaxed,
-    this.rightUpperarmsExtended,
+    this.leftUpperArmsRelaxed,
+    this.leftUpperArmsExtended,
+    this.rightUpperArmsRelaxed,
+    this.rightUpperArmsExtended,
     this.waist,
     this.hip,
     this.leftThighRelaxed,
@@ -45,43 +45,45 @@ class UserProfile {
     this.basalMetabolismRate,
     this.image,
     this.fitnessCenter,
+    this.dob,
     this.course,
     this.dietPlan,
   });
 
   int? id;
   User? user;
-  dynamic age;
-  int? weight;
-  int? heightCm;
-  double? heightFt;
-  int? neck;
-  int? shoulders;
-  int? chestExtended;
-  int? chestNormal;
-  int? leftForearmsRelaxed;
-  int? leftForearmsExtended;
-  int? rightForearmsRelaxed;
-  int? rightForearmsExtended;
-  int? leftUpperarmsRelaxed;
-  int? leftUpperarmsExtended;
-  int? rightUpperarmsRelaxed;
-  int? rightUpperarmsExtended;
-  int? waist;
-  int? hip;
-  int? leftThighRelaxed;
-  int? leftThighExtended;
-  int? rightThighRelaxed;
-  int? rightThighExtended;
-  int? leftCalfRelaxed;
-  int? leftCalfExtended;
-  int? rightCalfRelaxed;
-  int? rightCalfExtended;
+  int? age;
+  String? dob;
+  double? weight;
+  double? heightCm;
+  String? heightFt;
+  double? neck;
+  double? shoulders;
+  double? chestExtended;
+  double? chestNormal;
+  double? leftForearmsRelaxed;
+  double? leftForearmsExtended;
+  double? rightForearmsRelaxed;
+  double? rightForearmsExtended;
+  double? leftUpperArmsRelaxed;
+  double? leftUpperArmsExtended;
+  double? rightUpperArmsRelaxed;
+  double? rightUpperArmsExtended;
+  double? waist;
+  double? hip;
+  double? leftThighRelaxed;
+  double? leftThighExtended;
+  double? rightThighRelaxed;
+  double? rightThighExtended;
+  double? leftCalfRelaxed;
+  double? leftCalfExtended;
+  double? rightCalfRelaxed;
+  double? rightCalfExtended;
   String? gender;
   dynamic membershipId;
   int? bodyFatPercentage;
-  int? bodyMassIndex;
-  int? basalMetabolismRate;
+  double? bodyMassIndex;
+  double? basalMetabolismRate;
   dynamic image;
   List<dynamic>? fitnessCenter;
   List<dynamic>? course;
@@ -91,6 +93,7 @@ class UserProfile {
     id: (json["id"] == null) ? null : json["id"],
     user: User.fromJson(json["user"]),
     age: (json["age"] == null) ? null : json["age"],
+    dob: (json["dob"] == null) ? null : json["dob"],
     weight: (json["weight"] == null) ? null : json["weight"],
     heightCm: (json["height_cm"] == null) ? null : json["height_cm"],
     heightFt: (json["height_ft"] == null) ? null : json["height_ft"],
@@ -102,10 +105,10 @@ class UserProfile {
     leftForearmsExtended: (json["left_forearms_extended"] == null) ? null : json["left_forearms_extended"],
     rightForearmsRelaxed: (json["right_forearms_relaxed"] == null) ? null : json["right_forearms_relaxed"],
     rightForearmsExtended: (json["right_forearms_extended"] == null) ? null : json["right_forearms_extended"],
-    leftUpperarmsRelaxed: (json["left_upperarms_relaxed"] == null) ? null : json["left_upperarms_relaxed"],
-    leftUpperarmsExtended: (json["left_upperarms_extended"] == null) ? null : json["left_upperarms_extended"],
-    rightUpperarmsRelaxed: (json["right_upperarms_relaxed"] == null) ? null : json["right_upperarms_relaxed"],
-    rightUpperarmsExtended: (json["right_upperarms_extended"] == null) ? null : json["right_upperarms_extended"],
+    leftUpperArmsRelaxed: (json["left_upperarms_relaxed"] == null) ? null : json["left_upperarms_relaxed"],
+    leftUpperArmsExtended: (json["left_upperarms_extended"] == null) ? null : json["left_upperarms_extended"],
+    rightUpperArmsRelaxed: (json["right_upperarms_relaxed"] == null) ? null : json["right_upperarms_relaxed"],
+    rightUpperArmsExtended: (json["right_upperarms_extended"] == null) ? null : json["right_upperarms_extended"],
     waist: (json["waist"] == null) ? null : json["waist"],
     hip: (json["hip"] == null) ? null : json["hip"],
     leftThighRelaxed: (json["left_thigh_relaxed"] == null) ? null : json["left_thigh_relaxed"],
@@ -131,6 +134,7 @@ class UserProfile {
     "id": id,
     "user": user!.toJson(),
     "age": age,
+    "dob": dob,
     "weight": weight,
     "height_cm": heightCm,
     "height_ft": heightFt,
@@ -142,10 +146,10 @@ class UserProfile {
     "left_forearms_extended": leftForearmsExtended,
     "right_forearms_relaxed": rightForearmsRelaxed,
     "right_forearms_extended": rightForearmsExtended,
-    "left_upperarms_relaxed": leftUpperarmsRelaxed,
-    "left_upperarms_extended": leftUpperarmsExtended,
-    "right_upperarms_relaxed": rightUpperarmsRelaxed,
-    "right_upperarms_extended": rightUpperarmsExtended,
+    "left_upperarms_relaxed": leftUpperArmsRelaxed,
+    "left_upperarms_extended": leftUpperArmsExtended,
+    "right_upperarms_relaxed": rightUpperArmsRelaxed,
+    "right_upperarms_extended": rightUpperArmsExtended,
     "waist": waist,
     "hip": hip,
     "left_thigh_relaxed": leftThighRelaxed,

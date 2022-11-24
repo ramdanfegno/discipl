@@ -60,7 +60,7 @@ class AuthenticationBloc
         // if expired yield authFailed
 
         if(userData != null && userData.token != null){
-          yield const AuthenticationSuccess();
+          yield const AuthenticationSuccess(isGuest: false,isLoggedIn: true);
         }
         else{
           yield const AuthenticationFailure(message: 'Token Expired');
@@ -70,7 +70,7 @@ class AuthenticationBloc
         //check if guest
         if(isGuest!){
           //guest
-          yield AuthenticationGuest();
+          yield const AuthenticationGuest(isGuest: true,isLoggedIn: false);
         }
         else{
           //new user
@@ -119,7 +119,7 @@ class AuthenticationBloc
   Stream<AuthenticationState> _mapAuthenticationSkipToState() async* {
     _userRepository.setGuestFlag(true);
     _userRepository.setIsLogged(false);
-    yield AuthenticationGuest();
+    yield const AuthenticationGuest(isGuest: true,isLoggedIn: false);
   }
 
   Stream<AuthenticationState> _mapSkipCheckProfileState(Map<String,dynamic> data) async* {
@@ -131,9 +131,18 @@ class AuthenticationBloc
         yield AuthenticationOnLoading();
         Response? response = await _userRepository.fitnessCalculate(data);
         if(response != null){
+          print('fitnessCalculate');
+          print(response.statusCode);
+          print(response.data);
+          print(response.statusMessage);
+
           if(response.statusCode == 200){
             //store profile details
             Response? response2 = await _userRepository.getUserProfile(true);
+            print('getUserProfile');
+            print(response2!.statusCode);
+            print(response2.data);
+            print(response2.statusMessage);
             if(response2 != null && response2.statusCode == 200){
               UserProfile userProfile = UserProfile.fromJson(response2.data);
               await _userRepository.storeProfileDetails(userProfile);
@@ -147,7 +156,7 @@ class AuthenticationBloc
     }
     _userRepository.setGuestFlag(false);
     _userRepository.setIsLogged(true);
-    yield const AuthenticationSuccess();
+    yield const AuthenticationSuccess(isGuest: false,isLoggedIn: true);
   }
 
   Stream<AuthenticationState> _mapProfileFilledToState(Map<String,dynamic> data) async* {
@@ -155,7 +164,7 @@ class AuthenticationBloc
     //fitness calculation
     //store profile details
     //route to show result
-    try{
+
       print('_mapProfileFilledToState');
       yield AuthenticationOnLoading();
       Response? response = await _userRepository.fitnessCalculate(data);
@@ -172,14 +181,16 @@ class AuthenticationBloc
           _userRepository.setIsLogged(true);
           FitnessResponse result = FitnessResponse.fromJson(response.data);
           //store profile details
-          try{
             Response? response2 = await _userRepository.getUserProfile(true);
             if(response2 != null && response2.statusCode == 200){
               UserProfile userProfile = UserProfile.fromJson(response2.data);
               await _userRepository.storeProfileDetails(userProfile);
             }
+          try{
+
           }
-          catch(e){
+
+        catch(e){
             print(e.toString());
           }
           yield AuthenticationShowResult(result: result);
@@ -193,7 +204,9 @@ class AuthenticationBloc
         print('Unable to calculate fitness details 2');
         yield* _showError('Unable to calculate fitness details');
       }
-    }
+    try{
+
+      }
     catch(e){
       print(e.toString());
       yield* _showError('Unable to calculate fitness details');
@@ -203,13 +216,13 @@ class AuthenticationBloc
   Stream<AuthenticationState> _showError(String msg) async*{
     _userRepository.setGuestFlag(false);
     _userRepository.setIsLogged(true);
-    yield AuthenticationSuccess(message: msg);
+    yield AuthenticationSuccess(message: msg,isGuest: false,isLoggedIn: true);
   }
 
   Stream<AuthenticationState> _mapMoveToHomeState() async*{
     _userRepository.setGuestFlag(false);
     _userRepository.setIsLogged(true);
-    yield const AuthenticationSuccess();
+    yield const AuthenticationSuccess(isGuest: false,isLoggedIn: true);
   }
 
 }

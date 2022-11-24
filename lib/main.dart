@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/home_screen.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/loading_screen.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
-import 'package:provider/provider.dart';
 import 'bloc/authentication_bloc/authentication_bloc.dart';
 import 'repositories/user_repo.dart';
 import 'ui/screens/auth/login/login_screen.dart';

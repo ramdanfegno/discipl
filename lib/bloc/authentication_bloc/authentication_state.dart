@@ -18,8 +18,9 @@ class AuthenticationLoadSplashScreen extends AuthenticationState {}
 /// To home screen as user
 class AuthenticationSuccess extends AuthenticationState {
   final String? message;
-
-  const AuthenticationSuccess({this.message});
+  final bool isGuest;
+  final bool isLoggedIn;
+  const AuthenticationSuccess({this.message,required this.isLoggedIn,required this.isGuest});
 
   @override
   // TODO: implement props
@@ -44,7 +45,11 @@ class AuthenticationFailure extends AuthenticationState {
 }
 
 /// To home screen as guest
-class AuthenticationGuest extends AuthenticationState {}
+class AuthenticationGuest extends AuthenticationState {
+  final bool isGuest;
+  final bool isLoggedIn;
+  const AuthenticationGuest({required this.isGuest,required this.isLoggedIn});
+}
 
 /// Profile form screen
 class AuthenticationCompleteProfile extends AuthenticationState {}
@@ -52,5 +57,4 @@ class AuthenticationCompleteProfile extends AuthenticationState {}
 class AuthenticationShowResult extends AuthenticationState {
   final FitnessResponse result;
   const AuthenticationShowResult({required this.result});
-
 }

@@ -14,21 +14,21 @@ class FitnessResponse {
     this.bmi,
     this.bmr,
     this.bfp,
-    this.status,
+    this.message,
   });
 
   int? age;
   double? bmi;
   double? bmr;
   double? bfp;
-  int? status;
+  String? message;
 
   factory FitnessResponse.fromJson(Map<String, dynamic> json) => FitnessResponse(
     age: json["age"] == null ? null : json["age"],
     bmi: json["BMI"] == null ? null : json["BMI"],
     bmr: json["BMR"] == null ? null : json["BMR"],
     bfp: json["BFP"] == null ? null : json["BFP"],
-    status: json["status"] == null ? null : json["status"],
+    message: json["message"] == null ? null : json["message"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -36,6 +36,6 @@ class FitnessResponse {
     "BMI": bmi,
     "BMR": bmr,
     "BFP": bfp,
-    "status": status,
+    "message": message,
   };
 }

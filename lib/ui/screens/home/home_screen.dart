@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/ui/screens/bmi/profile_screen.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,10 +19,24 @@ class _HomeScreenState extends State<HomeScreen> {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(
-            children: const [
-              Center(
-                child: Text(
-                  'Home'
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+
+              InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const ProfileScreen();
+                  }));
+                },
+                child: Container(
+                  width: 150,
+                  height: 40,
+                  color: Colors.red,
+                  alignment: Alignment.center,
+                  child: const Text(
+                      'Profile'
+                  ),
                 ),
               )
             ],

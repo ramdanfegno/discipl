@@ -6,12 +6,11 @@ import 'package:habitoz_fitness_app/ui/screens/bmi/components/bmr_view.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/body_fat_view.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../../utils/routes.dart';
-import '../../../utils/scroll_setting.dart';
 import '../../widgets/buttons/custom_button.dart';
+import '../../widgets/dialog/custom_dialog.dart';
 
 class ResultView extends StatefulWidget {
   final String? resultType;
@@ -36,29 +35,32 @@ class _ResultViewState extends State<ResultView> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          child: Stack(
-            children: <Widget>[
-              //verification form
-              selectScreen(),
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.white,
+            child: Stack(
+              children: <Widget>[
+                //verification form
+                selectScreen(),
 
-              //verify button
-              Positioned(
-                  bottom: SizeConfig.blockSizeHorizontal * 7,
-                  right: SizeConfig.blockSizeHorizontal * 7,
-                  child: homeButton()),
+                //verify button
+                Positioned(
+                    bottom: SizeConfig.blockSizeHorizontal * 7,
+                    right: SizeConfig.blockSizeHorizontal * 7,
+                    child: homeButton()),
 
-            ],
+              ],
+            ),
           ),
+          // This trailing comma makes auto-formatting nicer for build methods.
         ),
-        // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
   }
@@ -101,15 +103,36 @@ class _ResultViewState extends State<ResultView> {
       titleColor: Colors.white,
       onPressed: () {
         _authBloc.add(AuthenticationMoveToHomeScreen());
-        Future.delayed(const Duration(milliseconds: 400),(){
-          Navigator.pushNamedAndRemoveUntil(
-              context, HabitozRoutes.app, (route) => false);
-        });
+        Navigator.pushNamedAndRemoveUntil(
+            context, HabitozRoutes.app, (route) => false);
       },
       height: SizeConfig.blockSizeHorizontal * 13,
       width: SizeConfig.blockSizeHorizontal* 40,
     );
   }
+
+  Future<bool> _onBackPressed() async {
+    return showDialog(
+        context: context,
+        //barrierDismissible: false,
+        builder: (_) {
+          return CustomDialog(
+            title: 'Exit App',
+            subtitle: 'Do you want to exit app ? ',
+            yesTitle: 'Yes',
+            noTitle: 'No',
+            yes: () {
+              Navigator.pop(context, true);
+              return true;
+            },
+            no: () {
+              Navigator.pop(context, false);
+              return false;
+            },
+          );
+        }).then((x) => x ?? false);
+  }
+
 }
 
 class WeightIndicator extends StatelessWidget {
@@ -146,5 +169,8 @@ class WeightIndicator extends StatelessWidget {
       ],
     );
   }
+
+
+
 }
 
