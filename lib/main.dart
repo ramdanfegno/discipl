@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:habitoz_fitness_app/ui/Screens/home/home_page.dart';
+import 'package:habitoz_fitness_app/ui/Screens/home/homepage.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

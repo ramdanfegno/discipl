@@ -77,7 +77,7 @@ class _FeedListViewPageState extends State<FeedListViewPage> {
                                     color: Colors.white,
                                     fontFamily: Constants.fontRegular,
                                     fontSize:
-                                        SizeConfig.blockSizeHorizontal * 5.2),
+                                    SizeConfig.blockSizeHorizontal * 5.2),
                               ),
                             ],
                           ),
@@ -94,7 +94,7 @@ class _FeedListViewPageState extends State<FeedListViewPage> {
                                       color: Colors.white,
                                       fontFamily: Constants.fontRegular,
                                       fontSize:
-                                          SizeConfig.blockSizeHorizontal * 4)),
+                                      SizeConfig.blockSizeHorizontal * 4)),
                             ],
                           )
                         ]),

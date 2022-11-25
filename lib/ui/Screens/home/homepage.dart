@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:habitoz_fitness_app/ui/Screens/gym/fitness_center_list/fitness_center_list_view.dart';
-import 'package:habitoz_fitness_app/ui/screens/feed/feed_page_view.dart';
+import 'package:habitoz_fitness_app/ui/Screens/gym/fitness_center_list/fitness_center_listview.dart';
+import 'package:habitoz_fitness_app/ui/screens/feed/feed_pageview.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/drawer.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     SizeConfig().init(context);
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(
+      drawer: const CustomDrawer(
         isGuest: false,
         userName: 'Ramdan Salim',
       ),
@@ -30,6 +30,9 @@ class _HomePageState extends State<HomePage> {
         },
         appBarTitle: '',
         isHomeAppBar: true,
+        onBackPressed: (){
+
+        },
       ),
       body: SafeArea(
         child: Column(
