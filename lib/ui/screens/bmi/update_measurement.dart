@@ -18,8 +18,14 @@ import '../../widgets/others/app_bar.dart';
 import 'profile_screen.dart';
 
 class UpdateMeasurement extends StatefulWidget {
-  final String title;
-  const UpdateMeasurement({Key? key,required this.title
+  final String title,slug;
+  final String? slug2;
+  final double? relaxedReading,extendedReading;
+  final bool isExtendedAvailable;
+
+  const UpdateMeasurement({Key? key,
+    required this.title, this.extendedReading,required this.slug,this.slug2,
+    required this.isExtendedAvailable, required this.relaxedReading
   }) : super(key: key);
 
   @override
@@ -31,14 +37,22 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
   late bool isLoading;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserRepository userRepository = UserRepository();
-
+  late String _buttonText;
   late int? _inch,_cm;
+  late Map<String,dynamic> _details;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     isLoading = false;
+    _details = {};
+    if(widget.isExtendedAvailable){
+      _buttonText = 'Next';
+    }
+    else{
+      _buttonText = 'Update';
+    }
     _inch = 0;
     _cm = 0;
   }
@@ -122,10 +136,18 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
 
   Widget updateButton() {
     return AuthButton(
-      title: 'Update',
+      title: _buttonText,
       color: Constants.primaryColor,
       onPressed: () {
-
+        if(_buttonText == 'Update'){
+          //update values
+          updateMeasurement();
+        }
+        else{
+          //check if valid value is picked
+          _buttonText = 'Update';
+          setState(() {});
+        }
       },
       height: SizeConfig.blockSizeHorizontal * 13,
       width: SizeConfig.blockSizeHorizontal* 40,
@@ -139,36 +161,18 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
       title: 'Cancel',
       backgroundColor: Colors.grey[200]!,
       borderColor: Colors.grey[200]!,
-
       titleColor: const Color.fromRGBO(153, 153, 153, 1),
       onPressed: () {
+        Navigator.pop(context,true);
       },
       height: SizeConfig.blockSizeHorizontal * 13,
       width: SizeConfig.blockSizeHorizontal* 40,
     );
   }
 
-  void _onFormSubmitted() {
+  updateMeasurement() async{
     try{
-      if ( _formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
-        submitNameApi();
-      }
-    }
-    catch(e){
-      print(e.toString());
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
 
-  submitNameApi() async{
-    try{
-      setState(() {
-        isLoading = true;
-      });
-      FocusScope.of(context).requestFocus(FocusNode());
 
      /* Response? response = await userRepository.updateName('_name');
 

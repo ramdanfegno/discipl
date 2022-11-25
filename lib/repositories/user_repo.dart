@@ -171,25 +171,25 @@ class UserRepository{
 
   //update user details
   Future<Response?> updateUserDetails(Map<String,dynamic> details) async {
-
-    LoginResponse? loginResponse = await getLoginResponse();
-    String? token = loginResponse!.token;
-
-    Map<String, dynamic> body = {};
-
-    if(details.isNotEmpty){
-      body = details;
-    }
-
-    Map<String,String> headers = {
-      'Authorization' : 'Token $token'
-    };
-
-    print('body');
-    print(body);
-
     try {
-      Response? response = await apiQuery.postQuery(Constants.apiUserProfile,headers,body, 'UpdateProfile');
+
+      LoginResponse? loginResponse = await getLoginResponse();
+      String? token = loginResponse!.token;
+
+      Map<String, dynamic> body = {};
+
+      if(details.isNotEmpty){
+        body = details;
+      }
+
+      Map<String,String> headers = {
+        'Authorization' : 'Token $token'
+      };
+
+      print('body');
+      print(body);
+
+      Response? response = await apiQuery.putQuery(Constants.apiUserProfile,headers,body, 'UpdateProfile');
       return response;
     } catch (exception) {
       print(exception.toString());
