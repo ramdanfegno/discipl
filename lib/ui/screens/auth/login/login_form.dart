@@ -313,6 +313,7 @@ class _LoginFormState extends State<LoginForm> {
     return AuthButton(
       title: 'Continue',
       color: Constants.primaryColor,
+      fontFamily: Constants.fontMedium,
       onPressed: () {
         if (!(state.isSubmitting)) {
           _onFormSubmitted();

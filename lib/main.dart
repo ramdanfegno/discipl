@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:habitoz_fitness_app/ui/Screens/home/home_page.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
@@ -11,9 +14,11 @@ import 'ui/screens/auth/login/login_screen.dart';
 import 'ui/screens/bmi/fill_profile.dart';
 import 'ui/screens/bmi/result_display.dart';
 import 'ui/splash_screen.dart';
-
+import 'package:habitoz_fitness_app/ui/screens/auth/login/login_screen.dart';
 
 void main() async {
+
+
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -21,9 +26,9 @@ void main() async {
   final UserRepository userRepository = UserRepository();
 
   runApp(
-    MultiBlocProvider(
+     MultiBlocProvider(
       providers: [
-        BlocProvider(
+         BlocProvider(
             create: (context) =>
             AuthenticationBloc(userRepository: userRepository)
               ..add(AuthenticationStarted())),
@@ -42,13 +47,15 @@ void main() async {
 class App extends StatelessWidget {
   final UserRepository _userRepository;
 
-  const App({super.key, required UserRepository userRepository})
-      : _userRepository = userRepository;
+  const App({required UserRepository userRepository,})
+      : _userRepository = userRepository,
+        super();
+
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: Constants.appTitle,
       theme: ThemeData(
         primaryColor: const Color(0xff05BC7F),
@@ -66,8 +73,7 @@ class App extends StatelessWidget {
         disabledColor: const Color(0xffF2F2F2),
         backgroundColor: const Color(0xffFFFFFF),
         buttonTheme: const ButtonThemeData(
-            textTheme: ButtonTextTheme.normal,
-            buttonColor: Color(0xffFFFFFF)),
+            textTheme: ButtonTextTheme.normal, buttonColor: Color(0xffFFFFFF)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
@@ -77,7 +83,6 @@ class App extends StatelessWidget {
         buildWhen: (previous, current) => (previous != current),
         builder: (context, state) {
           if (state is AuthenticationSuccess) {
-            // go to home screen
             return const HomeScreen();
           }
           if (state is AuthenticationFailure) {

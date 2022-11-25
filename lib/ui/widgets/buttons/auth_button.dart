@@ -8,17 +8,18 @@ class AuthButton extends StatelessWidget {
   final Function() onPressed;
   final Color? color;
   final bool isLoading;
-  final String title;
+  final String title, fontFamily;
   final double width, height, textSize;
 
   AuthButton(
       {this.color,
-        required this.title,
-        required this.onPressed,
-        required this.height,
-        required this.width,
-        required this.textSize,
-        required this.isLoading});
+      required this.title,
+      required this.onPressed,
+      required this.height,
+      required this.width,
+      required this.textSize,
+      required this.isLoading,
+      required this.fontFamily});
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +38,9 @@ class AuthButton extends StatelessWidget {
         alignment: Alignment.center,
         child: (isLoading)
             ? SpinKitThreeBounce(
-          color: Colors.white,
-          size: textSize,
-        )
+                color: Colors.white,
+                size: textSize,
+              )
             : Text(
           title,
           style: TextStyle(

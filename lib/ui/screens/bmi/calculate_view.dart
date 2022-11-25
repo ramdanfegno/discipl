@@ -259,6 +259,7 @@ class _CalculateViewState extends State<CalculateView> {
     return AuthButton(
       title: 'Next',
       color: Constants.primaryColor,
+      fontFamily: Constants.fontMedium,
       onPressed: () {
         if(_currentTab == 0){
           if(_name == null || _name == ""){

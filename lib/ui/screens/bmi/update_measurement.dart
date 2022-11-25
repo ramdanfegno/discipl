@@ -195,6 +195,7 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
     return AuthButton(
       title: _buttonText,
       color: Constants.primaryColor,
+      fontFamily: Constants.fontMedium,
       onPressed: () {
         if(!isLoading){
           // case : for both relaxed and extended readings

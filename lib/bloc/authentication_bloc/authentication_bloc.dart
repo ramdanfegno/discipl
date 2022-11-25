@@ -92,13 +92,13 @@ class AuthenticationBloc
       // check if profile is empty or is new user
       //if new user redirect to profile fill screen
       //if not redirect to home screen
-     /* if(otpResponse.isRegistered != null && otpResponse.isRegistered!){
-        yield const AuthenticationSuccess();
+      if(otpResponse.isRegistered != null && otpResponse.isRegistered!){
+        yield const AuthenticationSuccess(isLoggedIn: true,isGuest: false);
       }
       else{
         yield AuthenticationCompleteProfile();
-      }*/
-      yield AuthenticationCompleteProfile();
+      }
+      //yield AuthenticationCompleteProfile();
     }
     catch(e){
       yield AuthenticationFailure(message: 'AuthenticationFailure: ${e.toString()}');

@@ -331,6 +331,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         title: 'Verify',
         height: SizeConfig.blockSizeHorizontal * 13,
         width: SizeConfig.screenWidth,
+        fontFamily: Constants.fontMedium,
         textSize: 15,
         color: isOtpTimedOut
             ? const Color.fromRGBO(155, 155, 155, 1)

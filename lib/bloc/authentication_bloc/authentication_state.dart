@@ -59,3 +59,4 @@ class AuthenticationShowResult extends AuthenticationState {
   final Map<String,dynamic> data;
   const AuthenticationShowResult({required this.result,required this.data});
 }
+

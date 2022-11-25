@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:habitoz_fitness_app/ui/Screens/gym/fitnes_center_details/fitness_center_list_detail_page.dart';
 import 'package:habitoz_fitness_app/ui/Screens/gym/fitness_center_list/components/gym_list_view_tile.dart';
@@ -19,12 +17,9 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         appBarTitle: 'Fitness Center List',
         isHomeAppBar: false,
-        onBackPressed: (){
-          Navigator.pop(context);
-        },
       ),
       body: SafeArea(
         child: Column(

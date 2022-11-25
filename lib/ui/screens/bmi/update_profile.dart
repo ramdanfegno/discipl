@@ -470,6 +470,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     return AuthButton(
       title: 'Update',
       color: Constants.primaryColor,
+      fontFamily: Constants.fontMedium,
       onPressed: () {
          if (!(isLoading)) {
           _onFormSubmitted();

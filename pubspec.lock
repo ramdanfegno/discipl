@@ -611,6 +611,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.1"
+  percent_indicator:
+    dependency: "direct main"
+    description:
+      name: percent_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.2"
   petitparser:
     dependency: transitive
     description:
@@ -687,6 +694,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.27.6"
   scroll_date_picker:
     dependency: "direct main"
@@ -695,6 +703,9 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.6.0"
+=======
+    version: "0.27.7"
+>>>>>>> branch_ramdan
   shared_preferences:
     dependency: "direct main"
     description:
