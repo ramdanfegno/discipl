@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habitoz_fitness_app/models/fitness_response.dart';
+import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/bmi_view.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/bmr_view.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/body_fat_view.dart';
@@ -14,8 +15,13 @@ import '../../widgets/dialog/custom_dialog.dart';
 
 class ResultView extends StatefulWidget {
   final String? resultType;
+  final bool isFromProfile;
+  final Map<String,dynamic> data;
   final FitnessResponse? fitnessResponse;
-  const ResultView({Key? key,this.resultType,required this.fitnessResponse}) : super(key: key);
+  final UserProfile? userProfile;
+  const ResultView({
+    Key? key,
+    this.resultType,this.userProfile,this.fitnessResponse,required this.isFromProfile,required this.data}) : super(key: key);
 
   @override
   _ResultViewState createState() => _ResultViewState();
@@ -72,26 +78,52 @@ class _ResultViewState extends State<ResultView> {
           return SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: const BMIView(isFromHome: false,),
+            child: BMIView(
+              isFromHome: false,
+              data: widget.data,
+              result: (widget.userProfile != null && widget.userProfile!.bodyMassIndex != null)
+                  ? widget.userProfile!.bodyMassIndex!.toStringAsFixed(2) :
+              (widget.fitnessResponse != null && widget.fitnessResponse!.bmi != null)
+                  ? widget.fitnessResponse!.bmi!.toStringAsFixed(2) : '0',
+            ),
           );
         case 'BMR':
           return SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: const BMRView(),
+            child: BMRView(
+              data: widget.data,
+              result: (widget.userProfile != null && widget.userProfile!.basalMetabolismRate != null)
+                  ? widget.userProfile!.basalMetabolismRate!.toStringAsFixed(2) :
+              (widget.fitnessResponse != null && widget.fitnessResponse!.bmr != null)
+                  ? widget.fitnessResponse!.bmr!.toStringAsFixed(2) : '0',
+            ),
           );
         case 'Body Fat':
           return SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: const BodyFatView(),
+            child: BodyFatView(
+              data: widget.data,
+              result: (widget.userProfile != null && widget.userProfile!.bodyFatPercentage != null)
+                  ? widget.userProfile!.bodyFatPercentage!.toString() :
+              (widget.fitnessResponse != null && widget.fitnessResponse!.bfp != null)
+                  ? widget.fitnessResponse!.bfp!.toString() : '0',
+            ),
           );
       }
     }
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      child: const BMIView(isFromHome: true,),
+      child: BMIView(
+        isFromHome: true,
+        data: widget.data,
+        result: (widget.userProfile != null && widget.userProfile!.bodyMassIndex != null)
+            ? widget.userProfile!.bodyMassIndex!.toStringAsFixed(2) :
+        (widget.fitnessResponse != null && widget.fitnessResponse!.bmi != null)
+            ? widget.fitnessResponse!.bmi!.toStringAsFixed(2) : '0',
+      ),
     );
   }
 
@@ -112,25 +144,31 @@ class _ResultViewState extends State<ResultView> {
   }
 
   Future<bool> _onBackPressed() async {
-    return showDialog(
-        context: context,
-        //barrierDismissible: false,
-        builder: (_) {
-          return CustomDialog(
-            title: 'Exit App',
-            subtitle: 'Do you want to exit app ? ',
-            yesTitle: 'Yes',
-            noTitle: 'No',
-            yes: () {
-              Navigator.pop(context, true);
-              return true;
-            },
-            no: () {
-              Navigator.pop(context, false);
-              return false;
-            },
-          );
-        }).then((x) => x ?? false);
+
+    if(widget.isFromProfile){
+      return true;
+    }
+    else{
+      return showDialog(
+          context: context,
+          //barrierDismissible: false,
+          builder: (_) {
+            return CustomDialog(
+              title: 'Exit App',
+              subtitle: 'Do you want to exit app ? ',
+              yesTitle: 'Yes',
+              noTitle: 'No',
+              yes: () {
+                Navigator.pop(context, true);
+                return true;
+              },
+              no: () {
+                Navigator.pop(context, false);
+                return false;
+              },
+            );
+          }).then((x) => x ?? false);
+    }
   }
 
 }

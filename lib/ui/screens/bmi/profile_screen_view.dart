@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
+import 'package:habitoz_fitness_app/ui/screens/bmi/calculate_view.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/update_measurement.dart';
+import 'package:habitoz_fitness_app/ui/screens/bmi/update_profile.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 
 import '../../../utils/constants.dart';
@@ -12,7 +15,8 @@ import 'result_display.dart';
 
 class ProfileScreenView extends StatelessWidget {
   final UserProfile? userProfile;
-  const ProfileScreenView({Key? key,required this.userProfile}) : super(key: key);
+  final Map<String,dynamic> data;
+  const ProfileScreenView({Key? key,required this.userProfile,required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,7 @@ class ProfileScreenView extends StatelessWidget {
         children: [
 
           (userProfile!.user != null) ?
-          buildProfile() : Container(),
+          buildProfile(context) : Container(),
 
           SizedBox(height: SizeConfig.blockSizeHorizontal*5),
 
@@ -41,7 +45,7 @@ class ProfileScreenView extends StatelessWidget {
     ) : Container();
   }
 
-  Widget buildProfile(){
+  Widget buildProfile(BuildContext context){
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,6 +80,11 @@ class ProfileScreenView extends StatelessWidget {
               GestureDetector(
                 onTap: (){
                   //update profile
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return UpdateProfileView(
+                      userProfile: userProfile,
+                    );
+                  }));
                 },
                 child: const Icon(
                   Icons.edit_outlined,
@@ -182,15 +191,26 @@ class ProfileScreenView extends StatelessWidget {
               if(userProfile!.bodyMassIndex != null && userProfile!.bodyMassIndex! > 0){
                 //show bmi result
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const ResultView(resultType: 'BMI',fitnessResponse: null,);
+                  return ResultView(
+                    resultType: 'BMI',
+                    fitnessResponse: null,
+                    isFromProfile: true,
+                    userProfile: userProfile,
+                    data: data,
+                  );
                 }));
               }
               else{
                 //route to calculate bmi
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CalculateView(
+                    profile: userProfile,
+                  );
+                }));
               }
             },
             result: (userProfile!.bodyMassIndex != null && userProfile!.bodyMassIndex! > 0)
-                ? userProfile!.bodyMassIndex!.toStringAsFixed(2) :'Calculate',
+                ? '${userProfile!.bodyMassIndex!.toStringAsFixed(2)} Kg/m2' :'Calculate',
             isAvailable: (userProfile!.bodyMassIndex != null && userProfile!.bodyMassIndex! > 0),
           ),
 
@@ -202,15 +222,26 @@ class ProfileScreenView extends StatelessWidget {
               if(userProfile!.basalMetabolismRate != null && userProfile!.basalMetabolismRate! > 0){
                 //show bmr result
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const ResultView(resultType: 'BMR',fitnessResponse: null,);
+                  return ResultView(
+                    resultType: 'BMR',
+                    fitnessResponse: null,
+                    isFromProfile: true,
+                    userProfile: userProfile,
+                    data: data,
+                  );
                 }));
               }
               else{
                 //route to calculate bmi
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CalculateView(
+                    profile: userProfile,
+                  );
+                }));
               }
             },
             result: (userProfile!.basalMetabolismRate != null && userProfile!.basalMetabolismRate! > 0)
-                ? userProfile!.basalMetabolismRate!.toStringAsFixed(2) :'Calculate',
+                ? '${userProfile!.basalMetabolismRate!.toStringAsFixed(2)} Calories/day' :'Calculate',
             isAvailable: (userProfile!.basalMetabolismRate != null && userProfile!.basalMetabolismRate! > 0),
           ),
 
@@ -222,15 +253,26 @@ class ProfileScreenView extends StatelessWidget {
               if(userProfile!.bodyFatPercentage != null && userProfile!.bodyFatPercentage! > 0){
                 //show body fat result
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const ResultView(resultType: 'Body Fat',fitnessResponse: null,);
+                  return ResultView(
+                      resultType: 'Body Fat',
+                      fitnessResponse: null,
+                      userProfile: userProfile,
+                      data: data,
+                      isFromProfile: true
+                  );
                 }));
               }
               else{
                 //route to calculate body fat
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CalculateView(
+                    profile: userProfile,
+                  );
+                }));
               }
             },
             result: (userProfile!.bodyFatPercentage != null && userProfile!.bodyFatPercentage! > 0)
-                ? userProfile!.bodyFatPercentage!.toString() :'Calculate',
+                ? '${userProfile!.bodyFatPercentage!} %' :'Calculate',
             isAvailable: (userProfile!.bodyFatPercentage != null && userProfile!.bodyFatPercentage! > 0),
           ),
         ],

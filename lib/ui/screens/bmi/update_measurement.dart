@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/fill_dob.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/fill_height.dart';
@@ -38,8 +40,10 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserRepository userRepository = UserRepository();
   late String _buttonText;
-  late int? _inch,_cm;
+  late double? _relaxedInch,_relaxedCm,_extendedInch,_extendedCm;
   late Map<String,dynamic> _details;
+  late ProfileBloc _profileBloc;
+  late String title;
 
   @override
   void initState() {
@@ -47,14 +51,39 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
     super.initState();
     isLoading = false;
     _details = {};
+    _profileBloc = BlocProvider.of<ProfileBloc>(context);
+    title = '';
+
     if(widget.isExtendedAvailable){
       _buttonText = 'Next';
+      title = '${widget.title} Relaxed';
     }
     else{
       _buttonText = 'Update';
+      title = '${widget.title} Relaxed';
     }
-    _inch = 0;
-    _cm = 0;
+
+    if(widget.relaxedReading != null && widget.relaxedReading! > 0 ){
+      _relaxedCm = widget.relaxedReading;
+      _relaxedInch = _relaxedCm! / 2.54;
+    }
+    else{
+      _relaxedCm = 0;
+      _relaxedInch = 0;
+    }
+    _details[widget.slug] = _relaxedCm;
+
+    if(widget.isExtendedAvailable){
+      if(widget.extendedReading != null && widget.extendedReading! > 0 ){
+        _extendedCm = widget.extendedReading;
+        _extendedInch = _extendedCm! / 2.54;
+      }
+      else{
+        _extendedCm = 0;
+        _extendedInch = 0;
+      }
+      _details[widget.slug2!] = _extendedCm;
+    }
   }
 
   @override
@@ -66,7 +95,10 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
         backgroundColor: Colors.white,
         appBar: CustomAppBar(
           isHomeAppBar: false,
-          appBarTitle: 'Update ${widget.title}',
+          appBarTitle: 'Update $title',
+          onBackPressed: (){
+            Navigator.pop(context, true);
+          }
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
@@ -92,7 +124,6 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
                   bottom: SizeConfig.blockSizeHorizontal * 7,
                   left: SizeConfig.blockSizeHorizontal * 7,
                   child: cancelButton()),
-
             ],
           ),
         ),
@@ -123,15 +154,41 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
   }
 
   Widget selectTab(){
-    return MeasureView(
-        measurementInch: _inch,
-        measurementCM: _cm,
-        title: widget.title,
-        onFilled: (v1,v2){
-          _cm = v1;
-          _inch = v2;
-        }
-    );
+    if(widget.isExtendedAvailable){
+      return (_buttonText == 'Next') ?
+      MeasureView(
+          measurementInch: _relaxedInch,
+          measurementCM: _relaxedCm,
+          title: title,
+          onFilled: (v1,v2){
+            _relaxedCm = v1;
+            _relaxedInch = v2;
+            _details[widget.slug] = _relaxedCm;
+          }
+      ) : (_buttonText == 'Update') ?
+      MeasureView(
+          measurementInch: _extendedCm,
+          measurementCM: _extendedInch,
+          title: title,
+          onFilled: (v1,v2){
+            _extendedCm = v1;
+            _extendedInch = v2;
+            _details[widget.slug2!] = _extendedCm;
+          }
+      ) : Container();
+    }
+    else{
+     return MeasureView(
+          measurementInch: _relaxedInch,
+          measurementCM: _relaxedCm,
+          title: title,
+          onFilled: (v1,v2){
+            _relaxedCm = v1;
+            _relaxedInch = v2;
+            _details[widget.slug] = _relaxedCm;
+          }
+      );
+    }
   }
 
   Widget updateButton() {
@@ -139,14 +196,42 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
       title: _buttonText,
       color: Constants.primaryColor,
       onPressed: () {
-        if(_buttonText == 'Update'){
-          //update values
-          updateMeasurement();
-        }
-        else{
-          //check if valid value is picked
-          _buttonText = 'Update';
-          setState(() {});
+        if(!isLoading){
+          // case : for both relaxed and extended readings
+          if(widget.isExtendedAvailable){
+            if(_buttonText == 'Update'){
+              if(_extendedCm! > 0){
+                //update values
+                _details[widget.slug2!] = _extendedCm;
+                updateMeasurement();
+              }
+              else{
+                Fluttertoast.showToast(msg: 'Please pick a valid value for measurement');
+              }
+            }
+            else{
+              //check if valid value is picked
+              if(_relaxedCm! > 0){
+                _details[widget.slug] = _relaxedCm;
+                _buttonText = 'Update';
+                title = '${widget.title} Extended';
+                setState(() {});
+              }
+              else{
+                Fluttertoast.showToast(msg: 'Please pick a valid value for measurement');
+              }
+            }
+          }
+          // case : for only relaxed readings
+          else{
+            if(_relaxedCm! > 0){
+              _details[widget.slug] = _relaxedCm;
+              updateMeasurement();
+            }
+            else{
+              Fluttertoast.showToast(msg: 'Please pick a valid value for measurement');
+            }
+          }
         }
       },
       height: SizeConfig.blockSizeHorizontal * 13,
@@ -172,22 +257,28 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
 
   updateMeasurement() async{
     try{
-
-
-     /* Response? response = await userRepository.updateName('_name');
-
+      setState(() {
+        isLoading = true;
+      });
+      //_profileBloc.add(UpdateProfile(details: _details));
+      //Navigator.pop(context);
+      Response? response = await userRepository.updateUserDetails(_details);
       if(response != null){
         if(response.statusCode == 200){
           // next page
-
+          Fluttertoast.showToast(msg: '${widget.title} updated');
+          _profileBloc.add(LoadProfile());
+          /*Future.delayed(const Duration(seconds: 2), (){
+            Navigator.pop(context);
+          });*/
         }
         else{
-          Fluttertoast.showToast(msg: 'Error submitting name');
+          Fluttertoast.showToast(msg: 'Error  updating details');
         }
       }
       else{
-        Fluttertoast.showToast(msg: 'Error submitting name');
-      }*/
+        Fluttertoast.showToast(msg: 'Error updating details');
+      }
       setState(() {
         isLoading = false;
       });

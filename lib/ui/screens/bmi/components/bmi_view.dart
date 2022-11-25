@@ -8,7 +8,9 @@ import '../result_display.dart';
 
 class BMIView extends StatefulWidget {
   final bool isFromHome;
-  const BMIView({Key? key,required this.isFromHome}) : super(key: key);
+  final String result;
+  final Map<String,dynamic> data;
+  const BMIView({Key? key,required this.isFromHome,required this.data,required this.result}) : super(key: key);
 
   @override
   _BMIViewState createState() => _BMIViewState();
@@ -17,12 +19,23 @@ class BMIView extends StatefulWidget {
 class _BMIViewState extends State<BMIView> {
 
   late bool isExpanded;
+  late double _height,_weight;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     isExpanded = false;
+    _height = 0;
+    _weight = 0;
+    if(widget.data.isNotEmpty){
+      if(widget.data['height_cm'] != null){
+        _height = widget.data['height_cm'];
+      }
+      if(widget.data['weight'] != null){
+        _weight = widget.data['weight'];
+      }
+    }
   }
 
   @override
@@ -101,14 +114,14 @@ class _BMIViewState extends State<BMIView> {
       style: TextStyle(
           color: Color.fromRGBO(68, 68, 68, 1),
           fontSize: 18,
-          fontFamily: Constants.fontRegular),
+          fontFamily: Constants.fontMedium),
     );
   }
 
   Widget bmiReading() {
-    return const Text(
-      '23.6 Kg/m2',
-      style: TextStyle(
+    return Text(
+      '${widget.result} Kg/m2',
+      style: const TextStyle(
           color: Colors.green,
           fontSize: 20,
           fontFamily: Constants.fontSemiBold),
@@ -161,9 +174,9 @@ class _BMIViewState extends State<BMIView> {
                     color: Colors.red
                 ),
               ],
-              pointers: const <GaugePointer>[
+              pointers: <GaugePointer>[
                 NeedlePointer(
-                  value: 23.6,
+                  value: double.parse(widget.result),
                   needleStartWidth: 0,
                   needleEndWidth: 5,
                 )],
@@ -296,9 +309,9 @@ class _BMIViewState extends State<BMIView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children: [
 
-              Text(
+              const Text(
                 'Height',
                 style: TextStyle(
                     color: Color.fromRGBO(102, 102, 102, 1),
@@ -307,8 +320,8 @@ class _BMIViewState extends State<BMIView> {
               ),
 
               Text(
-                '165',
-                style: TextStyle(
+                '${_height.toStringAsFixed(0)} cm',
+                style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
                     fontFamily: Constants.fontRegular),
@@ -321,9 +334,9 @@ class _BMIViewState extends State<BMIView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children:  [
 
-              Text(
+              const Text(
                 'Weight',
                 style: TextStyle(
                     color: Color.fromRGBO(102, 102, 102, 1),
@@ -332,8 +345,8 @@ class _BMIViewState extends State<BMIView> {
               ),
 
               Text(
-                '80.65 Kg',
-                style: TextStyle(
+                '${_weight.toStringAsFixed(1)} Kg',
+                style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
                     fontFamily: Constants.fontRegular),

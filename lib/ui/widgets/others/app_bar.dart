@@ -6,12 +6,14 @@ import 'package:habitoz_fitness_app/utils/size_config.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isHomeAppBar;
   final String? appBarTitle;
+  final Function() onBackPressed;
   final Function()? drawerClicked;
 
   const CustomAppBar(
       {Key? key,
         required this.isHomeAppBar,
         required this.appBarTitle,
+        required this.onBackPressed,
         this.drawerClicked})
       : super(key: key);
 
@@ -35,7 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: (!isHomeAppBar) ?
             InkWell(
               onTap: () {
-                Navigator.pop(context);
+               onBackPressed();
               },
               child: Container(
                 height: SizeConfig.blockSizeHorizontal * 7,

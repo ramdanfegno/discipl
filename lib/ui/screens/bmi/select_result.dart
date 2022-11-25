@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/models/fitness_response.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/result_display.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
@@ -6,7 +7,9 @@ import '../../../utils/constants.dart';
 import 'components/result_tile_1.dart';
 
 class SelectResult extends StatefulWidget {
-  const SelectResult({Key? key}) : super(key: key);
+  final FitnessResponse fitnessResponse;
+  final Map<String,dynamic> data;
+  const SelectResult({Key? key,required this.fitnessResponse,required this.data}) : super(key: key);
 
   @override
   _SelectResultState createState() => _SelectResultState();
@@ -41,30 +44,42 @@ class _SelectResultState extends State<SelectResult> {
                 title: 'BMI',
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const ResultView(resultType: 'BMI',fitnessResponse: null,);
+                    return ResultView(
+                        resultType: 'BMI',
+                        fitnessResponse: widget.fitnessResponse,
+                        data: widget.data,isFromProfile: true);
                   }));
                 },
-                result: '23.6 Kg/m2'
+                result: '${widget.fitnessResponse.bmi!.toStringAsFixed(2)} Kg/m2'
             ),
 
             ResultTile(
                 title: 'BMR',
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const ResultView(resultType: 'BMR',fitnessResponse: null,);
+                    return ResultView(
+                        resultType: 'BMR',
+                        fitnessResponse: widget.fitnessResponse,
+                        data: widget.data,
+                        isFromProfile: true);
                   }));
                 },
-                result: '1717 Calories/day'
+                result: '${widget.fitnessResponse.bmr!.toStringAsFixed(2)} Calories/day'
             ),
 
             ResultTile(
                 title: 'Body Fat',
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const ResultView(resultType: 'Body Fat',fitnessResponse: null,);
+                    return ResultView(
+                        resultType: 'Body Fat',
+                        fitnessResponse: widget.fitnessResponse,
+                        data: widget.data,
+                        isFromProfile: true
+                    );
                   }));
                 },
-                result: '18.1%'
+                result: '${widget.fitnessResponse.bfp!.toString()} %'
             ),
           ],
         )

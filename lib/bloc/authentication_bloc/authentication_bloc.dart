@@ -164,6 +164,7 @@ class AuthenticationBloc
     //fitness calculation
     //store profile details
     //route to show result
+    try{
 
       print('_mapProfileFilledToState');
       yield AuthenticationOnLoading();
@@ -181,19 +182,17 @@ class AuthenticationBloc
           _userRepository.setIsLogged(true);
           FitnessResponse result = FitnessResponse.fromJson(response.data);
           //store profile details
+          try{
             Response? response2 = await _userRepository.getUserProfile(true);
             if(response2 != null && response2.statusCode == 200){
               UserProfile userProfile = UserProfile.fromJson(response2.data);
               await _userRepository.storeProfileDetails(userProfile);
             }
-          try{
-
           }
-
         catch(e){
             print(e.toString());
           }
-          yield AuthenticationShowResult(result: result);
+          yield AuthenticationShowResult(result: result,data: data);
         }
         else{
           print('Unable to calculate fitness details 1');
@@ -204,7 +203,6 @@ class AuthenticationBloc
         print('Unable to calculate fitness details 2');
         yield* _showError('Unable to calculate fitness details');
       }
-    try{
 
       }
     catch(e){

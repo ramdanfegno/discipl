@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/home_screen.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/loading_screen.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
@@ -26,6 +27,10 @@ void main() async {
             create: (context) =>
             AuthenticationBloc(userRepository: userRepository)
               ..add(AuthenticationStarted())),
+
+        BlocProvider(
+            create: (context) =>
+            ProfileBloc(userRepository: userRepository),lazy: true,),
       ],
       child: App(
         userRepository: userRepository,
@@ -95,6 +100,8 @@ class App extends StatelessWidget {
             return ResultView(
               fitnessResponse: state.result,
               resultType: 'BMI',
+              isFromProfile: false,
+              data: state.data,
             );
           }
           if (state is AuthenticationOnLoading) {

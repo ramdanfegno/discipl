@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/profile_screen.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
@@ -10,6 +12,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  late ProfileBloc _profileBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _profileBloc = BlocProvider.of<ProfileBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -25,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               InkWell(
                 onTap: (){
+                  _profileBloc.add(LoadProfile());
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return const ProfileScreen();
                   }));

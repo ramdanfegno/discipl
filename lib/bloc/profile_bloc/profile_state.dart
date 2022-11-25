@@ -18,7 +18,10 @@ class ProfileFetchSuccess extends ProfileState {
   final UserProfile? userProfile;
   final String? errorMsg;
   final bool isLoading;
-  const ProfileFetchSuccess({required this.userProfile,required this.isLoading,this.errorMsg});
+  final Map<String,dynamic> data;
+  const ProfileFetchSuccess({required this.userProfile,required this.isLoading,
+    this.errorMsg,required this.data
+  });
 }
 
 ///Profile Fetch Failure

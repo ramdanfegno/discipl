@@ -4,8 +4,36 @@ import 'package:habitoz_fitness_app/utils/size_config.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/scroll_setting.dart';
 
-class BMRView extends StatelessWidget {
-  const BMRView({Key? key}) : super(key: key);
+class BMRView extends StatefulWidget {
+  final String result;
+  final Map<String,dynamic> data;
+
+  const BMRView({Key? key,required this.data,required this.result}) : super(key: key);
+
+  @override
+  State<BMRView> createState() => _BMRViewState();
+}
+
+class _BMRViewState extends State<BMRView> {
+
+  late double _height,_weight;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _height = 0;
+    _weight = 0;
+    if(widget.data.isNotEmpty){
+      if(widget.data['height_cm'] != null){
+        _height = widget.data['height_cm'];
+      }
+      if(widget.data['weight'] != null){
+        _weight = widget.data['weight'];
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +66,7 @@ class BMRView extends StatelessWidget {
       style: TextStyle(
           color: Color.fromRGBO(40, 40, 40, 1),
           fontSize: 22,
-          fontFamily: Constants.fontRegular),
+          fontFamily: Constants.fontMedium),
     );
   }
 
@@ -129,9 +157,9 @@ class BMRView extends StatelessWidget {
   }
 
   Widget bmrReading() {
-    return const Text(
-      '1771 Calories/day',
-      style: TextStyle(
+    return  Text(
+      '${widget.result} Calories/day',
+      style: const TextStyle(
           color: Colors.green,
           fontSize: 20,
           fontFamily: Constants.fontSemiBold),
@@ -159,9 +187,9 @@ class BMRView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children:  [
 
-              Text(
+              const Text(
                 'Height',
                 style: TextStyle(
                     color: Color.fromRGBO(102, 102, 102, 1),
@@ -170,8 +198,8 @@ class BMRView extends StatelessWidget {
               ),
 
               Text(
-                '165',
-                style: TextStyle(
+                '${_height.toStringAsFixed(0)} cm',
+                style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
                     fontFamily: Constants.fontRegular),
@@ -184,9 +212,9 @@ class BMRView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children:  [
 
-              Text(
+              const Text(
                 'Weight',
                 style: TextStyle(
                     color: Color.fromRGBO(102, 102, 102, 1),
@@ -195,8 +223,8 @@ class BMRView extends StatelessWidget {
               ),
 
               Text(
-                '80.65 Kg',
-                style: TextStyle(
+                '${_weight.toStringAsFixed(1)} Kg',
+                style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
                     fontFamily: Constants.fontRegular),
@@ -207,5 +235,4 @@ class BMRView extends StatelessWidget {
       ),
     );
   }
-
 }

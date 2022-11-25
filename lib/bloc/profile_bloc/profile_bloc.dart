@@ -32,14 +32,41 @@ class ProfileBloc
       yield ProfileFetchLoading();
       UserProfile? userProfile1 = await _userRepository.getProfileDetailsLocal();
       UserProfile? userProfile2;
+      Map<String,dynamic> data = {};
       if(userProfile1 != null){
-        yield ProfileFetchSuccess(userProfile: userProfile1,isLoading: false);
+        if(userProfile1.heightCm != null){
+          data['height_cm'] = userProfile1.heightCm;
+        }
+        if(userProfile1.weight != null){
+          data['weight'] = userProfile1.weight;
+        }
+        if(userProfile1.neck != null){
+          data['neck'] = userProfile1.neck;
+        }
+        if(userProfile1.waist != null){
+          data['waist'] = userProfile1.waist;
+        }
+        yield ProfileFetchSuccess(userProfile: userProfile1,isLoading: false,data: data);
       }
       Response? response = await _userRepository.getUserProfile(true);
       if(response != null){
         if(response.statusCode == 200){
           userProfile2 = UserProfile.fromJson(response.data);
-          yield ProfileFetchSuccess(userProfile: userProfile2,isLoading: false);
+          if(userProfile2 != null){
+            if(userProfile2.heightCm != null){
+              data['height_cm'] = userProfile2.heightCm;
+            }
+            if(userProfile2.weight != null){
+              data['weight'] = userProfile2.weight;
+            }
+            if(userProfile2.neck != null){
+              data['neck'] = userProfile2.weight;
+            }
+            if(userProfile2.waist != null){
+              data['waist'] = userProfile2.weight;
+            }
+          }
+          yield ProfileFetchSuccess(userProfile: userProfile2,isLoading: false,data: data);
         }
       }
       if(userProfile1 == null){
@@ -49,7 +76,21 @@ class ProfileBloc
       }
       else{
         if(userProfile2 == null){
-          yield ProfileFetchSuccess(userProfile: userProfile1,isLoading: false,errorMsg: 'Unable to load profile details');
+          if(userProfile2 != null){
+            if(userProfile2.heightCm != null){
+              data['height_cm'] = userProfile2.heightCm;
+            }
+            if(userProfile2.weight != null){
+              data['weight'] = userProfile2.weight;
+            }
+            if(userProfile2.neck != null){
+              data['neck'] = userProfile2.weight;
+            }
+            if(userProfile2.waist != null){
+              data['waist'] = userProfile2.weight;
+            }
+          }
+          yield ProfileFetchSuccess(userProfile: userProfile1,isLoading: false,errorMsg: 'Unable to load profile details',data: data);
         }
       }
     }
@@ -64,7 +105,7 @@ class ProfileBloc
       UserProfile? userProfile1 = await _userRepository.getProfileDetailsLocal();
       UserProfile? userProfile2;
       if(userProfile1 != null){
-        yield ProfileFetchSuccess(userProfile: userProfile1,isLoading: true);
+        yield ProfileFetchSuccess(userProfile: userProfile1,isLoading: true,data: data);
       }
       else{
         yield ProfileFetchLoading();
@@ -105,7 +146,7 @@ class ProfileBloc
           if(response2 != null){
             if(response2.statusCode == 200){
               userProfile2 = UserProfile.fromJson(response2.data);
-              yield ProfileFetchSuccess(userProfile: userProfile2,isLoading: false);
+              yield ProfileFetchSuccess(userProfile: userProfile2,isLoading: false,data: data);
             }
           }
         }
@@ -118,7 +159,7 @@ class ProfileBloc
       }
       else{
         if(userProfile2 == null){
-          yield ProfileFetchSuccess(userProfile: userProfile1,isLoading: false,errorMsg: 'Unable update profile details');
+          yield ProfileFetchSuccess(userProfile: userProfile1,isLoading: false,errorMsg: 'Unable update profile details',data: data);
         }
       }
     }

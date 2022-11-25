@@ -27,9 +27,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.white,
-          appBar: const CustomAppBar(
+          appBar: CustomAppBar(
             isHomeAppBar: false,
             appBarTitle: 'My Profile',
+            onBackPressed: (){
+              Navigator.pop(context);
+            },
           ),
           body: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
@@ -37,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 if(state.errorMsg != null){
                   showToast(state.errorMsg!);
                 }
-                return profileView(state.userProfile, state.isLoading);
+                return profileView(state.userProfile, state.isLoading,state.data);
               }
               if (state is ProfileFetchFailure) {
                 return buildErrorView(state.message);
@@ -56,13 +59,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Fluttertoast.showToast(msg: msg);
   }
 
-  Widget profileView(UserProfile? userProfile,bool? isLoading){
+  Widget profileView(UserProfile? userProfile,bool? isLoading,Map<String,dynamic> data){
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Stack(
         children: [
-          ProfileScreenView(userProfile: userProfile),
+          ProfileScreenView(userProfile: userProfile,data: data,),
 
           (isLoading != null && isLoading) ?
           Container(

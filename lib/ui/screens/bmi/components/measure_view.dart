@@ -8,9 +8,9 @@ import '../../../../utils/constants.dart';
 class MeasureView extends StatefulWidget {
 
   final String title;
-  final int? measurementInch;
-  final int? measurementCM;
-  final Function(int,int) onFilled;
+  final double? measurementInch;
+  final double? measurementCM;
+  final Function(double,double) onFilled;
 
   const MeasureView({Key? key,required this.title,required this.measurementInch,required this.measurementCM,required this.onFilled}) : super(key: key);
 
@@ -20,7 +20,7 @@ class MeasureView extends StatefulWidget {
 
 class _MeasureViewState extends State<MeasureView> {
 
-  late int? _measurementInch,_measurementCM;
+  late double? _measurementInch,_measurementCM;
   late bool isCM;
   RulerPickerController? _rulerPickerController;
 
@@ -31,20 +31,20 @@ class _MeasureViewState extends State<MeasureView> {
     isCM = true;
     _measurementCM = 0;
     _measurementInch = 0;
-    if(widget.measurementInch != null){
+    if(widget.measurementInch != null && widget.measurementInch! > 0){
       _measurementInch = widget.measurementInch;
     }
     else{
-      _measurementInch = 7;
+      _measurementInch = 0;
     }
-    if(widget.measurementCM != null){
+    if(widget.measurementCM != null && widget.measurementInch! > 0){
       _measurementCM = widget.measurementCM;
     }
     else{
-      _measurementCM = 40;
+      _measurementCM = 0;
     }
 
-    _rulerPickerController = RulerPickerController(value: _measurementCM!);
+    _rulerPickerController = RulerPickerController(value: _measurementCM!.toInt());
 
   }
 
@@ -68,10 +68,10 @@ class _MeasureViewState extends State<MeasureView> {
   Widget title() {
     String val = '';
     if(isCM){
-      val = '$_measurementCM cm';
+      val = '${_measurementCM!.toStringAsFixed(0)} cm';
     }
     else{
-     val = '$_measurementInch Inch';
+     val = '${_measurementInch!.toStringAsFixed(0)} Inch';
     }
     return Center(
       child: Text(
@@ -153,7 +153,7 @@ class _MeasureViewState extends State<MeasureView> {
         controller: _rulerPickerController!,
         beginValue: 0,
         endValue: 300,
-        initValue: _measurementCM!,
+        initValue: _measurementCM!.toInt(),
         scaleLineStyleList: const [
           ScaleLineStyle(
               color: Colors.grey, width: 1.5, height: 30, scale: 0),
@@ -163,11 +163,9 @@ class _MeasureViewState extends State<MeasureView> {
               color: Colors.grey, width: 1, height: 15, scale: -1)
         ],
         onValueChange: (value) {
-          setState(() {
-            _measurementCM = value;
-          });
-          print('_measurementCM');
-          print(_measurementCM);
+          _measurementCM = value.toDouble();
+          _measurementInch = _measurementCM! / 2.54;
+          setState(() {});
           widget.onFilled(_measurementCM!,_measurementInch!);
         },
         width: MediaQuery.of(context).size.width,
@@ -226,12 +224,13 @@ class _MeasureViewState extends State<MeasureView> {
             child: WheelChooser.integer(
               onValueChanged: (v){
                 _measurementInch = v;
+                _measurementCM = _measurementInch! * 2.54;
                 setState(() {});
                 widget.onFilled(_measurementCM!,_measurementInch!);
               },
-              maxValue: 30,
+              maxValue: 200,
               minValue: 0,
-              initValue: _measurementInch!,
+              initValue: _measurementInch!.toInt(),
               selectTextStyle: const TextStyle(
                   color: Constants.fontColor1,
                   fontSize: 24,

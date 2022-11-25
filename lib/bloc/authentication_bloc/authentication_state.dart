@@ -56,5 +56,6 @@ class AuthenticationCompleteProfile extends AuthenticationState {}
 
 class AuthenticationShowResult extends AuthenticationState {
   final FitnessResponse result;
-  const AuthenticationShowResult({required this.result});
+  final Map<String,dynamic> data;
+  const AuthenticationShowResult({required this.result,required this.data});
 }

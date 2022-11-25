@@ -6,8 +6,46 @@ import '../../../../utils/constants.dart';
 import '../../../../utils/scroll_setting.dart';
 import '../result_display.dart';
 
-class BodyFatView extends StatelessWidget {
-  const BodyFatView({Key? key}) : super(key: key);
+class BodyFatView extends StatefulWidget {
+  final String result;
+  final Map<String,dynamic> data;
+  const BodyFatView({Key? key,required this.result,required this.data}) : super(key: key);
+
+  @override
+  State<BodyFatView> createState() => _BodyFatViewState();
+}
+
+class _BodyFatViewState extends State<BodyFatView> {
+
+  late double _height,_weight,_neck,_waist;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _height = 0;
+    _weight = 0;
+    _neck = 0;
+    _waist = 0;
+
+    print('widget.data');
+    print(widget.data);
+
+    if(widget.data.isNotEmpty){
+      if(widget.data['height_cm'] != null){
+        _height = widget.data['height_cm'];
+      }
+      if(widget.data['weight'] != null){
+        _weight = widget.data['weight'];
+      }
+      if(widget.data['neck'] != null){
+        _neck = widget.data['neck'];
+      }
+      if(widget.data['waist'] != null){
+        _waist = widget.data['waist'];
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,14 +192,14 @@ class BodyFatView extends StatelessWidget {
       style: TextStyle(
           color: Color.fromRGBO(68, 68, 68, 1),
           fontSize: 18,
-          fontFamily: Constants.fontRegular),
+          fontFamily: Constants.fontMedium),
     );
   }
 
   Widget bodyFatReading() {
-    return const Text(
-      '18.1 %',
-      style: TextStyle(
+    return Text(
+      '${widget.result} %',
+      style: const TextStyle(
           color: Colors.green,
           fontSize: 20,
           fontFamily: Constants.fontSemiBold),
@@ -214,9 +252,9 @@ class BodyFatView extends StatelessWidget {
                     color: Colors.red
                 ),
               ],
-              pointers: const <GaugePointer>[
+              pointers: <GaugePointer>[
                 NeedlePointer(
-                  value: 23.6,
+                  value: double.parse(widget.result),
                   needleStartWidth: 0,
                   needleEndWidth: 5,
                 )],
@@ -250,9 +288,9 @@ class BodyFatView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children: [
 
-              Text(
+              const Text(
                 'Height',
                 style: TextStyle(
                     color: Color.fromRGBO(102, 102, 102, 1),
@@ -261,8 +299,8 @@ class BodyFatView extends StatelessWidget {
               ),
 
               Text(
-                '165',
-                style: TextStyle(
+                '${_height.toStringAsFixed(0)} cm',
+                style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
                     fontFamily: Constants.fontRegular),
@@ -275,9 +313,9 @@ class BodyFatView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children: [
 
-              Text(
+              const Text(
                 'Weight',
                 style: TextStyle(
                     color: Color.fromRGBO(102, 102, 102, 1),
@@ -286,8 +324,8 @@ class BodyFatView extends StatelessWidget {
               ),
 
               Text(
-                '80.65 Kg',
-                style: TextStyle(
+                '${_weight.toStringAsFixed(1)} Kg',
+                style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
                     fontFamily: Constants.fontRegular),
@@ -300,9 +338,9 @@ class BodyFatView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children: [
 
-              Text(
+              const Text(
                 'Neck Size',
                 style: TextStyle(
                     color: Color.fromRGBO(102, 102, 102, 1),
@@ -311,8 +349,8 @@ class BodyFatView extends StatelessWidget {
               ),
 
               Text(
-                '50',
-                style: TextStyle(
+                '${_neck.toStringAsFixed(0)} cm',
+                style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
                     fontFamily: Constants.fontRegular),
@@ -325,9 +363,9 @@ class BodyFatView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children:  [
 
-              Text(
+              const Text(
                 'Waist',
                 style: TextStyle(
                     color: Color.fromRGBO(102, 102, 102, 1),
@@ -336,8 +374,8 @@ class BodyFatView extends StatelessWidget {
               ),
 
               Text(
-                '98',
-                style: TextStyle(
+                '${_waist.toStringAsFixed(0)} cm',
+                style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
                     fontFamily: Constants.fontRegular),
@@ -348,5 +386,4 @@ class BodyFatView extends StatelessWidget {
       ),
     );
   }
-
 }
