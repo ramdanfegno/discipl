@@ -20,36 +20,50 @@ class HomeScreenView extends StatelessWidget {
   final FCDetailBloc fcDetailBloc;
   final FCListBloc fcListBloc;
   final bool isProfileCompleted;
-  final Function() onLocationChanged;
-  const HomeScreenView({Key? key,required this.onLocationChanged,
-    required this.isProfileCompleted,required this.homeData,
-    required this.fcListBloc,required this.fcDetailBloc}) : super(key: key);
+  final Function() onLocationChanged, onProfileClicked;
+
+  const HomeScreenView(
+      {Key? key,
+      required this.onLocationChanged,
+      required this.onProfileClicked,
+      required this.isProfileCompleted,
+      required this.homeData,
+      required this.fcListBloc,
+      required this.fcDetailBloc})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return (homeData != null) ?
-    SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-
-          SizedBox(
-            height: SizeConfig.blockSizeHorizontal * 4,
-          ),
-          locationWidget(context)!,
-          SizedBox(
-            height: SizeConfig.blockSizeHorizontal * 4,
-          ),
-          (!isProfileCompleted)
-              ? const PercentageTIile(value: 0.3)
-              : Container(),
-
-          _content(context, homeData!.content!),
-        ],
-      ),
-    ) : Container();
+    return (homeData != null)
+        ? SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: SizeConfig.blockSizeHorizontal * 4,
+                ),
+                locationWidget(context)!,
+                SizedBox(
+                  height: SizeConfig.blockSizeHorizontal * 4,
+                ),
+                (!isProfileCompleted && homeData!.profilePercentage != null)
+                    ? InkWell(
+                        onTap: () {
+                          onProfileClicked();
+                        },
+                        child: PercentageTile(
+                            value: (homeData!.profilePercentage != null)
+                                ? homeData!.profilePercentage!.toDouble()
+                                : 0),
+                      )
+                    : Container(),
+                _content(context, homeData!.content!),
+              ],
+            ),
+          )
+        : Container();
   }
 
   Widget _content(BuildContext context, List<HomePageModelContent> content) {
@@ -95,15 +109,14 @@ class HomeScreenView extends StatelessWidget {
           color: Constants.primaryColor,
         ),
         InkWell(
-          onTap: (){
+          onTap: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ChooseLocation(
-                            onLocationUpdated: (){
-                              onLocationChanged();
-                            },
+                    builder: (context) => ChooseLocation(
+                          onLocationUpdated: () {
+                            onLocationChanged();
+                          },
                         )));
           },
           child: Row(
@@ -111,8 +124,11 @@ class HomeScreenView extends StatelessWidget {
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 3,
               ),
-              const Text('Kakkanad',
-                  style: TextStyle(fontFamily: Constants.fontRegular)),
+              Text(
+                  (homeData!.zone != null && homeData!.zone!.name != null)
+                      ? homeData!.zone!.name!
+                      : '',
+                  style: const TextStyle(fontFamily: Constants.fontRegular)),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 7,
               ),
@@ -129,38 +145,41 @@ class HomeScreenView extends StatelessWidget {
 
   Widget _buildIcons(BuildContext context, HomePageModelContent? content) {
     return Padding(
-      padding:  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*4,left: SizeConfig.blockSizeHorizontal*4),
-      child: CategoryListTile(content: content!.content,fcListBloc: fcListBloc,),
-    );
-  }
-
-  Widget _buildRectangleTiles(BuildContext context, HomePageModelContent? content) {
-    return Padding(
-      padding:  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*4),
-      child: RectangleBannerTile(
-        title: content!.title,
-        content: content.content,
-        fcDetailBloc: fcDetailBloc,
-        seeAllPressed: (){
-          // route to fitness listing page with slug
-          fcListBloc.add(
-              LoadListingPage(
-                forceRefresh: true,
-                slug: content.slug,
-                pageNo: 1,
-              ));
-
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      FitnessCenterListView(title: content.title!.toUpperCase(), slug: content.slug)));
-        },
+      padding: EdgeInsets.only(
+          top: SizeConfig.blockSizeHorizontal * 4,
+          left: SizeConfig.blockSizeHorizontal * 4),
+      child: CategoryListTile(
+        content: content!.content,
+        fcListBloc: fcListBloc,
       ),
     );
   }
 
-  Widget _buildBannerTiles(BuildContext context, HomePageModelContent? content) {
+  Widget _buildRectangleTiles(
+      BuildContext context, HomePageModelContent? content) {
+    return RectangleBannerTile(
+      title: content!.title,
+      content: content.content,
+      fcDetailBloc: fcDetailBloc,
+      seeAllPressed: () {
+        // route to fitness listing page with slug
+        fcListBloc.add(LoadListingPage(
+          forceRefresh: true,
+          slug: 'fc',
+          pageNo: 1,
+        ));
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => FitnessCenterListView(
+                    title: content.title!.toUpperCase(), slug: 'fc')));
+      },
+    );
+  }
+
+  Widget _buildBannerTiles(
+      BuildContext context, HomePageModelContent? content) {
     return BannerTile(
       hasTitle: false,
       title: content!.title,
@@ -169,13 +188,14 @@ class HomeScreenView extends StatelessWidget {
     );
   }
 
-  Widget _buildSquareTiles(BuildContext context, HomePageModelContent? content) {
+  Widget _buildSquareTiles(
+      BuildContext context, HomePageModelContent? content) {
     return Padding(
-      padding:  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*4),
+      padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 4),
       child: SquareBannerTile(
         title: content!.title,
         content: content.content,
-        seeAllPressed: (){
+        seeAllPressed: () {
           // route to feedpage
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return FeedListViewPage(data: content);
@@ -184,6 +204,4 @@ class HomeScreenView extends StatelessWidget {
       ),
     );
   }
-
-
 }

@@ -34,7 +34,7 @@ class ProductRepository{
   }
 
   //fitness center list
-  Future<Response?> getFitnessCenterList(bool forceRefresh,String slug,int pageNo,String? searchQ) async {
+  Future<Response?> getFitnessCenterList(bool forceRefresh,String? slug,int pageNo,String? searchQ,String? categoryId) async {
     try {
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
       String? token = loginResponse!.token;
@@ -47,6 +47,10 @@ class ProductRepository{
         'page' : pageNo.toString()
       };
 
+      if(categoryId != null){
+        queryParams['category_id'] = categoryId;
+      }
+
       print(queryParams);
       String apiName = 'FitnessCenterListApi$slug${pageNo.toString()}';
 
@@ -55,8 +59,13 @@ class ProductRepository{
         apiName += searchQ;
       }
 
+      String url =  Constants.apiFitnessCenterList;
+      if(slug != null){
+        url += '$slug/';
+      }
+
       Response? response = await apiQuery.getQuery(
-          '${Constants.apiFitnessCenterList}/$slug/', headers, queryParams,
+          url, headers, queryParams,
           apiName, true, true, forceRefresh);
       return response;
     }
@@ -69,6 +78,7 @@ class ProductRepository{
   //fitness center details
   Future<Response?> getFitnessCenterDetail(bool forceRefresh,String id) async {
     try {
+      print('getFitnessCenterDetail');
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
       String? token = loginResponse!.token;
 
@@ -77,8 +87,13 @@ class ProductRepository{
       };
 
       Response? response = await apiQuery.getQuery(
-          '${Constants.apiFitnessCenterList}/$id/', headers, {},
+          '${Constants.apiFitnessCenterList}fc/$id/', headers, {},
           'FitnessCenterApi$id', true, true, forceRefresh);
+      print('getFitnessCenterDetail response');
+      print(response!.statusCode);
+      print(response.statusMessage);
+      print(response.data);
+
       return response;
     }
     catch(e){
@@ -173,6 +188,121 @@ class ProductRepository{
     }
   }
 
+/*  _getCurrentLocation() async{
+    bool serviceEnabled;
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+      else if(serviceEnabled){
+        getLocation();
+        return;
+      }
+    }
+    else if(serviceEnabled){
+      getLocation();
+    }
+  }
 
+  getLocation() async{
+    l.PermissionStatus permissionGranted;
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == l.PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != l.PermissionStatus.granted) {
+        setState(() {});
+        _locationBloc.add(LoadLocationPage(forceRefresh: false, pageNo: _pageNo,isLoading: true));
+        return;
+      }
+      else if(permissionGranted == l.PermissionStatus.granted || permissionGranted == l.PermissionStatus.grantedLimited){
+        location.getLocation().then((value) async {
+          _currentLat = value.latitude;
+          _currentLong = value.longitude;
+
+          // From coordinates
+          List<Placemark> placeMarks = await placemarkFromCoordinates(_currentLat!, _currentLong!);
+          print('placeMarks[0].locality');
+          print(placeMarks[0].locality);
+          print('placeMarks[0].name');
+          print(placeMarks[0].name);
+          print('placeMarks[0].administrativeArea');
+          print(placeMarks[0].administrativeArea);
+          print('placeMarks[0].street');
+          print(placeMarks[0].street);
+          print('placeMarks[0].postalCode');
+          print(placeMarks[0].postalCode);
+          print('placeMarks[0].subLocality');
+          print(placeMarks[0].subLocality);
+          print('placeMarks[0].subAdministrativeArea');
+          print(placeMarks[0].subAdministrativeArea);
+          print('placeMarks[0].subThoroughfare');
+          print(placeMarks[0].subThoroughfare);
+          _currentPlace = placeMarks[0].locality;
+          if(mounted){
+            setState(() {});
+            _locationBloc.add(LoadLocationPage(forceRefresh: false, pageNo: _pageNo,isLoading: true));
+          }
+        }).timeout(const Duration(seconds: 3), onTimeout: (){
+          isCalledAgain = isCalledAgain! + 1;
+          if(isCalledAgain! <= 5){
+            getLocation();
+          }
+          else{
+            if(mounted){
+              setState(() {});
+              _locationBloc.add(LoadLocationPage(forceRefresh: false, pageNo: _pageNo,isLoading: true));
+            }
+            isCalledAgain = 0 ;
+            Fluttertoast.showToast(msg: 'Timed out! Unable to obtain location');
+          }
+        });
+      }
+    }
+    else if(permissionGranted == l.PermissionStatus.granted || permissionGranted == l.PermissionStatus.grantedLimited){
+      location.getLocation().then((value) async {
+        _currentLat = value.latitude;
+        _currentLong = value.longitude;
+        // From coordinates
+        List<Placemark> placeMarks = await placemarkFromCoordinates(_currentLat!, _currentLong!);
+        print('placeMarks[0].locality');
+        print(placeMarks[0].locality);
+        print('placeMarks[0].name');
+        print(placeMarks[0].name);
+        print('placeMarks[0].administrativeArea');
+        print(placeMarks[0].administrativeArea);
+        print('placeMarks[0].street');
+        print(placeMarks[0].street);
+        print('placeMarks[0].subLocality');
+        print(placeMarks[0].subLocality);
+        print('placeMarks[0].subAdministrativeArea');
+        print(placeMarks[0].subAdministrativeArea);
+        print('placeMarks[0].subThoroughfare');
+        print(placeMarks[0].subThoroughfare);
+
+        _currentPlace = placeMarks[0].locality;
+
+        if(mounted){
+          setState(() {});
+          _locationBloc.add(LoadLocationPage(forceRefresh: false, pageNo: _pageNo,isLoading: true));
+        }
+
+      }).timeout(const Duration(seconds: 3), onTimeout: (){
+        isCalledAgain = isCalledAgain! + 1;
+        if(isCalledAgain! <= 5){
+          getLocation();
+        }
+        else{
+          if(mounted){
+            setState(() {});
+            _locationBloc.add(LoadLocationPage(forceRefresh: false, pageNo: _pageNo,isLoading: true));
+          }
+          isCalledAgain = 0 ;
+          Fluttertoast.showToast(msg: 'Timed out! Unable to obtain location');
+        }
+      });
+    }
+  }*/
 
 }

@@ -17,7 +17,7 @@ class Constants {
   static const String apiLogout = 'user/logout/';
   static const String apiHome = 'user/index/';
   static const String apiCustomerRegister = 'user/register/customer/';
-  static const String apiFitnessCenterList = 'fitness_center/fc/';
+  static const String apiFitnessCenterList = 'fitness_center/';
   static const String apiFitnessCalculate = 'user/fit-calculator/';
   static const String apiPostEnquiry = 'user/enquiry/';
   static const String apiZoneList = 'fitness_center/zone/';

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'home_page_model.dart';
+
 FitnessCenterListModel fitnessCenterListModelFromJson(String str) => FitnessCenterListModel.fromJson(json.decode(str));
 
 String fitnessCenterListModelToJson(FitnessCenterListModel data) => json.encode(data.toJson());
@@ -46,8 +48,6 @@ class FitnessCenterModel {
     this.category,
     this.name,
     this.description,
-    this.opensAt,
-    this.closesAt,
     this.mobile,
     this.email,
     this.logo,
@@ -61,7 +61,8 @@ class FitnessCenterModel {
     this.facebookUrl,
     this.youtubeUrl,
     this.zone,
-    this.rating
+    this.rating,
+    this.workingTime
   });
 
   int? id;
@@ -70,11 +71,10 @@ class FitnessCenterModel {
   List<Plan>? plans;
   List<Amenities>? rules;
   List<Amenities>? category;
+  List<WorkingTime>? workingTime;
   String? name;
   String? rating;
   String? description;
-  String? opensAt;
-  String? closesAt;
   String? mobile;
   String? email;
   String? logo;
@@ -96,11 +96,10 @@ class FitnessCenterModel {
     plans: json["plans"] == null ? null : List<Plan>.from(json["plans"].map((x) => Plan.fromJson(x))),
     rules: json["rules"] == null ? null : List<Amenities>.from(json["rules"].map((x) => Amenities.fromJson(x))),
     category: json["category"] == null ? null : List<Amenities>.from(json["category"].map((x) => Amenities.fromJson(x))),
+    workingTime: json["working_time"] == null ? null : List<WorkingTime>.from(json["working_time"].map((x) => WorkingTime.fromJson(x))),
     name: json["name"] == null ? null : json["name"],
     rating: json["rating"] == null ? null : json["rating"],
     description: json["description"] == null ? null : json["description"],
-    opensAt: json["opens_at"] == null ? null : json["opens_at"],
-    closesAt: json["closes_at"] == null ? null : json["closes_at"],
     mobile: json["mobile"] == null ? null : json["mobile"],
     email: json["email"] == null ? null : json["email"],
     logo: json["logo"] == null ? null : json["logo"],
@@ -126,8 +125,7 @@ class FitnessCenterModel {
     "name": name,
     "rating": rating,
     "description": description == null ? null : description,
-    "opens_at": opensAt == null ? null : opensAt,
-    "closes_at": closesAt == null ? null : closesAt,
+    "working_time": workingTime == null ? null : List<dynamic>.from(workingTime!.map((x) => x.toJson())),
     "mobile": mobile == null ? null : mobile,
     "email": email == null ? null : email,
     "logo": logo == null ? null : logo,

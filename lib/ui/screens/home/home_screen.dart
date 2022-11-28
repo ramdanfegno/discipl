@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:habitoz_fitness_app/bloc/home_screen_bloc/home_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/location_bloc/location_bloc.dart';
+import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
@@ -31,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late FCDetailBloc _fcDetailBloc;
   late FCListBloc _fcListBloc;
   late HomeBloc _homeBloc;
+  late ProfileBloc _profileBloc;
 
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -43,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _fcListBloc = BlocProvider.of<FCListBloc>(context);
     _fcDetailBloc = BlocProvider.of<FCDetailBloc>(context);
     _homeBloc = BlocProvider.of<HomeBloc>(context);
+    _profileBloc = BlocProvider.of<ProfileBloc>(context);
   }
 
   @override
@@ -159,13 +162,17 @@ class _HomeScreenState extends State<HomeScreen> {
       height: MediaQuery.of(context).size.height,
       child: Stack(
         children: [
+
           HomeScreenView(
             homeData: homePageData,
             fcDetailBloc: _fcDetailBloc,
             fcListBloc: _fcListBloc,
-            isProfileCompleted: false,
+            isProfileCompleted: (widget.isLoggedIn) ? false : true,
             onLocationChanged: (){
               _homeBloc.add(LoadHome(forceRefresh: true));
+            },
+            onProfileClicked: (){
+              _profileBloc.add(LoadProfile());
             },
           ),
 

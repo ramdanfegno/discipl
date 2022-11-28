@@ -35,7 +35,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-                padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*5),
+                padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*5,right: SizeConfig.blockSizeHorizontal*2),
               child: (!isHomeAppBar) ?
               InkWell(
                 onTap: () {
@@ -70,9 +70,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
 
             (!isHomeAppBar)
-                ? Center(
+                ? Expanded(
                   child: Text(
                     appBarTitle!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: SizeConfig.blockSizeHorizontal * 4,
                         fontFamily: Constants.fontMedium),
@@ -114,7 +116,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ],
               ),
-            ) : SizedBox(width: SizeConfig.blockSizeHorizontal*12,)
+            ) : SizedBox(width: SizeConfig.blockSizeHorizontal*2,)
           ],
         ),
       ),
