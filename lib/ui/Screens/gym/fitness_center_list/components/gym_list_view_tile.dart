@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/models/fitness_center_list_model.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 class GymListViewTile extends StatelessWidget {
-  final String gymName, rating, gymnasium, place, distance;
-  final bool isFreeTrialAvailable;
+  final FitnessCenterModel? fcData;
   final Function() onListTilePressed;
 
   const GymListViewTile(
       {Key? key,
-      required this.gymName,
-      required this.rating,
-      required this.gymnasium,
-      required this.isFreeTrialAvailable,
-      required this.place,
-      required this.distance,
-      required this.onListTilePressed})
+        required this.fcData,
+        required this.onListTilePressed})
       : super(key: key);
 
   @override
@@ -51,7 +46,7 @@ class GymListViewTile extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        gymName,
+                        (fcData!.name != null) ? fcData!.name! : '',
                         style: TextStyle(
                             fontSize: SizeConfig.blockSizeHorizontal * 3.8,
                             fontFamily: Constants.fontBold),
@@ -71,8 +66,11 @@ class GymListViewTile extends StatelessWidget {
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 1,
                       ),
+
+                      /// need to get data here
+
                       Text(
-                        rating,
+                        (fcData!.rating != null) ? fcData!.rating! : '',
                         style: TextStyle(
                             color: Constants.fontColor3,
                             fontSize: SizeConfig.blockSizeHorizontal * 3.5,
@@ -83,8 +81,11 @@ class GymListViewTile extends StatelessWidget {
                   SizedBox(
                     height: SizeConfig.blockSizeHorizontal * 1,
                   ),
+
+                  /// need to verify data here
+
                   Text(
-                    gymnasium,
+                    (fcData!.category!.isNotEmpty && fcData!.category![0].name != null ) ? fcData!.category![0].name! : '',
                     style: TextStyle(
                         color: Constants.appbarColor,
                         fontFamily: Constants.fontRegular,
@@ -93,14 +94,15 @@ class GymListViewTile extends StatelessWidget {
                   SizedBox(
                     height: SizeConfig.blockSizeHorizontal * 1,
                   ),
+
+                  /// need to get data here
+
                   Text(
-                    (isFreeTrialAvailable)
-                        ? 'Free trial available'
-                        : 'Free trial not available',
+                    'Free trial not available',
                     style: TextStyle(
                         fontFamily: Constants.fontRegular,
                         fontSize: SizeConfig.blockSizeHorizontal * 3.5,
-                        color: (isFreeTrialAvailable)
+                        color: (false)
                             ? Constants.fontColor3
                             : Constants.primaryColor),
                   ),
@@ -118,8 +120,11 @@ class GymListViewTile extends StatelessWidget {
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 1,
                       ),
+
+                      /// need to verify data here
+
                       Text(
-                        place,
+                        (fcData!.location != null) ? fcData!.location.toString() : '',
                         style: TextStyle(
                             color: Constants.appbarColor,
                             fontFamily: Constants.fontRegular,
@@ -136,8 +141,10 @@ class GymListViewTile extends StatelessWidget {
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 1,
                       ),
+
+                      /// need to get data here
                       Text(
-                        '$distance Kms away',
+                        '5 Kms away',
                         style: TextStyle(
                             color: Constants.appbarColor,
                             fontFamily: Constants.fontRegular,
