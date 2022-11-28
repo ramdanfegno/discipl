@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
-class PercentageTile extends StatelessWidget {
+class PercentageTIile extends StatelessWidget {
   final double value;
-  const PercentageTile({Key? key, required this.value}) : super(key: key);
+
+  const PercentageTIile({Key? key, required this.value}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class PercentageTile extends StatelessWidget {
                 BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2.5),
             boxShadow: [
               BoxShadow(
-                  offset: const Offset(0, 8),
+                  offset: Offset(0, 8),
                   blurRadius: 20,
                   color: Colors.black.withOpacity(0.09))
             ]),
@@ -55,12 +56,12 @@ class PercentageTile extends StatelessWidget {
                   width: SizeConfig.blockSizeHorizontal * 72,
                   child: ClipRRect(
                     borderRadius:
-                        const BorderRadius.all(Radius.circular(10)),
+                        const BorderRadius.all(const Radius.circular(10)),
                     child: LinearProgressIndicator(
                       minHeight: SizeConfig.blockSizeHorizontal * 2.5,
                       color: Constants.primaryColor,
                       backgroundColor: Constants.timeContainerColor,
-                      value: value/10,
+                      value: value,
                     ),
                   ),
                 ),

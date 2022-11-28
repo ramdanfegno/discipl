@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:habitoz_fitness_app/models/fitness_center_list_model.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
 
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/size_config.dart';
 
 class GymPlanTile extends StatelessWidget {
-  final List<Plan> plan;
+  final String plan, planTitle;
 
-  const GymPlanTile({Key? key, required this.plan})
+  const GymPlanTile({Key? key, required this.plan, required this.planTitle})
       : super(key: key);
 
   @override
@@ -34,10 +33,9 @@ class GymPlanTile extends StatelessWidget {
             height: SizeConfig.blockSizeHorizontal * 3,
           ),
           ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: plan.length,
-              scrollDirection: Axis.vertical,
+              itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                   children: [
@@ -47,7 +45,7 @@ class GymPlanTile extends StatelessWidget {
                           width: SizeConfig.blockSizeHorizontal * 4,
                         ),
                         Text(
-                          (plan[index].amount != null) ? '${Constants.currencySymbol}${plan[index].amount.toString()}' : '',
+                          '${Constants.currencySymbol}$plan',
                           style: TextStyle(
                               fontFamily: Constants.fontBold,
                               fontSize: SizeConfig.blockSizeHorizontal * 5.5),
@@ -63,58 +61,38 @@ class GymPlanTile extends StatelessWidget {
                     SizedBox(
                       height: SizeConfig.blockSizeHorizontal * 2,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: SizeConfig.blockSizeHorizontal * 1.5,
-                          bottom: SizeConfig.blockSizeHorizontal * 1.5),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: SizeConfig.blockSizeHorizontal * 4,
-                          ),
-                          Icon(
-                            HabitozIcons.tick,
-                            size: SizeConfig.blockSizeHorizontal * 3.2,
-                            color: Constants.tickColor,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.blockSizeHorizontal * 2.5,
-                          ),
-                          Text(
-                            (plan[index].duration != null) ? plan[index].duration! : '',
-                            style: const TextStyle(
-                                fontFamily: Constants.fontRegular,
-                                color: Constants.appbarColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: SizeConfig.blockSizeHorizontal * 1.5,
-                          bottom: SizeConfig.blockSizeHorizontal * 1.5),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: SizeConfig.blockSizeHorizontal * 4,
-                          ),
-                          Icon(
-                            HabitozIcons.tick,
-                            size: SizeConfig.blockSizeHorizontal * 3.2,
-                            color: Constants.tickColor,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.blockSizeHorizontal * 2.5,
-                          ),
-                          Text(
-                            (plan[index].description != null) ? plan[index].description! : '',
-                            style: const TextStyle(
-                                fontFamily: Constants.fontRegular,
-                                color: Constants.appbarColor),
-                          ),
-                        ],
-                      ),
-                    ),
+                    ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: 2,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                                top: SizeConfig.blockSizeHorizontal * 1.5,
+                                bottom: SizeConfig.blockSizeHorizontal * 1.5),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: SizeConfig.blockSizeHorizontal * 4,
+                                ),
+                                Icon(
+                                  HabitozIcons.tick,
+                                  size: SizeConfig.blockSizeHorizontal * 3.2,
+                                  color: Constants.tickColor,
+                                ),
+                                SizedBox(
+                                  width: SizeConfig.blockSizeHorizontal * 2.5,
+                                ),
+                                Text(
+                                  planTitle,
+                                  style: const TextStyle(
+                                      fontFamily: Constants.fontRegular,
+                                      color: Constants.appbarColor),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
                     SizedBox(
                       height: SizeConfig.blockSizeHorizontal * 2,
                     ),

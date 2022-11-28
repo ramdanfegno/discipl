@@ -1,30 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:habitoz_fitness_app/models/fitness_center_list_model.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 class GymListViewTile extends StatelessWidget {
-  final FitnessCenterModel? fcData;
+  final String gymName, rating, gymnasium, place, distance;
+  final bool isFreeTrialAvailable;
   final Function() onListTilePressed;
 
   const GymListViewTile(
       {Key? key,
-        required this.fcData,
-        required this.onListTilePressed})
+      required this.gymName,
+      required this.rating,
+      required this.gymnasium,
+      required this.isFreeTrialAvailable,
+      required this.place,
+      required this.distance,
+      required this.onListTilePressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String categoryNames = '';
-    for(int i = 0; i < fcData!.category!.length; i++){
-     if(fcData!.category![i].name != null && fcData!.category![i].name != ''){
-       if( i != 0){
-         categoryNames += ',';
-       }
-       categoryNames += fcData!.category![i].name!;
-     }
-    }
     return Padding(
       padding:
           EdgeInsets.symmetric(vertical: SizeConfig.blockSizeHorizontal * 3.5),
@@ -55,7 +51,7 @@ class GymListViewTile extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        (fcData!.name != null) ? fcData!.name! : '',
+                        gymName,
                         style: TextStyle(
                             fontSize: SizeConfig.blockSizeHorizontal * 3.8,
                             fontFamily: Constants.fontBold),
@@ -75,11 +71,8 @@ class GymListViewTile extends StatelessWidget {
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 1,
                       ),
-
-                      /// need to get data here
-
                       Text(
-                        (fcData!.rating != null) ? fcData!.rating! : '',
+                        rating,
                         style: TextStyle(
                             color: Constants.fontColor3,
                             fontSize: SizeConfig.blockSizeHorizontal * 3.5,
@@ -90,11 +83,8 @@ class GymListViewTile extends StatelessWidget {
                   SizedBox(
                     height: SizeConfig.blockSizeHorizontal * 1,
                   ),
-
-                  /// need to verify data here
-
                   Text(
-                    categoryNames,
+                    gymnasium,
                     style: TextStyle(
                         color: Constants.appbarColor,
                         fontFamily: Constants.fontRegular,
@@ -103,15 +93,14 @@ class GymListViewTile extends StatelessWidget {
                   SizedBox(
                     height: SizeConfig.blockSizeHorizontal * 1,
                   ),
-
-                  /// need to get data here
-
                   Text(
-                    'Free trial not available',
+                    (isFreeTrialAvailable)
+                        ? 'Free trial available'
+                        : 'Free trial not available',
                     style: TextStyle(
                         fontFamily: Constants.fontRegular,
                         fontSize: SizeConfig.blockSizeHorizontal * 3.5,
-                        color: (false)
+                        color: (isFreeTrialAvailable)
                             ? Constants.fontColor3
                             : Constants.primaryColor),
                   ),
@@ -129,11 +118,8 @@ class GymListViewTile extends StatelessWidget {
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 1,
                       ),
-
-                      /// need to verify data here
-
                       Text(
-                        (fcData!.location != null) ? fcData!.location.toString() : '',
+                        place,
                         style: TextStyle(
                             color: Constants.appbarColor,
                             fontFamily: Constants.fontRegular,
@@ -150,10 +136,8 @@ class GymListViewTile extends StatelessWidget {
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 1,
                       ),
-
-                      /// need to get data here
                       Text(
-                        '5 Kms away',
+                        '$distance Kms away',
                         style: TextStyle(
                             color: Constants.appbarColor,
                             fontFamily: Constants.fontRegular,
