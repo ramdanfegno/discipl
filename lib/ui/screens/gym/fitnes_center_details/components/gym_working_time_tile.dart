@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/models/home_page_model.dart';
 
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/size_config.dart';
 
 class GymWorkingTimeTile extends StatelessWidget {
-  final String time;
+  final List<WorkingTime>? time;
 
   const GymWorkingTimeTile({Key? key, required this.time}) : super(key: key);
 
@@ -41,8 +42,18 @@ class GymWorkingTimeTile extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 4,
+                      itemCount: time!.length,
                       itemBuilder: (context, int index) {
+
+                        String s = '';
+                        if(time![index].opensAt != null){
+                          s += time![index].opensAt!;
+                          s += ' to ';
+                        }
+                        if(time![index].closesAt != null){
+                          s += time![index].closesAt!;
+                        }
+
                         return Padding(
                           padding: EdgeInsets.only(
                               left: SizeConfig.blockSizeHorizontal * 1.5,
@@ -55,8 +66,8 @@ class GymWorkingTimeTile extends StatelessWidget {
                                 color: Constants.timeContainerColor),
                             child: Center(
                                 child: Text(
-                              time,
-                              style: TextStyle(
+                              s,
+                              style: const TextStyle(
                                   color: Constants.primaryColor,
                                   fontFamily: Constants.fontMedium),
                             )),

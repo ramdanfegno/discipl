@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
-class PercentageTIile extends StatelessWidget {
+class PercentageTile extends StatelessWidget {
   final double value;
 
-  const PercentageTIile({Key? key, required this.value}) : super(key: key);
+  const PercentageTile({Key? key, required this.value}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class PercentageTIile extends StatelessWidget {
                       minHeight: SizeConfig.blockSizeHorizontal * 2.5,
                       color: Constants.primaryColor,
                       backgroundColor: Constants.timeContainerColor,
-                      value: value,
+                      value: value/100,
                     ),
                   ),
                 ),

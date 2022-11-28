@@ -193,7 +193,7 @@ class HomeScreenView extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 4),
       child: SquareBannerTile(
-        title: content!.title,
+        title: content!.title!,
         content: content.content,
         seeAllPressed: () {
           // route to feedpage
