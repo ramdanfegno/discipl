@@ -17,14 +17,11 @@ class AuthenticationLoadSplashScreen extends AuthenticationState {}
 
 /// To home screen as user
 class AuthenticationSuccess extends AuthenticationState {
-  final String? message;
+  final String? message,userName;
   final bool isGuest;
   final bool isLoggedIn;
-  const AuthenticationSuccess({this.message,required this.isLoggedIn,required this.isGuest});
-
-  @override
-  // TODO: implement props
-  List<Object> get props => [message!];
+  const AuthenticationSuccess({this.message,required this.isLoggedIn,
+    required this.isGuest,this.userName});
 
   @override
   String toString() => 'AuthenticationSuccess';

@@ -60,7 +60,7 @@ class AuthenticationBloc
         // if expired yield authFailed
 
         if(userData != null && userData.token != null){
-          yield const AuthenticationSuccess(isGuest: false,isLoggedIn: true);
+          yield AuthenticationSuccess(isGuest: false,isLoggedIn: true,userName: userData.user!);
         }
         else{
           yield const AuthenticationFailure(message: 'Token Expired');
@@ -93,7 +93,7 @@ class AuthenticationBloc
       //if new user redirect to profile fill screen
       //if not redirect to home screen
       if(otpResponse.isRegistered != null && otpResponse.isRegistered!){
-        yield const AuthenticationSuccess(isLoggedIn: true,isGuest: false);
+        yield AuthenticationSuccess(isLoggedIn: true,isGuest: false,userName: loginResponse.user);
       }
       else{
         yield AuthenticationCompleteProfile();
@@ -126,6 +126,7 @@ class AuthenticationBloc
     //check how much is filled
     //post details that are filled
     //store profile details
+    String? userName = '';
     if(data.isNotEmpty){
       try{
         yield AuthenticationOnLoading();
@@ -145,6 +146,7 @@ class AuthenticationBloc
             print(response2.statusMessage);
             if(response2 != null && response2.statusCode == 200){
               UserProfile userProfile = UserProfile.fromJson(response2.data);
+              userName = (userProfile.user!.firstName != null) ? userProfile.user!.firstName : '';
               await _userRepository.storeProfileDetails(userProfile);
             }
           }
@@ -156,7 +158,7 @@ class AuthenticationBloc
     }
     _userRepository.setGuestFlag(false);
     _userRepository.setIsLogged(true);
-    yield const AuthenticationSuccess(isGuest: false,isLoggedIn: true);
+    yield AuthenticationSuccess(isGuest: false,isLoggedIn: true,userName: userName);
   }
 
   Stream<AuthenticationState> _mapProfileFilledToState(Map<String,dynamic> data) async* {

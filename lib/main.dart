@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'package:habitoz_fitness_app/ui/Screens/home/homepage.dart';
+import 'package:habitoz_fitness_app/bloc/fc_detail_bloc/fc_detail_bloc.dart';
+import 'package:habitoz_fitness_app/bloc/fc_list_bloc/fc_list_bloc.dart';
+import 'package:habitoz_fitness_app/bloc/home_screen_bloc/home_bloc.dart';
+import 'package:habitoz_fitness_app/bloc/location_bloc/location_bloc.dart';
+import 'package:habitoz_fitness_app/repositories/product_repo.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +17,6 @@ import 'ui/screens/auth/login/login_screen.dart';
 import 'ui/screens/bmi/fill_profile.dart';
 import 'ui/screens/bmi/result_display.dart';
 import 'ui/splash_screen.dart';
-import 'package:habitoz_fitness_app/ui/screens/auth/login/login_screen.dart';
 
 void main() async {
 
@@ -24,6 +26,7 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
   final UserRepository userRepository = UserRepository();
+  final ProductRepository productRepository = ProductRepository();
 
   runApp(
      MultiBlocProvider(
@@ -36,6 +39,22 @@ void main() async {
         BlocProvider(
             create: (context) =>
             ProfileBloc(userRepository: userRepository),lazy: true,),
+
+        BlocProvider(
+          create: (context) =>
+              HomeBloc(productRepository: productRepository),lazy: true,),
+
+        BlocProvider(
+          create: (context) =>
+              FCDetailBloc(productRepository: productRepository),lazy: true,),
+
+        BlocProvider(
+          create: (context) =>
+              FCListBloc(productRepository: productRepository),lazy: true,),
+
+        BlocProvider(
+          create: (context) =>
+              LocationBloc(productRepository: productRepository),lazy: true,),
       ],
       child: App(
         userRepository: userRepository,
@@ -44,12 +63,28 @@ void main() async {
   );
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   final UserRepository _userRepository;
 
   const App({required UserRepository userRepository,})
       : _userRepository = userRepository,
         super();
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+
+  late HomeBloc _homeBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _homeBloc = BlocProvider.of<HomeBloc>(context);
+
+  }
 
 
   @override
@@ -83,18 +118,24 @@ class App extends StatelessWidget {
         buildWhen: (previous, current) => (previous != current),
         builder: (context, state) {
           if (state is AuthenticationSuccess) {
-            return const HomeScreen();
+            _homeBloc.add(LoadHome(forceRefresh: true));
+            return HomeScreen(
+                isGuest: state.isGuest,
+                isLoggedIn: state.isLoggedIn,
+                userName: state.userName
+            );
           }
           if (state is AuthenticationFailure) {
             // logged out user - redirect to login page
             return LoginScreen(
-              userRepository: _userRepository,
+              userRepository: widget._userRepository,
               message: state.message,
             );
           }
           if (state is AuthenticationGuest) {
             // guest user - redirect to home screen as guest
-            return const HomeScreen();
+            _homeBloc.add(LoadHome(forceRefresh: true));
+            return HomeScreen(isGuest: state.isGuest, isLoggedIn: state.isLoggedIn);
           }
           if (state is AuthenticationCompleteProfile) {
             // complete profile page

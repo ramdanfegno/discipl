@@ -1,92 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
-
+import '../../../models/fitness_center_list_model.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/size_config.dart';
 
 class CircularSlidingTile extends StatelessWidget {
-  final bool hasHeading;
-  final String heading,iconTitle;
-  final IconData circularIcons;
+  final List<Amenities> content;
+  final String? title;
 
   const CircularSlidingTile(
       {Key? key,
-      required this.hasHeading,
-      required this.heading,
-      required this.circularIcons, required this.iconTitle})
+        required this.content,
+        required this.title
+        })
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Column(
-        children: [
-          SizedBox(
-            height: (hasHeading) ? SizeConfig.blockSizeHorizontal * 10 : SizeConfig.blockSizeHorizontal * 1,
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+              left: SizeConfig.blockSizeHorizontal * 0),
+          child: SizedBox(
+            width: SizeConfig.blockSizeHorizontal * 75,
+            child: Text(
+              title!,
+              style: TextStyle(
+                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                  fontFamily: Constants.fontMedium),
+            ),
           ),
-          Row(
-            children: [
-              SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 4,
-              ),
-              Text(
-                (hasHeading) ? heading : '',
-                style: TextStyle(fontFamily: Constants.fontBold),
-              ),
-            ],
-          ),
-          SizedBox(
-            height:(hasHeading) ?SizeConfig.blockSizeHorizontal * 4:0,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 2.5,
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: SizeConfig.blockSizeHorizontal * 27,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 6,
-                      itemBuilder: (context, int index) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                              left: SizeConfig.blockSizeHorizontal * 1.5,
-                              right: SizeConfig.blockSizeHorizontal * 1.5),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: SizeConfig.blockSizeHorizontal*19.5,
-                                width: SizeConfig.blockSizeHorizontal * 19.5,
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Constants.primaryColor),
-                                child: Center(
-                                    child: Icon(
-                                  circularIcons,
-                                  color: Colors.white,
-                                  size: SizeConfig.blockSizeHorizontal * 9,
-                                )),
-                              ),
-                              SizedBox(
-                                height: SizeConfig.blockSizeHorizontal*2,
-                              ),
-                              Text(iconTitle,style: TextStyle(
-                                fontFamily: Constants.fontRegular
-                              ),),
-                            ],
-                          ),
-                        );
-                      }),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+        ),
+        (content != null) ?
+        SizedBox(
+          height: SizeConfig.blockSizeHorizontal * 27,
+          width: MediaQuery.of(context).size.width,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: content.length,
+              physics: const AlwaysScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, int index) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      left: SizeConfig.blockSizeHorizontal * 1.5,
+                      right: SizeConfig.blockSizeHorizontal * 1.5),
+                  child: Column(
+                    children: [
+                      Container(
+                          height: SizeConfig.blockSizeHorizontal*19.5,
+                          width: SizeConfig.blockSizeHorizontal * 19.5,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Constants.primaryColor),
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(3),
+                          child: Image.network(
+                            (content[index].logo != null) ? content[index].logo! : '',
+                            fit: BoxFit.contain,
+                          )
+                      ),
+                      SizedBox(
+                        height: SizeConfig.blockSizeHorizontal*2,
+                      ),
+                      Text(
+                        (content[index].name != null) ? content[index].name! : '',
+                        style: const TextStyle(
+                            fontFamily: Constants.fontRegular
+                        ),),
+                    ],
+                  ),
+                );
+              }),
+        ) : Container()
+      ],
     );
-
   }
 }

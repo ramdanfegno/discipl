@@ -67,6 +67,7 @@ dependencies:
   flutter_ruler_picker: ^1.0.2
   syncfusion_flutter_gauges: ^20.3.57
   percent_indicator: ^4.0.0
+  location: ^4.4.0
 
 
 dev_dependencies:

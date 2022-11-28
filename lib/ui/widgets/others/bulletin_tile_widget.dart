@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/models/fitness_center_list_model.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 import '../../../utils/constants.dart';
 
 class BulletinTileWidget extends StatelessWidget {
-  final String bulletinHeading,title;
+  final String bulletinHeading;
+  final List<Amenities>? category;
 
-  const BulletinTileWidget({Key? key, required this.bulletinHeading, required this.title})
+  const BulletinTileWidget({Key? key, required this.bulletinHeading,required this.category})
       : super(key: key);
 
   @override
@@ -32,9 +34,10 @@ class BulletinTileWidget extends StatelessWidget {
             height: SizeConfig.blockSizeHorizontal * 3,
           ),
           ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: category!.length,
+              scrollDirection: Axis.vertical,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding:  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*1),
@@ -53,12 +56,15 @@ class BulletinTileWidget extends StatelessWidget {
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 2,
                       ),
-                      Container(
+                      SizedBox(
                         width: SizeConfig.blockSizeHorizontal*90,
-                        child: Text(title,style: TextStyle(
+                        child: Text(
+                          (category![index].name  != null) ? category![index].name! : '',
+                          style: const TextStyle(
                           fontFamily: Constants.fontRegular,
                           color: Constants.appbarColor
-                        ),),
+                          ),
+                        ),
                       )
                     ],
                   ),

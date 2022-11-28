@@ -34,7 +34,7 @@ class ProductRepository{
   }
 
   //fitness center list
-  Future<Response?> getFitnessCenterList(bool forceRefresh) async {
+  Future<Response?> getFitnessCenterList(bool forceRefresh,String slug,int pageNo,String? searchQ) async {
     try {
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
       String? token = loginResponse!.token;
@@ -43,9 +43,21 @@ class ProductRepository{
         'Authorization' : 'Token $token'
       };
 
+      Map<String,String> queryParams = {
+        'page' : pageNo.toString()
+      };
+
+      print(queryParams);
+      String apiName = 'FitnessCenterListApi$slug${pageNo.toString()}';
+
+      if(searchQ != null){
+        queryParams['q'] = searchQ;
+        apiName += searchQ;
+      }
+
       Response? response = await apiQuery.getQuery(
-          Constants.apiFitnessCenterList, headers, {},
-          'FitnessCenterListApi', true, true, forceRefresh);
+          '${Constants.apiFitnessCenterList}/$slug/', headers, queryParams,
+          apiName, true, true, forceRefresh);
       return response;
     }
     catch(e){
@@ -76,7 +88,7 @@ class ProductRepository{
   }
 
   //feed list
-  Future<Response?> getFeedList(bool forceRefresh) async {
+  Future<Response?> getZoneList(bool forceRefresh,int pageNo,String? searchQ) async {
     try {
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
       String? token = loginResponse!.token;
@@ -85,9 +97,21 @@ class ProductRepository{
         'Authorization' : 'Token $token'
       };
 
+      Map<String,String> queryParams = {
+        'page' : pageNo.toString()
+      };
+
+      print(queryParams);
+      String apiName = 'ZoneListApi${pageNo.toString()}';
+
+      if(searchQ != null){
+        queryParams['q'] = searchQ;
+        apiName += searchQ;
+      }
+
       Response? response = await apiQuery.getQuery(
-          Constants.apiFeedList, headers, {},
-          'FeedListApi', true, true, forceRefresh);
+          Constants.apiZoneList, headers, queryParams,
+          apiName, true, true, forceRefresh);
       return response;
     }
     catch(e){
@@ -97,7 +121,7 @@ class ProductRepository{
   }
 
   //post enquiry
-  Future<Response?> postEnquiry(String? name, String? phone, String? email) async {
+  Future<Response?> postEnquiry(Map<String,dynamic> details) async {
 
     LoginResponse? loginResponse = await userRepository.getLoginResponse();
     String? token = loginResponse!.token;
@@ -106,11 +130,9 @@ class ProductRepository{
       'Authorization' : 'Token $token'
     };
 
-    Map<String, dynamic> body = {
-      "name": name!,
-      "phone": phone!,
-      "email": email!,
-    };
+    Map<String, dynamic> body = {};
+
+    body = details;
 
     print(body);
 
@@ -126,7 +148,7 @@ class ProductRepository{
 
 
   //set location api
-  Future<Response?> setLocation(double? lat,double? long,String? placeName) async {
+  Future<Response?> setLocation(Map<String,dynamic> data) async {
 
     LoginResponse? loginResponse = await userRepository.getLoginResponse();
     String? token = loginResponse!.token;
@@ -135,11 +157,9 @@ class ProductRepository{
       'Authorization' : 'Token $token'
     };
 
-    Map<String, dynamic> body = {
-      "lat": lat!,
-      "long": long!,
-      "placeName": placeName!,
-    };
+    Map<String, dynamic> body = {};
+
+    body = data;
 
     print(body);
 
@@ -152,5 +172,7 @@ class ProductRepository{
       return null;
     }
   }
+
+
 
 }

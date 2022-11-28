@@ -1,21 +1,25 @@
-import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:habitoz_fitness_app/ui/screens/home/components/banner_tile.dart';
-import 'package:habitoz_fitness_app/ui/screens/home/components/invite_tile.dart';
-import 'package:habitoz_fitness_app/ui/screens/home/components/percentage_tile.dart';
-import 'package:habitoz_fitness_app/ui/screens/home/components/rectangle_banner_tile.dart';
-import 'package:habitoz_fitness_app/ui/screens/home/components/square_banner_tile.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:habitoz_fitness_app/bloc/home_screen_bloc/home_bloc.dart';
+import 'package:habitoz_fitness_app/bloc/location_bloc/location_bloc.dart';
+import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
-import 'package:habitoz_fitness_app/ui/widgets/others/circular_sliding_tile.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
+import '../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
+import '../../../bloc/fc_list_bloc/fc_list_bloc.dart';
+import '../../widgets/others/color_loader.dart';
 import '../../widgets/others/drawer.dart';
+import 'home_screen_view.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final bool isLoggedIn,isGuest;
+  final String? userName;
+  const HomeScreen({Key? key,required this.isGuest,required this.isLoggedIn,this.userName }) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -24,24 +28,32 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   late bool isProfileCompleted;
+  late FCDetailBloc _fcDetailBloc;
+  late FCListBloc _fcListBloc;
+  late HomeBloc _homeBloc;
+
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     isProfileCompleted = false;
+    _fcListBloc = BlocProvider.of<FCListBloc>(context);
+    _fcDetailBloc = BlocProvider.of<FCDetailBloc>(context);
+    _homeBloc = BlocProvider.of<HomeBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     SizeConfig().init(context);
     return Scaffold(
       key: _scaffoldKey,
-      drawer: const CustomDrawer(
-        isGuest: false,
-        userName: 'Ramdan Salim',
+      drawer: CustomDrawer(
+        isGuest: widget.isGuest,
+        userName: widget.userName!,
       ),
       appBar: CustomAppBar(
         drawerClicked: () {
@@ -53,7 +65,28 @@ class _HomeScreenState extends State<HomeScreen> {
           //Navigator.pop(context);
         },
       ),
-      body: SafeArea(
+      backgroundColor: Colors.white,
+      body: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          if (state is HomeFetchSuccess) {
+            if(state.errorMsg != null){
+              showToast(state.errorMsg!);
+            }
+            return homeView(state.homeDate, state.isLoading);
+          }
+          if (state is HomeFetchFailure) {
+            return buildErrorView(state.message);
+          }
+          if (state is HomeFetchLoading) {
+            return buildLoadingView();
+          }
+          return Container();
+        },
+      ),
+      /*
+           body: SafeArea(
+        child: ,
+
         child: Column(
           children: [
             Expanded(
@@ -66,14 +99,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: SizeConfig.blockSizeHorizontal * 6,
                       ),
 
-                      /*========Location Widget==========*/
+                      */
+/*========Location Widget==========*//*
+
 
                       locationWidget()!,
                       SizedBox(
                         height: SizeConfig.blockSizeHorizontal * 4,
                       ),
 
-                      /*========Percentage Widget==========*/
+                      */
+/*========Percentage Widget==========*//*
+
 
                       (!isProfileCompleted)
                           ? const PercentageTIile(
@@ -81,7 +118,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                           : Container(),
 
-                      /*========Workout type  Widget==========*/
+                      */
+/*========Workout type  Widget==========*//*
+
 
                       const CircularSlidingTile(
                           hasHeading: false,
@@ -109,40 +148,70 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+
+      ),*/
+    );
+  }
+
+  Widget homeView(HomePageModel? homePageData,bool? isLoading){
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Stack(
+        children: [
+          HomeScreenView(
+            homeData: homePageData,
+            fcDetailBloc: _fcDetailBloc,
+            fcListBloc: _fcListBloc,
+            isProfileCompleted: false,
+            onLocationChanged: (){
+              _homeBloc.add(LoadHome(forceRefresh: true));
+            },
+          ),
+
+          (isLoading != null && isLoading) ?
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: Colors.black.withOpacity(0.2),
+            alignment: Alignment.center,
+            child: ColorLoader5(),
+          ) : Container()
+
+        ],
       ),
     );
   }
 
-  Widget? locationWidget() {
-    return Row(
-      children: [
-        SizedBox(
-          width: SizeConfig.blockSizeHorizontal * 4,
+  Widget buildErrorView(String msg){
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Center(
+        child: Text(
+          msg,
+          style: const TextStyle(
+              color: Constants.fontColor1,
+              fontSize: 22,
+              fontFamily: Constants.fontRegular
+          ),
         ),
-        const Text(
-          'Select your Location :',
-          style: TextStyle(fontFamily: Constants.fontRegular),
-        ),
-        SizedBox(
-          width: SizeConfig.blockSizeHorizontal * 12,
-        ),
-        const Icon(
-          Icons.location_on,
-          color: Constants.primaryColor,
-        ),
-        SizedBox(
-          width: SizeConfig.blockSizeHorizontal * 3,
-        ),
-        const Text('Kakkanad',
-            style: TextStyle(fontFamily: Constants.fontRegular)),
-        SizedBox(
-          width: SizeConfig.blockSizeHorizontal * 7,
-        ),
-        Icon(
-          HabitozIcons.downArrow,
-          size: SizeConfig.blockSizeHorizontal * 2.7,
-        )
-      ],
+      ),
     );
+  }
+
+  Widget buildLoadingView(){
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Center(
+        child: ColorLoader5(),
+      ),
+    );
+  }
+
+
+  showToast(String msg){
+    Fluttertoast.showToast(msg: msg);
   }
 }

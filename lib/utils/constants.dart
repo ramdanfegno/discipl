@@ -19,9 +19,9 @@ class Constants {
   static const String apiCustomerRegister = 'user/register/customer/';
   static const String apiFitnessCenterList = 'fitness_center/fc/';
   static const String apiFitnessCalculate = 'user/fit-calculator/';
-  static const String apiPostEnquiry = '';
-  static const String apiFeedList = '';
-  static const String apiSetLocation = '';
+  static const String apiPostEnquiry = 'user/enquiry/';
+  static const String apiZoneList = 'fitness_center/zone/';
+  static const String apiSetLocation = 'user/location/';
 
 
   //fonts styles
