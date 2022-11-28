@@ -11,6 +11,7 @@ import 'package:habitoz_fitness_app/ui/screens/gym/fitnes_center_details/compone
 import 'package:habitoz_fitness_app/ui/screens/gym/fitnes_center_details/request_callback_page.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/bulletin_tile_widget.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/circular_sliding_tile.dart';
+import 'package:scroll_date_picker/scroll_date_picker.dart';
 
 import '../../../../models/fitness_center_list_model.dart';
 import '../../../../utils/constants.dart';
@@ -93,15 +94,6 @@ class _FitnessCenterDetailPageState
       address += '.';
     }
 
-    String time = '';
-    if(details.opensAt != null){
-      time += details.opensAt!;
-    }
-    if(details.closesAt != null){
-      time += '-';
-      time += details.closesAt!;
-    }
-
     List<Amenities> amenities = [];
     if(details.amenities != null){
       amenities.add(details.amenities!);
@@ -130,9 +122,10 @@ class _FitnessCenterDetailPageState
 
         /*=======Gym time Tile========*/
 
+        (details.workingTime != null) ?
         GymWorkingTimeTile(
-          time: time,
-        ),
+          time: details.workingTime,
+        ) : Container(),
 
         /*=======Gym amenities Tile========*/
 

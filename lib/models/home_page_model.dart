@@ -13,15 +13,23 @@ String homePageModelToJson(HomePageModel data) => json.encode(data.toJson());
 class HomePageModel {
   HomePageModel({
     this.content,
+    this.profilePercentage,
+    this.zone
   });
 
+  Zone? zone;
+  int? profilePercentage;
   List<HomePageModelContent>? content;
 
   factory HomePageModel.fromJson(Map<String, dynamic> json) => HomePageModel(
-    content: List<HomePageModelContent>.from(json["content"].map((x) => HomePageModelContent.fromJson(x))),
+    zone: json["zone"] == null ? null : Zone.fromJson(json["zone"]),
+    profilePercentage: json["profile_percentage"] == null ? null : json["profile_percentage"],
+    content: json["content"] == null ? null : List<HomePageModelContent>.from(json["content"].map((x) => HomePageModelContent.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
+    "zone": zone!.toJson(),
+    "profile_percentage": profilePercentage,
     "content": List<dynamic>.from(content!.map((x) => x.toJson())),
   };
 }
@@ -93,6 +101,8 @@ class ContentContent {
     this.zone,
     this.title,
     this.image,
+    this.fitnessCenter,
+    this.workingTime
   });
 
   int? id;
@@ -104,6 +114,7 @@ class ContentContent {
   List<Plan>? plans;
   List<Amenities>? rules;
   List<Amenities>? category;
+  List<WorkingTime>? workingTime;
   String? opensAt;
   String? closesAt;
   String? mobile;
@@ -120,6 +131,7 @@ class ContentContent {
   int? zone;
   String? title;
   String? image;
+  Zone? fitnessCenter;
 
   factory ContentContent.fromJson(Map<String, dynamic> json) => ContentContent(
     id: json["id"],
@@ -131,11 +143,10 @@ class ContentContent {
     plans: json["plans"] == null ? null : List<Plan>.from(json["plans"].map((x) => Plan.fromJson(x))),
     rules: json["rules"] == null ? null : List<Amenities>.from(json["rules"].map((x) => Amenities.fromJson(x))),
     category: json["category"] == null ? null : List<Amenities>.from(json["category"].map((x) => Amenities.fromJson(x))),
-    opensAt: json["opens_at"] == null ? null : json["opens_at"],
-    closesAt: json["closes_at"] == null ? null : json["closes_at"],
     mobile: json["mobile"] == null ? null : json["mobile"],
     email: json["email"] == null ? null : json["email"],
     location: json["location"],
+    workingTime: json["working_time"] == null ? null : List<WorkingTime>.from(json["working_time"].map((x) => WorkingTime.fromJson(x))),
     contact: json["contact"] == null ? null : json["contact"],
     addressLine1: json["address_line1"] == null ? null : json["address_line1"],
     addressLine2: json["address_line2"] == null ? null : json["address_line2"],
@@ -147,6 +158,7 @@ class ContentContent {
     zone: json["zone"] == null ? null : json["zone"],
     title: json["title"] == null ? null : json["title"],
     image: json["image"] == null ? null : json["image"],
+    fitnessCenter: json["fitness_center"] == null ? null : Zone.fromJson(json["fitness_center"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -159,8 +171,7 @@ class ContentContent {
     "plans": plans == null ? null : List<dynamic>.from(plans!.map((x) => x.toJson())),
     "rules": rules == null ? null : List<dynamic>.from(rules!.map((x) => x.toJson())),
     "category": category == null ? null : List<dynamic>.from(category!.map((x) => x.toJson())),
-    "opens_at": opensAt == null ? null : opensAt,
-    "closes_at": closesAt == null ? null : closesAt,
+    "working_time": workingTime == null ? null : List<dynamic>.from(workingTime!.map((x) => x.toJson())),
     "mobile": mobile == null ? null : mobile,
     "email": email == null ? null : email,
     "location": location,
@@ -175,5 +186,50 @@ class ContentContent {
     "zone": zone == null ? null : zone,
     "title": title == null ? null : title,
     "image": image == null ? null : image,
+    "fitness_center": fitnessCenter == null ? null : fitnessCenter!.toJson(),
+  };
+}
+
+class Zone {
+  Zone({
+    this.id,
+    this.name,
+  });
+
+  int? id;
+  String? name;
+
+  factory Zone.fromJson(Map<String, dynamic> json) => Zone(
+    id: json["id"] == null ? null : json["id"],
+    name: json["name"] == null ? null : json["name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+  };
+}
+
+class WorkingTime {
+  WorkingTime({
+    this.id,
+    this.opensAt,
+    this.closesAt,
+  });
+
+  int? id;
+  String? opensAt;
+  String? closesAt;
+
+  factory WorkingTime.fromJson(Map<String, dynamic> json) => WorkingTime(
+    id: json["id"] == null ? null : json["id"],
+    opensAt: json["opens_at"] == null ? null : json["opens_at"],
+    closesAt: json["closes_at"] == null ? null : json["closes_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "opens_at": opensAt,
+    "closes_at": closesAt,
   };
 }
