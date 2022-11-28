@@ -26,7 +26,7 @@ class CategoryListTile extends StatelessWidget {
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: content!.length,
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (context, int index) {
             return Padding(

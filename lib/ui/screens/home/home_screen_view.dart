@@ -128,29 +128,35 @@ class HomeScreenView extends StatelessWidget {
   }
 
   Widget _buildIcons(BuildContext context, HomePageModelContent? content) {
-    return CategoryListTile(content: content!.content,fcListBloc: fcListBloc,);
+    return Padding(
+      padding:  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*4,left: SizeConfig.blockSizeHorizontal*4),
+      child: CategoryListTile(content: content!.content,fcListBloc: fcListBloc,),
+    );
   }
 
   Widget _buildRectangleTiles(BuildContext context, HomePageModelContent? content) {
-    return RectangleBannerTile(
-      title: content!.title,
-      content: content.content,
-      fcDetailBloc: fcDetailBloc,
-      seeAllPressed: (){
-        // route to fitness listing page with slug
-        fcListBloc.add(
-            LoadListingPage(
-              forceRefresh: true,
-              slug: content.slug,
-              pageNo: 1,
-            ));
+    return Padding(
+      padding:  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*4),
+      child: RectangleBannerTile(
+        title: content!.title,
+        content: content.content,
+        fcDetailBloc: fcDetailBloc,
+        seeAllPressed: (){
+          // route to fitness listing page with slug
+          fcListBloc.add(
+              LoadListingPage(
+                forceRefresh: true,
+                slug: content.slug,
+                pageNo: 1,
+              ));
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    FitnessCenterListView(title: content.title!.toUpperCase(), slug: content.slug)));
-      },
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      FitnessCenterListView(title: content.title!.toUpperCase(), slug: content.slug)));
+        },
+      ),
     );
   }
 
@@ -164,15 +170,18 @@ class HomeScreenView extends StatelessWidget {
   }
 
   Widget _buildSquareTiles(BuildContext context, HomePageModelContent? content) {
-    return SquareBannerTile(
-      title: content!.title,
-      content: content.content,
-      seeAllPressed: (){
-        // route to feedpage
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return FeedListViewPage(data: content);
-        }));
-      },
+    return Padding(
+      padding:  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*4),
+      child: SquareBannerTile(
+        title: content!.title,
+        content: content.content,
+        seeAllPressed: (){
+          // route to feedpage
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return FeedListViewPage(data: content);
+          }));
+        },
+      ),
     );
   }
 

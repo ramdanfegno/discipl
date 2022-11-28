@@ -11,10 +11,9 @@ class SquareBannerTile extends StatelessWidget {
 
   const SquareBannerTile(
       {Key? key,
-        required this.title,
-        required this.content,
-        required this.seeAllPressed
-      })
+      required this.title,
+      required this.content,
+      required this.seeAllPressed})
       : super(key: key);
 
   @override
@@ -46,7 +45,7 @@ class SquareBannerTile extends StatelessWidget {
               right: SizeConfig.blockSizeHorizontal * 4,
               top: SizeConfig.blockSizeHorizontal * 1,
               child: InkWell(
-                onTap: (){
+                onTap: () {
                   seeAllPressed!();
                 },
                 child: Text(
@@ -73,7 +72,7 @@ class SquareBannerTile extends StatelessWidget {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: content!.length,
-              physics: const AlwaysScrollableScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: EdgeInsets.only(
@@ -87,62 +86,67 @@ class SquareBannerTile extends StatelessWidget {
                         color: Constants.fontColor1,
                         borderRadius: BorderRadius.circular(
                             SizeConfig.blockSizeHorizontal * 3)),
-                    child: Column(
+                    child: Column(children: [
+                      Container(
+                        height: SizeConfig.blockSizeHorizontal * 50,
+                        width: SizeConfig.blockSizeHorizontal * 75,
+                        decoration: BoxDecoration(
+                            color: Constants.appbarColor,
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.blockSizeHorizontal * 3)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.blockSizeHorizontal *
+                                  3), // Image border
+                          child: Image.network(
+                            (content![index].image != null)
+                                ? content![index].image!
+                                : '',
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.blockSizeHorizontal * 2.5,
+                      ),
+                      Row(
                         children: [
-                          Container(
-                            height: SizeConfig.blockSizeHorizontal * 50,
-                            width: SizeConfig.blockSizeHorizontal * 75,
-                            decoration: BoxDecoration(
-                                color: Constants.appbarColor,
-                                borderRadius: BorderRadius.circular(
-                                    SizeConfig.blockSizeHorizontal * 3)),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal *
-                                      3), // Image border
-                              child: Image.network(
-                                (content![index].image != null) ? content![index].image! : '',
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
                           SizedBox(
-                            height: SizeConfig.blockSizeHorizontal * 2.5,
+                            width: SizeConfig.blockSizeHorizontal * 4,
                           ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: SizeConfig.blockSizeHorizontal * 4,
-                              ),
-                              Text(
-                                (content![index].title != null) ? content![index].title! : '',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: Constants.fontRegular,
-                                    fontSize:
-                                    SizeConfig.blockSizeHorizontal * 5.2),
-                              ),
-                            ],
+                          Text(
+                            (content![index].title != null)
+                                ? content![index].title!
+                                : '',
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                                color: Colors.white,
+                                fontFamily: Constants.fontRegular,
+                                fontSize: SizeConfig.blockSizeHorizontal * 5.2),
                           ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: SizeConfig.blockSizeHorizontal * 2,
+                      ),
+                      Row(
+                        children: [
                           SizedBox(
-                            height: SizeConfig.blockSizeHorizontal * 2,
+                            width: SizeConfig.blockSizeHorizontal * 4,
                           ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: SizeConfig.blockSizeHorizontal * 4,
-                              ),
-                              Text(
-                                  (content![index].description != null) ? content![index].description! : '',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: Constants.fontRegular,
-                                      fontSize:
+                          Text(
+                              (content![index].name != null)
+                                  ? content![index].name!
+                                  : '',
+                              style: TextStyle(
+                                  overflow: TextOverflow.fade,
+                                  color: Colors.white,
+                                  fontFamily: Constants.fontRegular,
+                                  fontSize:
                                       SizeConfig.blockSizeHorizontal * 4)),
-                            ],
-                          )
-                        ]),
-
+                        ],
+                      )
+                    ]),
                   ),
                 );
               }),

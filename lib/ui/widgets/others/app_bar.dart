@@ -78,24 +78,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         fontFamily: Constants.fontMedium),
                   ),
                 )
-                :
-            Column(
-              children: [
-                SizedBox(
-                  height: SizeConfig.blockSizeHorizontal * 2,
+                : Padding(
+                  padding:  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal*40),
+                  child: Container(
+                    height: SizeConfig.blockSizeHorizontal * 9,
+                    width: SizeConfig.blockSizeHorizontal*16,
+                    color: Colors.white,
+                    child: /*SvgPicture.asset('assets/images/png/logo.png'),*/
+                     Image.asset(
+                      'assets/images/png/logo.png',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                 ),
-                Container(
-                  height: SizeConfig.blockSizeHorizontal * 15.5,
-                  width: 150,
-                  color: Colors.white,
-                  child: SvgPicture.asset('assets/images/svg/logo.svg'),
-                  /*child: Image.asset(
-                    'assets/images/jpg/logo.jpg',
-                    fit: BoxFit.fill,
-                  ),*/
-                ),
-              ],
-            ),
+
 
             (isHomeAppBar) ?
             Padding(
@@ -110,7 +106,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     size: SizeConfig.blockSizeHorizontal * 6,
                   ),
                   SizedBox(
-                    width: SizeConfig.blockSizeHorizontal * 3,
+                    width: SizeConfig.blockSizeHorizontal * 5,
                   ),
                   const Icon(HabitozIcons.notification2),
                   SizedBox(
