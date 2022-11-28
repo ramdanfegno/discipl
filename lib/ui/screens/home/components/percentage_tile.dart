@@ -60,7 +60,7 @@ class PercentageTile extends StatelessWidget {
                       minHeight: SizeConfig.blockSizeHorizontal * 2.5,
                       color: Constants.primaryColor,
                       backgroundColor: Constants.timeContainerColor,
-                      value: value/10,
+                      value: value/100,
                     ),
                   ),
                 ),

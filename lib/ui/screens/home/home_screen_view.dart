@@ -20,8 +20,8 @@ class HomeScreenView extends StatelessWidget {
   final FCDetailBloc fcDetailBloc;
   final FCListBloc fcListBloc;
   final bool isProfileCompleted;
-  final Function() onLocationChanged;
-  const HomeScreenView({Key? key,required this.onLocationChanged,
+  final Function() onLocationChanged,onProfileClicked;
+  const HomeScreenView({Key? key,required this.onLocationChanged,required this.onProfileClicked,
     required this.isProfileCompleted,required this.homeData,
     required this.fcListBloc,required this.fcDetailBloc}) : super(key: key);
 
@@ -42,9 +42,15 @@ class HomeScreenView extends StatelessWidget {
           SizedBox(
             height: SizeConfig.blockSizeHorizontal * 4,
           ),
-          (!isProfileCompleted)
-              ? const PercentageTIile(value: 0.3)
-              : Container(),
+          (!isProfileCompleted && homeData!.profilePercentage != null)
+              ?
+          InkWell(
+            onTap: (){
+              onProfileClicked();
+            },
+            child: PercentageTile(
+                value: (homeData!.profilePercentage != null ) ? homeData!.profilePercentage!.toDouble() : 0),
+          ) : Container(),
 
           _content(context, homeData!.content!),
         ],
@@ -111,8 +117,8 @@ class HomeScreenView extends StatelessWidget {
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 3,
               ),
-              const Text('Kakkanad',
-                  style: TextStyle(fontFamily: Constants.fontRegular)),
+            Text( (homeData!.zone != null && homeData!.zone!.name != null) ? homeData!.zone!.name! : '',
+                  style: const TextStyle(fontFamily: Constants.fontRegular)),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 7,
               ),
@@ -141,7 +147,7 @@ class HomeScreenView extends StatelessWidget {
         fcListBloc.add(
             LoadListingPage(
               forceRefresh: true,
-              slug: content.slug,
+              slug: 'fc',
               pageNo: 1,
             ));
 
@@ -149,7 +155,7 @@ class HomeScreenView extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    FitnessCenterListView(title: content.title!.toUpperCase(), slug: content.slug)));
+                    FitnessCenterListView(title: content.title!.toUpperCase(), slug: 'fc')));
       },
     );
   }

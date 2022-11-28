@@ -41,6 +41,7 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
     super.initState();
     isLoading = false;
     isGuest = false;
+    _selectedCategory = null;
     _nameEditingController = TextEditingController();
     _phoneEditingController = TextEditingController();
     _emailEditingController = TextEditingController();
@@ -71,6 +72,7 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -84,15 +86,20 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                   SizedBox(
                     width: SizeConfig.blockSizeHorizontal * 4,
                   ),
-                  Container(
-                    height: SizeConfig.blockSizeHorizontal * 8,
-                    width: SizeConfig.blockSizeHorizontal * 8,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.black),
-                    child:  Icon(
-                      Icons.arrow_back_ios_new_sharp,
-                      color: Colors.white,
-                      size: SizeConfig.blockSizeHorizontal*4,
+                  InkWell(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      height: SizeConfig.blockSizeHorizontal * 8,
+                      width: SizeConfig.blockSizeHorizontal * 8,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.black),
+                      child:  Icon(
+                        Icons.arrow_back_ios_new_sharp,
+                        color: Colors.white,
+                        size: SizeConfig.blockSizeHorizontal*4,
+                      ),
                     ),
                   )
                 ],
@@ -125,6 +132,10 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                 height: SizeConfig.blockSizeHorizontal * 4,
               ),
               emailTextField()!,
+              SizedBox(
+                height: SizeConfig.blockSizeHorizontal * 4,
+              ),
+              buildCategory(),
               SizedBox(
                 height: SizeConfig.blockSizeHorizontal * 4,
               ),
@@ -164,6 +175,7 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
       ),
       child: SizedBox(
         width: SizeConfig.blockSizeVertical * 86.6,
+        height: SizeConfig.blockSizeHorizontal*14,
         child: TextFormField(
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.text,
@@ -182,7 +194,8 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                 fontFamily: Constants.fontRegular,
               ),
               contentPadding: EdgeInsets.only(
-                  //top: SizeConfig.screenHeight / 50,
+                  top: SizeConfig.blockSizeHorizontal*4,
+                  bottom: SizeConfig.blockSizeHorizontal*4,
                   left: SizeConfig.blockSizeVertical * 2),
               errorStyle: const TextStyle(color: Colors.red),
               focusedErrorBorder: OutlineInputBorder(
@@ -202,15 +215,17 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                 borderRadius: BorderRadius.all(
                     Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
                 borderSide: BorderSide(
-                    color: Colors.black,
-                    width: SizeConfig.blockSizeHorizontal * 0.33),
+                    color: Colors.grey[700]!,
+                    width: 1
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                     Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
                 borderSide: BorderSide(
-                    color: Colors.black,
-                    width: SizeConfig.blockSizeHorizontal * 0.33),
+                    color: Colors.grey[800]!,
+                    width: 1
+                ),
               ),
               disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
@@ -232,13 +247,14 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
         // top: SizeConfig.screenHeight / 3const 0
       ),
       child: SizedBox(
-        height: SizeConfig.blockSizeHorizontal * 13.3,
+        height: SizeConfig.blockSizeHorizontal*14,
         width: SizeConfig.blockSizeVertical * 86.6,
         child: TextFormField(
           inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]'))],
           textInputAction: TextInputAction.next,
           keyboardType: const TextInputType.numberWithOptions(decimal: false),
           autofocus: false,
+          controller: _phoneEditingController,
           onFieldSubmitted: (v) {
             _phoneEditingController.text = v;
           },
@@ -260,7 +276,8 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                 fontFamily: Constants.fontRegular,
               ),
               contentPadding: EdgeInsets.only(
-                  //top: SizeConfig.screenHeight / 50,
+                  top: SizeConfig.blockSizeHorizontal*4,
+                  bottom: SizeConfig.blockSizeHorizontal*4,
                   left: SizeConfig.blockSizeVertical * 2),
               errorStyle: const TextStyle(color: Colors.red),
               focusedErrorBorder: OutlineInputBorder(
@@ -280,15 +297,17 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                 borderRadius: BorderRadius.all(
                     Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
                 borderSide: BorderSide(
-                    color: Colors.black,
-                    width: SizeConfig.blockSizeHorizontal * 0.33),
+                    color: Colors.grey[700]!,
+                    width: 1
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                     Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
                 borderSide: BorderSide(
-                    color: Colors.black,
-                    width: SizeConfig.blockSizeHorizontal * 0.33),
+                    color: Colors.grey[800]!,
+                    width: 1
+                ),
               ),
               disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
@@ -310,17 +329,20 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
         // top: SizeConfig.screenHeight / 3const 0
       ),
       child: SizedBox(
-        height: SizeConfig.blockSizeHorizontal * 13.3,
+        height: SizeConfig.blockSizeHorizontal*14,
         width: SizeConfig.blockSizeVertical * 86.6,
         child: TextFormField(
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.text,
           autofocus: false,
+          controller: _emailEditingController,
           onFieldSubmitted: (v) {
             _emailEditingController.text = v;
             FocusScope.of(context).requestFocus(focusNode1);
           },
-          validator: (String? v) {
+          validator: (val1) => val1!.isNotEmpty ? null : 'Enter your email',
+
+          /*validator: (String? v) {
             if (v!.isEmpty) {
               return 'Enter Email';
             }
@@ -331,7 +353,7 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
             }
 
             return null;
-          },
+          },*/
           decoration: InputDecoration(
               hintText: 'Email',
               hintStyle: const TextStyle(
@@ -340,7 +362,8 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                 fontFamily: Constants.fontRegular,
               ),
               contentPadding: EdgeInsets.only(
-                  //top: SizeConfig.screenHeight / 50,
+                  top: SizeConfig.blockSizeHorizontal*4,
+                  bottom: SizeConfig.blockSizeHorizontal*4,
                   left: SizeConfig.blockSizeVertical * 2),
               errorStyle: const TextStyle(color: Colors.red),
               focusedErrorBorder: OutlineInputBorder(
@@ -360,15 +383,17 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                 borderRadius: BorderRadius.all(
                     Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
                 borderSide: BorderSide(
-                    color: Colors.black,
-                    width: SizeConfig.blockSizeHorizontal * 0.33),
+                    color: Colors.grey[700]!,
+                    width: 1
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                     Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
-                borderSide: BorderSide(
-                    color: Colors.black,
-                    width: SizeConfig.blockSizeHorizontal * 0.33),
+                borderSide:  BorderSide(
+                    color: Colors.grey[800]!,
+                    width: 1
+                ),
               ),
               disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
@@ -390,15 +415,17 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
         // top: SizeConfig.screenHeight / 3const 0
       ),
       child: SizedBox(
-        height: SizeConfig.blockSizeHorizontal * 13.3,
+        height: SizeConfig.blockSizeHorizontal*25,
         width: SizeConfig.blockSizeVertical * 86.6,
         child: TextFormField(
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.text,
           autofocus: false,
+          maxLines: 5,
           onFieldSubmitted: (v) {
             _messageEditingController.text = v;
           },
+          controller: _messageEditingController,
           decoration: InputDecoration(
               hintText: 'Message',
               hintStyle: const TextStyle(
@@ -407,7 +434,7 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                 fontFamily: Constants.fontRegular,
               ),
               contentPadding: EdgeInsets.only(
-                  //top: SizeConfig.screenHeight / 50,
+                  top: SizeConfig.blockSizeVertical * 4,
                   left: SizeConfig.blockSizeVertical * 2),
               errorStyle: const TextStyle(color: Colors.red),
               focusedErrorBorder: OutlineInputBorder(
@@ -427,15 +454,17 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                 borderRadius: BorderRadius.all(
                     Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
                 borderSide: BorderSide(
-                    color: Colors.black,
-                    width: SizeConfig.blockSizeHorizontal * 0.33),
+                    color: Colors.grey[700]!,
+                    width: 1
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                     Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
                 borderSide: BorderSide(
-                    color: Colors.black,
-                    width: SizeConfig.blockSizeHorizontal * 0.33),
+                    color: Colors.grey[800]!,
+                    width: 1
+                ),
               ),
               disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
@@ -476,19 +505,19 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
           // top: SizeConfig.screenHeight / 3const 0
         ),
         child: Container(
-          height: SizeConfig.blockSizeHorizontal * 13.3,
+          height: SizeConfig.blockSizeHorizontal * 14,
           width: SizeConfig.blockSizeVertical * 86.6,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  color: Colors.black,
-                  width: SizeConfig.blockSizeHorizontal * 0.33
+                  color: (_selectedCategory != null) ? Colors.grey[800]! : Colors.grey[700]!,
+                  width: 1
               )
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 2,
+                horizontal: SizeConfig.blockSizeHorizontal * 4,
                 vertical: SizeConfig.blockSizeHorizontal * 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -501,8 +530,8 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
                         ? _selectedCategory!.name!
                         : 'Service Required',
                     textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Constants.primaryColor,
+                    style: TextStyle(
+                        color: (_selectedCategory != null) ? Colors.black : Constants.appbarColor,
                         fontSize: 16,
                         fontFamily: Constants.fontRegular),
                   ),
@@ -525,12 +554,13 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
       if ( _formKey.currentState!.validate()) {
         _formKey.currentState!.save();
         if(_selectedCategory != null){
-          if(isGuest!){
+          verifyPhoneNumber();
+          /*if(isGuest!){
             verifyPhoneNumber();
           }
           else{
             requestApi();
-          }
+          }*/
         }
         else{
           Fluttertoast.showToast(msg: 'Please pick a service');
@@ -551,8 +581,14 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
         isLoading = true;
       });
       Fluttertoast.showToast(msg: 'Verifying phone number .... ');
+      print('_phoneEditingController.text');
+      print(_phoneEditingController.text);
+
       Response? response = await userRepository.sendOtp(_phoneEditingController.text);
       print("============ \n\n\n ${response!.data} \n\n\n===========");
+      print(response.statusCode);
+      print(response.statusMessage);
+      print(response.data);
 
       if(response != null && response.statusCode == 200){
         OtpResponse otpResponse = OtpResponse.fromJson(response.data);
@@ -602,14 +638,17 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
       details['fitness_center'] = widget.fitnessCenterID;
 
       Response? response = await productRepository.postEnquiry(details);
-
+      print('requestApi');
+      print(response!.data);
+      print(response.statusCode);
+      print(response.statusMessage);
       if(response != null){
-        if(response.statusCode == 200){
+        if(response.statusCode == 201){
           setState(() {
             isLoading = false;
           });
           buildSuccessMsg();
-          Future.delayed(const Duration(seconds: 2),(){
+          Future.delayed(const Duration(seconds: 1),(){
             Navigator.pop(context,true);
             Navigator.pop(context,true);
           });

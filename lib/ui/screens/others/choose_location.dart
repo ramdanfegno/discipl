@@ -30,7 +30,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
   late TextEditingController textEditingController;
   late List<ZoneResult> _zoneList;
   final _scrollController = ScrollController();
-  late bool isLoading;
+  late bool isLoading,forceRefresh;
   final ProductRepository productRepository = ProductRepository();
 
   late String? _currentPlace;
@@ -43,12 +43,12 @@ class _ChooseLocationState extends State<ChooseLocation> {
     // TODO: implement initState
     super.initState();
     _locationBloc = BlocProvider.of<LocationBloc>(context);
-    _locationBloc.add(LoadLocationPage(forceRefresh: true, pageNo: 1,isLoading: true));
     textEditingController = TextEditingController();
     _pageNo = 1;
     _zoneList = [];
     _scrollController.addListener(_onScroll);
     isLoading = false;
+    forceRefresh = true;
     isCalledAgain = 0 ;
     _currentPlace = '';
     _getCurrentLocation();
@@ -74,6 +74,8 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   @override
   Widget build(BuildContext context) {
+    _locationBloc.add(LoadLocationPage(forceRefresh: forceRefresh, pageNo: 1,isLoading: forceRefresh));
+    forceRefresh = false;
     SizeConfig().init(context);
     return Scaffold(
       appBar: CustomAppBar(
@@ -164,7 +166,8 @@ class _ChooseLocationState extends State<ChooseLocation> {
           if(_currentLat != null && _currentLong != null){
             Map<String,dynamic> data = {
               'lattitude' : _currentLat,
-              'longitude' : _currentLong
+              'longitude' : _currentLong,
+              'location_name' : _currentPlace
             };
             setLocationApi(data);
           }
@@ -282,12 +285,13 @@ class _ChooseLocationState extends State<ChooseLocation> {
                         'Search-Debounce', const Duration(milliseconds: 500), () {
                       _pageNo = 1;
                       _zoneList.clear();
+                      forceRefresh = true;
                       _locationBloc.add(SearchLocationPage(
                           forceRefresh: true,
                           pageNo: _pageNo,
                           searchQ: textEditingController.text
                       ));
-
+                      setState(() {});
                     });
                   },
                   decoration: InputDecoration(
@@ -353,7 +357,9 @@ class _ChooseLocationState extends State<ChooseLocation> {
                           textEditingController.text = '';
                           _pageNo = 1;
                           _zoneList.clear();
+                          forceRefresh = false;
                           FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {});
                           _locationBloc.add(LoadLocationPage(
                               forceRefresh: true,
                               pageNo: _pageNo,
@@ -387,7 +393,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
                 child: InkWell(
                   onTap: (){
                     Map<String,dynamic> data = {
-                      'place' : zoneList[index].name,
+                      'zone_id' : zoneList[index].id,
                     };
                     setLocationApi(data);
                   },
