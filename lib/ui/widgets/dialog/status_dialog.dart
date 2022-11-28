@@ -31,7 +31,7 @@ class StatusDialog extends StatelessWidget {
 
                 Padding(
                   padding:
-                  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 5),
+                  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 10),
                   child: const Icon(
                     Icons.check_circle,
                     color: Colors.green,
@@ -41,7 +41,8 @@ class StatusDialog extends StatelessWidget {
 
                 Padding(
                   padding:
-                  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 5),
+                  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 5,
+                  bottom: SizeConfig.blockSizeHorizontal*15),
                   child: Text(
                     message,
                     maxLines: 3,
@@ -49,8 +50,8 @@ class StatusDialog extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontSize: 16,
-                        color: Constants.primaryColor,
-                        fontFamily: Constants.fontSemiBold),
+                        color: Colors.black,
+                        fontFamily: Constants.fontRegular),
                   ),
                 ),
               ],

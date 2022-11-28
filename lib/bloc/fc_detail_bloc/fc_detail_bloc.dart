@@ -34,7 +34,7 @@ class FCDetailBloc
       if(response != null){
         if(response.statusCode == 200){
           FitnessCenterModel fitnessCenterModel = FitnessCenterModel.fromJson(response.data);
-          FCDetailFetchSuccess(details: fitnessCenterModel,isLoading: false);
+          yield FCDetailFetchSuccess(details: fitnessCenterModel,isLoading: false);
         }
         else{
           yield const FCDetailFetchFailure(message: 'Error loading data');

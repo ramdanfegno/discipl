@@ -16,6 +16,15 @@ class GymListViewTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String categoryNames = '';
+    for(int i = 0; i < fcData!.category!.length; i++){
+     if(fcData!.category![i].name != null && fcData!.category![i].name != ''){
+       if( i != 0){
+         categoryNames += ',';
+       }
+       categoryNames += fcData!.category![i].name!;
+     }
+    }
     return Padding(
       padding:
           EdgeInsets.symmetric(vertical: SizeConfig.blockSizeHorizontal * 3.5),
@@ -85,7 +94,7 @@ class GymListViewTile extends StatelessWidget {
                   /// need to verify data here
 
                   Text(
-                    (fcData!.category!.isNotEmpty && fcData!.category![0].name != null ) ? fcData!.category![0].name! : '',
+                    categoryNames,
                     style: TextStyle(
                         color: Constants.appbarColor,
                         fontFamily: Constants.fontRegular,

@@ -27,6 +27,8 @@ class HomeBloc
   }
 
   Stream<HomeState> _mapLoadHomeToState(bool forceRefresh) async* {
+    try{
+
       yield HomeFetchLoading();
       Response? response = await _productRepository.getHomePage(forceRefresh);
       if(response != null){
@@ -46,7 +48,6 @@ class HomeBloc
         yield const HomeFetchFailure(message: 'Error loading data');
       }
 
-      try{
       }
 
     catch(e){

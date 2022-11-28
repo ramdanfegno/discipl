@@ -42,17 +42,31 @@ class CategoryListTile extends StatelessWidget {
                       fcListBloc.add(
                           LoadListingPage(
                             forceRefresh: true,
-                            slug: content![index].id.toString(),
+                            slug: 'fc',
                             pageNo: 1,
+                            categoryId: content![index].id.toString()
                           ));
+
+                      try{
+                        print('content title');
+                        print( content![index].title!.toUpperCase());
+                        print('content categoryId');
+                        print( content![index].id!.toString());
+                      }
+                      catch(e){
+                        print('edfvdvfdv');
+                        print(e.toString());
+                      }
+
 
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   FitnessCenterListView(
-                                      title: content![index].title!.toUpperCase(),
-                                      slug: content![index].id.toString())));
+                                      title: content![index].name,
+                                      categoryId: content![index].id.toString(),
+                                      slug: 'fc')));
                     },
                     child: Container(
                         height: SizeConfig.blockSizeHorizontal*19.5,

@@ -407,7 +407,7 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
           isLoading = false;
         });
         buildSuccessMsg();
-        Future.delayed(const Duration(seconds: 2),(){
+        Future.delayed(const Duration(seconds: 1),(){
           Navigator.pop(context,true);
           Navigator.pop(context,true);
           widget.onVerified();
