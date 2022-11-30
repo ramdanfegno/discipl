@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import '../../models/fitness_center_list_model.dart';
 import '../../models/home_page_model.dart';
 import '../../repositories/product_repo.dart';
@@ -25,23 +26,23 @@ class FCListBloc
   @override
   Stream<FCListState> mapEventToState(FCListEvent event) async* {
     if (event is LoadListingPage) {
-      yield* _mapLoadDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ,event.categoryId);
+      yield* _mapLoadDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ,event.categoryId,event.zone);
     }
     if (event is RefreshListingPage) {
-      yield* _mapLoadDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ,event.categoryId);
+      yield* _mapLoadDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ,event.categoryId,event.zone);
     }
     if (event is SearchListingPage) {
-      yield* _mapLoadDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ!,event.categoryId);
+      yield* _mapLoadDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ!,event.categoryId,event.zone);
     }
     if (event is PaginateListingPage) {
-      yield* _mapPaginateDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ,event.fcList!,event.categoryId);
+      yield* _mapPaginateDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ,event.fcList!,event.categoryId,event.zone);
     }
   }
 
-  Stream<FCListState> _mapLoadDetailPageToState(bool forceRefresh,String? slug,int pageNo,String? searchQ,String? categoryId) async* {
+  Stream<FCListState> _mapLoadDetailPageToState(bool forceRefresh,String? slug,int pageNo,String? searchQ,String? categoryId,ZoneResult zoneResult) async* {
     try{
       yield FCListingFetchLoading();
-      Response? response = await _productRepository.getFitnessCenterList(forceRefresh,slug!,pageNo,searchQ,categoryId);
+      Response? response = await _productRepository.getFitnessCenterList(forceRefresh,slug!,pageNo,searchQ,categoryId,zoneResult.id);
       if(response != null){
         if(response.statusCode == 200){
           FitnessCenterListModel fitnessCenterModel = FitnessCenterListModel.fromJson(response.data);
@@ -66,11 +67,11 @@ class FCListBloc
     }
   }
 
-  Stream<FCListState> _mapPaginateDetailPageToState(bool forceRefresh,String? slug,int pageNo,String? searchQ,List<FitnessCenterModel> fcList,String? categoryId) async* {
+  Stream<FCListState> _mapPaginateDetailPageToState(bool forceRefresh,String? slug,int pageNo,String? searchQ,List<FitnessCenterModel> fcList,String? categoryId,ZoneResult zoneResult) async* {
     try{
       yield FCListingFetchSuccess(fcList: fcList, isLoading: true,pageNo: pageNo);
       List<FitnessCenterModel> fCList = fcList;
-      Response? response = await _productRepository.getFitnessCenterList(forceRefresh,slug!,pageNo++,searchQ,categoryId);
+      Response? response = await _productRepository.getFitnessCenterList(forceRefresh,slug!,pageNo++,searchQ,categoryId,zoneResult.id);
       if(response != null){
         if(response.statusCode == 200){
           FitnessCenterListModel fitnessCenterModel = FitnessCenterListModel.fromJson(response.data);

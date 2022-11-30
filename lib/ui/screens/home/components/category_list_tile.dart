@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 
 import '../../../../bloc/fc_list_bloc/fc_list_bloc.dart';
 import '../../../../models/home_page_model.dart';
@@ -9,11 +10,13 @@ import '../../gym/fitness_center_list/fitness_center_listview.dart';
 class CategoryListTile extends StatelessWidget {
   final List<ContentContent>? content;
   final FCListBloc fcListBloc;
+  final ZoneResult zoneResult;
 
   const CategoryListTile(
       {Key? key,
         required this.content,
         required this.fcListBloc,
+        required this.zoneResult
       })
       : super(key: key);
 
@@ -44,6 +47,7 @@ class CategoryListTile extends StatelessWidget {
                             forceRefresh: true,
                             slug: 'fc',
                             pageNo: 1,
+                            zone: zoneResult,
                             categoryId: content![index].id.toString()
                           ));
 
@@ -66,6 +70,7 @@ class CategoryListTile extends StatelessWidget {
                                   FitnessCenterListView(
                                       title: content![index].name,
                                       categoryId: content![index].id.toString(),
+                                      zone: zoneResult,
                                       slug: 'fc')));
                     },
                     child: Container(

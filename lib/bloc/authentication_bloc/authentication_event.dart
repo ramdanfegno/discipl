@@ -10,8 +10,9 @@ class AuthenticationStarted extends AuthenticationEvent {}
 class AuthenticationLoggedIn extends AuthenticationEvent {
   OtpResponse otpResponse;
   LoginResponse loginResponse;
+  ZoneResult? zoneResult;
 
-  AuthenticationLoggedIn({required this.loginResponse,required this.otpResponse});
+  AuthenticationLoggedIn({required this.loginResponse,required this.otpResponse,required this.zoneResult});
 }
 
 class AuthenticationLoggedOut extends AuthenticationEvent {}

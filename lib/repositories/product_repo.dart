@@ -1,6 +1,7 @@
 
 
 import 'package:dio/dio.dart';
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 
 import '../models/login_response.dart';
@@ -13,7 +14,7 @@ class ProductRepository{
 
 
   //home page
-  Future<Response?> getHomePage(bool forceRefresh) async {
+  Future<Response?> getHomePage(bool forceRefresh,ZoneResult? zone) async {
     try {
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
       String? token = loginResponse!.token;
@@ -22,8 +23,13 @@ class ProductRepository{
         'Authorization' : 'Token $token'
       };
 
+      Map<String,dynamic> queryParams = {};
+      if(zone != null){
+        queryParams['zone_id'] = zone.id;
+      }
+
       Response? response = await apiQuery.getQuery(
-          Constants.apiHome, headers, {},
+          Constants.apiHome, headers, queryParams,
           'HomeApi', true, true, forceRefresh);
       return response;
     }
@@ -34,7 +40,7 @@ class ProductRepository{
   }
 
   //fitness center list
-  Future<Response?> getFitnessCenterList(bool forceRefresh,String? slug,int pageNo,String? searchQ,String? categoryId) async {
+  Future<Response?> getFitnessCenterList(bool forceRefresh,String? slug,int pageNo,String? searchQ,String? categoryId,int? zoneId) async {
     try {
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
       String? token = loginResponse!.token;
@@ -43,12 +49,16 @@ class ProductRepository{
         'Authorization' : 'Token $token'
       };
 
-      Map<String,String> queryParams = {
+      Map<String,dynamic> queryParams = {
         'page' : pageNo.toString()
       };
 
       if(categoryId != null){
         queryParams['category_id'] = categoryId;
+      }
+
+      if(zoneId != null){
+        queryParams['zone_id'] = zoneId;
       }
 
       print(queryParams);

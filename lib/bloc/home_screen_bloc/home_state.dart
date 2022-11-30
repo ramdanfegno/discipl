@@ -18,9 +18,11 @@ class HomeFetchSuccess extends HomeState {
   final HomePageModel? homeDate;
   final String? errorMsg;
   final bool isLoading;
+  final ZoneResult zone;
   const HomeFetchSuccess({
     required this.homeDate,
     required this.isLoading,
+    required this.zone,
     this.errorMsg
   });
 }

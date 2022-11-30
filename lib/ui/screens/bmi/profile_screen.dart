@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
@@ -6,6 +9,7 @@ import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/profile_screen_view.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/color_loader.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../utils/constants.dart';
 import '../../../utils/size_config.dart';
@@ -19,6 +23,14 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
 
   late UserProfile? userProfile;
+  late ProfileBloc? _profileBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _profileBloc = BlocProvider.of<ProfileBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +77,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       height: MediaQuery.of(context).size.height,
       child: Stack(
         children: [
-          ProfileScreenView(userProfile: userProfile,data: data,),
+          ProfileScreenView(
+            userProfile: userProfile,
+            data: data,
+            onImagePicked: (){
+              pickImage(context);
+            },
+          ),
 
           (isLoading != null && isLoading) ?
           Container(
@@ -80,6 +98,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  Future pickImage(BuildContext context) async{
+    try{
+      final image = await ImagePicker().pickImage(source:ImageSource.gallery,imageQuality: 60);
+      if(image == null){
+        final imageTemporary = File(image!.path);
+        Map<String,dynamic> data = {
+          'image' : imageTemporary
+        };
+        _profileBloc!.add(UpdateProfile(details: data));
+        Fluttertoast.showToast(msg: 'Updating profile image....');
+      }
+    }
+    on PlatformException {
+      return "Failed to Pick";
+    }
+  }
+
 
   Widget buildErrorView(String msg){
     return SizedBox(

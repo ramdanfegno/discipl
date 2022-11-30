@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/calculate_view.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/update_measurement.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/update_profile.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../utils/constants.dart';
 import '../../../utils/size_config.dart';
@@ -16,7 +21,8 @@ import 'result_display.dart';
 class ProfileScreenView extends StatelessWidget {
   final UserProfile? userProfile;
   final Map<String,dynamic> data;
-  const ProfileScreenView({Key? key,required this.userProfile,required this.data}) : super(key: key);
+  final Function() onImagePicked;
+  const ProfileScreenView({Key? key,required this.userProfile,required this.data,required this.onImagePicked}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -136,13 +142,18 @@ class ProfileScreenView extends StatelessWidget {
           Container(
             width: SizeConfig.blockSizeHorizontal*30,
             height: SizeConfig.blockSizeHorizontal*30,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white,
-                image: DecorationImage(
-                    image: AssetImage('assets/images/png/user_image.png'),
+                image:  (userProfile!.image != null) ?
+                DecorationImage(
+                    image:NetworkImage(userProfile!.image!) ,
                     fit: BoxFit.fitWidth
-                )
+                ) :
+                const DecorationImage(
+          image:AssetImage('assets/images/png/user_image.png'),
+    fit: BoxFit.fitWidth
+    )
             ),
           ),
           Positioned(
@@ -150,7 +161,7 @@ class ProfileScreenView extends StatelessWidget {
               right: SizeConfig.blockSizeHorizontal*0,
               child: GestureDetector(
                 onTap: (){
-
+                  onImagePicked();
                 },
                 child: Container(
                   width: SizeConfig.blockSizeHorizontal*10,
@@ -705,6 +716,7 @@ class ProfileScreenView extends StatelessWidget {
       ],
     );
   }
+
 }
 
 

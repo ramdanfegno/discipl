@@ -3,6 +3,7 @@ import 'package:habitoz_fitness_app/bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/fc_list_bloc/fc_list_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/home_screen_bloc/home_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/location_bloc/location_bloc.dart';
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import 'package:habitoz_fitness_app/repositories/product_repo.dart';
 
 import 'package:flutter/services.dart';
@@ -42,7 +43,7 @@ void main() async {
 
         BlocProvider(
           create: (context) =>
-              HomeBloc(productRepository: productRepository),lazy: true,),
+              HomeBloc(productRepository: productRepository,userRepository: userRepository),lazy: true,),
 
         BlocProvider(
           create: (context) =>
@@ -77,6 +78,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
 
   late HomeBloc _homeBloc;
+
 
   @override
   void initState() {
@@ -118,7 +120,7 @@ class _AppState extends State<App> {
         buildWhen: (previous, current) => (previous != current),
         builder: (context, state) {
           if (state is AuthenticationSuccess) {
-            _homeBloc.add(LoadHome(forceRefresh: true));
+            _homeBloc.add(LoadHome(forceRefresh: true,zone: state.zoneResult));
             return HomeScreen(
                 isGuest: state.isGuest,
                 isLoggedIn: state.isLoggedIn,
@@ -134,7 +136,7 @@ class _AppState extends State<App> {
           }
           if (state is AuthenticationGuest) {
             // guest user - redirect to home screen as guest
-            _homeBloc.add(LoadHome(forceRefresh: true));
+            _homeBloc.add(LoadHome(forceRefresh: true,zone: null));
             return HomeScreen(isGuest: state.isGuest, isLoggedIn: state.isLoggedIn);
           }
           if (state is AuthenticationCompleteProfile) {

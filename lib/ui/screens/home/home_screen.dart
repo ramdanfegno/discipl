@@ -6,6 +6,9 @@ import 'package:habitoz_fitness_app/bloc/home_screen_bloc/home_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/location_bloc/location_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/models/home_page_model.dart';
+import 'package:habitoz_fitness_app/models/user_profile_model.dart';
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
+import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
@@ -15,12 +18,13 @@ import '../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import '../../../bloc/fc_list_bloc/fc_list_bloc.dart';
 import '../../widgets/others/color_loader.dart';
 import '../../widgets/others/drawer.dart';
+import '../bmi/profile_screen.dart';
 import 'home_screen_view.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isLoggedIn,isGuest;
   final String? userName;
-  const HomeScreen({Key? key,required this.isGuest,required this.isLoggedIn,this.userName }) : super(key: key);
+  const HomeScreen({Key? key,required this.isGuest,required this.isLoggedIn,this.userName}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -33,7 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
   late FCListBloc _fcListBloc;
   late HomeBloc _homeBloc;
   late ProfileBloc _profileBloc;
-
+  ZoneResult? _zone;
+  final UserRepository userRepository = UserRepository();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -75,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if(state.errorMsg != null){
               showToast(state.errorMsg!);
             }
-            return homeView(state.homeDate, state.isLoading);
+            return homeView(state.homeDate, state.isLoading,state.zone);
           }
           if (state is HomeFetchFailure) {
             return buildErrorView(state.message);
@@ -86,77 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
           return Container();
         },
       ),
-      /*
-           body: SafeArea(
-        child: ,
-
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: SizeConfig.blockSizeHorizontal * 6,
-                      ),
-
-                      */
-/*========Location Widget==========*//*
-
-
-                      locationWidget()!,
-                      SizedBox(
-                        height: SizeConfig.blockSizeHorizontal * 4,
-                      ),
-
-                      */
-/*========Percentage Widget==========*//*
-
-
-                      (!isProfileCompleted)
-                          ? const PercentageTIile(
-                              value: 0.3,
-                            )
-                          : Container(),
-
-                      */
-/*========Workout type  Widget==========*//*
-
-
-                      const CircularSlidingTile(
-                          hasHeading: false,
-                          heading: '',
-                          circularIcons: HabitozIcons.fb,
-                          iconTitle: 'Gym'),
-                      SizedBox(
-                        height: SizeConfig.blockSizeHorizontal * 4,
-                      ),
-                      BannerTile(hasTitle: false),
-                      RectangleBannerTile(),
-                      SquareBannerTile(
-                        description: 'Lost 8 kg in 2 months',
-                        fitnessCenter: 'Name of fitness center',
-                      ),
-                      BannerTile(
-                        hasTitle: true,
-                        title: 'Best Offers',
-                      ),
-                      InviteTile()
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-
-      ),*/
     );
   }
 
-  Widget homeView(HomePageModel? homePageData,bool? isLoading){
+  Widget homeView(HomePageModel? homePageData,bool? isLoading,ZoneResult? zoneResult){
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -168,11 +106,16 @@ class _HomeScreenState extends State<HomeScreen> {
             fcDetailBloc: _fcDetailBloc,
             fcListBloc: _fcListBloc,
             isProfileCompleted: (widget.isLoggedIn) ? false : true,
-            onLocationChanged: (){
-              _homeBloc.add(LoadHome(forceRefresh: true));
+            zoneResult: zoneResult!,
+            onLocationChanged: (val){
+              _zone = val;
+              _homeBloc.add(LoadHome(forceRefresh: true,zone: _zone!));
             },
             onProfileClicked: (){
               _profileBloc.add(LoadProfile());
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const ProfileScreen();
+              }));
             },
           ),
 

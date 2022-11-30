@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:habitoz_fitness_app/models/login_response.dart';
 import 'package:habitoz_fitness_app/models/otp_response_model.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import '../../models/fitness_response.dart';
 import '../../repositories/user_repo.dart';
 
@@ -27,7 +28,7 @@ class AuthenticationBloc
     }
     else if (event is AuthenticationLoggedIn) {
       print('AuthenticationLoggedIn');
-      yield* _mapAuthenticationLoggedInToState(event.otpResponse,event.loginResponse);
+      yield* _mapAuthenticationLoggedInToState(event.otpResponse,event.loginResponse,event.zoneResult);
     }
     else if (event is AuthenticationLoggedOut) {
       yield* _mapAuthenticationLoggedOutToState();
@@ -54,13 +55,16 @@ class AuthenticationBloc
       bool? isLogged = await _userRepository.isLogged();
       bool? isGuest = await _userRepository.isGuest();
       LoginResponse? userData = await _userRepository.getLoginResponse();
+      ZoneResult? zoneResult = await _userRepository.getZoneDetailsLocal();
+      print('zoneResult!.name');
+      print(zoneResult!.name);
 
       if(isLogged!){
         // also need to check if token expired
         // if expired yield authFailed
 
         if(userData != null && userData.token != null){
-          yield AuthenticationSuccess(isGuest: false,isLoggedIn: true,userName: userData.user!);
+          yield AuthenticationSuccess(isGuest: false,isLoggedIn: true,userName: userData.user!,zoneResult: zoneResult);
         }
         else{
           yield const AuthenticationFailure(message: 'Token Expired');
@@ -84,7 +88,7 @@ class AuthenticationBloc
     }
   }
 
-  Stream<AuthenticationState> _mapAuthenticationLoggedInToState(OtpResponse otpResponse,LoginResponse loginResponse) async* {
+  Stream<AuthenticationState> _mapAuthenticationLoggedInToState(OtpResponse otpResponse,LoginResponse loginResponse,ZoneResult? zoneResult) async* {
     try{
       _userRepository.setGuestFlag(false);
       _userRepository.setIsLogged(true);
@@ -93,7 +97,7 @@ class AuthenticationBloc
       //if new user redirect to profile fill screen
       //if not redirect to home screen
       if(otpResponse.isRegistered != null && otpResponse.isRegistered!){
-        yield AuthenticationSuccess(isLoggedIn: true,isGuest: false,userName: loginResponse.user);
+        yield AuthenticationSuccess(isLoggedIn: true,isGuest: false,userName: loginResponse.user,zoneResult: zoneResult);
       }
       else{
         yield AuthenticationCompleteProfile();
@@ -107,7 +111,9 @@ class AuthenticationBloc
 
   Stream<AuthenticationState> _mapAuthenticationLoggedOutToState() async* {
     yield AuthenticationOnLoading();
-    Response? response = await _userRepository.logOut();
+    UserProfile? userProfile = await _userRepository.getProfileDetailsLocal();
+
+    Response? response = await _userRepository.logOut(userProfile!.id.toString());
     _userRepository.clear();
     _userRepository.setIsLogged(false);
     _userRepository.setGuestFlag(false);
@@ -127,6 +133,7 @@ class AuthenticationBloc
     //post details that are filled
     //store profile details
     String? userName = '';
+    ZoneResult? zoneResult = await _userRepository.getZoneDetailsLocal();
     if(data.isNotEmpty){
       try{
         yield AuthenticationOnLoading();
@@ -158,7 +165,7 @@ class AuthenticationBloc
     }
     _userRepository.setGuestFlag(false);
     _userRepository.setIsLogged(true);
-    yield AuthenticationSuccess(isGuest: false,isLoggedIn: true,userName: userName);
+    yield AuthenticationSuccess(isGuest: false,isLoggedIn: true,userName: userName,zoneResult: zoneResult);
   }
 
   Stream<AuthenticationState> _mapProfileFilledToState(Map<String,dynamic> data) async* {
@@ -216,13 +223,15 @@ class AuthenticationBloc
   Stream<AuthenticationState> _showError(String msg) async*{
     _userRepository.setGuestFlag(false);
     _userRepository.setIsLogged(true);
-    yield AuthenticationSuccess(message: msg,isGuest: false,isLoggedIn: true);
+    ZoneResult? zoneResult = await _userRepository.getZoneDetailsLocal();
+    yield AuthenticationSuccess(message: msg,isGuest: false,isLoggedIn: true,zoneResult: zoneResult);
   }
 
   Stream<AuthenticationState> _mapMoveToHomeState() async*{
     _userRepository.setGuestFlag(false);
     _userRepository.setIsLogged(true);
-    yield const AuthenticationSuccess(isGuest: false,isLoggedIn: true);
+    ZoneResult? zoneResult = await _userRepository.getZoneDetailsLocal();
+    yield AuthenticationSuccess(isGuest: false,isLoggedIn: true,zoneResult: zoneResult);
   }
 
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:habitoz_fitness_app/bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/fc_list_bloc/fc_list_bloc.dart';
 import 'package:habitoz_fitness_app/models/home_page_model.dart';
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
+import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/screens/feed/feed_pageview.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/components/category_list_tile.dart';
 import 'package:habitoz_fitness_app/ui/screens/others/choose_location.dart';
@@ -20,16 +22,20 @@ class HomeScreenView extends StatelessWidget {
   final FCDetailBloc fcDetailBloc;
   final FCListBloc fcListBloc;
   final bool isProfileCompleted;
-  final Function() onLocationChanged, onProfileClicked;
+  final Function(ZoneResult) onLocationChanged;
+  final Function() onProfileClicked;
+
+  final ZoneResult zoneResult;
 
   const HomeScreenView(
       {Key? key,
-      required this.onLocationChanged,
-      required this.onProfileClicked,
-      required this.isProfileCompleted,
-      required this.homeData,
-      required this.fcListBloc,
-      required this.fcDetailBloc})
+        required this.onLocationChanged,
+        required this.onProfileClicked,
+        required this.isProfileCompleted,
+        required this.homeData,
+        required this.fcListBloc,
+        required this.zoneResult,
+        required this.fcDetailBloc})
       : super(key: key);
 
   @override
@@ -114,8 +120,8 @@ class HomeScreenView extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ChooseLocation(
-                          onLocationUpdated: () {
-                            onLocationChanged();
+                          onLocationUpdated: (val) {
+                            onLocationChanged(val);
                           },
                         )));
           },
@@ -125,9 +131,9 @@ class HomeScreenView extends StatelessWidget {
                 width: SizeConfig.blockSizeHorizontal * 3,
               ),
               Text(
-                  (homeData!.zone != null && homeData!.zone!.name != null)
-                      ? homeData!.zone!.name!
-                      : '',
+                  (zoneResult != null && zoneResult.name != null)
+                      ? zoneResult.name!
+                      : (homeData!.zone != null && homeData!.zone!.name != null) ? homeData!.zone!.name! : '',
                   style: const TextStyle(fontFamily: Constants.fontRegular)),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 7,
@@ -151,6 +157,7 @@ class HomeScreenView extends StatelessWidget {
       child: CategoryListTile(
         content: content!.content,
         fcListBloc: fcListBloc,
+        zoneResult: zoneResult,
       ),
     );
   }
@@ -167,13 +174,14 @@ class HomeScreenView extends StatelessWidget {
           forceRefresh: true,
           slug: 'fc',
           pageNo: 1,
+          zone: zoneResult
         ));
 
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => FitnessCenterListView(
-                    title: content.title!.toUpperCase(), slug: 'fc')));
+                    title: content.title!.toUpperCase(), slug: 'fc',zone: zoneResult,)));
       },
     );
   }

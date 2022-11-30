@@ -1,10 +1,13 @@
 
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:habitoz_fitness_app/models/fitness_center_list_model.dart';
 import 'package:habitoz_fitness_app/models/login_response.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import 'package:habitoz_fitness_app/utils/api_query.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +32,7 @@ class UserRepository{
   static const String PROFILE_DETAILS = "PROFILE_DETAILS";
 
   // ignore: constant_identifier_names
-  static const String LOCATION_MSG = "LOCATION_MSG";
+  static const String ZONE_DETAILS = "ZONE_DETAILS";
 
 
   //send otp
@@ -97,10 +100,21 @@ class UserRepository{
   }
 
   //logout
-  Future<Response?> logOut() async {
+  Future<Response?> logOut(String userId) async {
     try {
-      Response? response =
-      await apiQuery.logoutQuery(Constants.apiLogout, 'LogoutApi');
+      LoginResponse? loginResponse = await getLoginResponse();
+      String? token = loginResponse!.token;
+
+      Map<String,String> headers = {
+        'Authorization' : 'Token $token'
+      };
+
+      Map<String,dynamic> data = {
+        'user_id' : userId,
+        'logout' : true
+      };
+
+      Response? response = await apiQuery.putQuery(Constants.apiSendOtp, headers, data,'LogoutApi');
       return response;
     } catch (exception) {
       print(exception.toString());
@@ -177,19 +191,39 @@ class UserRepository{
       String? token = loginResponse!.token;
 
       Map<String, dynamic> body = {};
+      String name = loginResponse.user!;
+      DateTime now = DateTime.now();
+
+
+      File userImage;
+      MultipartFile? imgFile1;
+
+      if(details['image'] != null){
+        userImage = details['image'];
+        details.remove('image');
+        var image1 = File(userImage.path);
+        String time = now.toString().trim();
+        time = time.replaceAll(".", "");
+        time = time.replaceAll("-", "");
+        time = time.replaceAll(":", "");
+        imgFile1 = await MultipartFile.fromFile(image1.path, filename: "$name$time-userImage.jpg");
+        details['image'] = imgFile1;
+      }
 
       if(details.isNotEmpty){
         body = details;
       }
+      FormData formData = FormData.fromMap(body);
 
       Map<String,String> headers = {
-        'Authorization' : 'Token $token'
+        'Authorization' : 'Token $token',
+        'Content-Type': 'multipart/form-data',
       };
 
       print('body');
       print(body);
 
-      Response? response = await apiQuery.putQuery(Constants.apiUserProfile,headers,body, 'UpdateProfile');
+      Response? response = await apiQuery.putQuery(Constants.apiUserProfile,headers,formData, 'UpdateProfile');
       return response;
     } catch (exception) {
       print(exception.toString());
@@ -257,6 +291,26 @@ class UserRepository{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setBool(IS_GUEST, isGuest);
   }
+
+  storeZoneDetails(ZoneResult userData) async {
+    // ignore: unnecessary_null_comparison
+    if (userData != null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String userProfileJson = json.encode(userData);
+      prefs.setString(ZONE_DETAILS, userProfileJson);
+    }
+  }
+
+  Future<ZoneResult?> getZoneDetailsLocal() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString(ZONE_DETAILS) == null) {
+      return null;
+    } else {
+      String? userResponse = prefs.getString(ZONE_DETAILS);
+      return ZoneResult.fromJson(json.decode(userResponse!));
+    }
+  }
+
 
   Future<void> clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
