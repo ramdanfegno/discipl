@@ -62,7 +62,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       },
                       child: Icon(
                         HabitozIcons.codiconMenu,
-                        size: SizeConfig.blockSizeHorizontal * 5,
+                        size: 22,
                       ),
                     );
                   }
@@ -105,7 +105,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   Icon(
                     HabitozIcons.epSearch,
-                    size: SizeConfig.blockSizeHorizontal * 6,
+                    size: 22,
                   ),
                   SizedBox(
                     width: SizeConfig.blockSizeHorizontal * 5,

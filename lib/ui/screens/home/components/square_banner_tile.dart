@@ -34,7 +34,7 @@ class SquareBannerTile extends StatelessWidget {
                   child: Text(
                     (title != null) ? title! : '',
                     style: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 6,
+                        fontSize: 18,
                         fontFamily: Constants.fontMedium),
                   ),
                 ),
@@ -48,10 +48,10 @@ class SquareBannerTile extends StatelessWidget {
                 onTap: () {
                   seeAllPressed!();
                 },
-                child: Text(
+                child: const Text(
                   'See all',
                   style: TextStyle(
-                      fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                      fontSize: 16,
                       fontFamily: Constants.fontMedium,
                       color: Constants.primaryColor),
                 ),
@@ -122,7 +122,7 @@ class SquareBannerTile extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                                 color: Colors.white,
                                 fontFamily: Constants.fontRegular,
-                                fontSize: SizeConfig.blockSizeHorizontal * 5.2),
+                                fontSize: 18),
                           ),
                         ],
                       ),

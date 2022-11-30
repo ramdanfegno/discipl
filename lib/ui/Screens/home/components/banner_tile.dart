@@ -12,7 +12,12 @@ class BannerTile extends StatelessWidget {
   final List<ContentContent>? content;
   final FCDetailBloc fcDetailBloc;
 
-  const BannerTile({Key? key, required this.hasTitle, this.title,required this.content,required this.fcDetailBloc})
+  const BannerTile(
+      {Key? key,
+      required this.hasTitle,
+      this.title,
+      required this.content,
+      required this.fcDetailBloc})
       : super(key: key);
 
   @override
@@ -54,42 +59,41 @@ class BannerTile extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: content!.length,
+                itemCount: 1,
                 shrinkWrap: true,
-                physics: const AlwaysScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, int index) {
                   return InkWell(
-                    onTap: (){
+                    onTap: () {
                       //route to fitness detail page
                       //route to fitness detail page
-                      fcDetailBloc.add(LoadDetailPage(forceRefresh: true, id: content![index].id.toString()));
+                      fcDetailBloc.add(LoadDetailPage(
+                          forceRefresh: true,
+                          id: content![index].id.toString()));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                              const FitnessCenterDetailPage()));
+                                  const FitnessCenterDetailPage()));
                     },
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          left: SizeConfig.blockSizeHorizontal * 1.5,
-                          right: SizeConfig.blockSizeHorizontal * 1.5),
-                      child: Container(
-                          height: SizeConfig.blockSizeHorizontal * 50,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: Constants.secondaryColor,
-                              borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 3)),
-                          child: ClipRRect(
+                    child: Container(
+                        height: SizeConfig.blockSizeHorizontal * 50,
+                        width: SizeConfig.blockSizeHorizontal*91,
+                        decoration: BoxDecoration(
+                            color: Constants.secondaryColor,
                             borderRadius: BorderRadius.circular(
-                                SizeConfig.blockSizeHorizontal * 3), // Image border
-                            child: Image.network(
-                              (content![index].image != null) ? content![index].image!
-                                  : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-                              fit: BoxFit.fill,
-                            ),
-                          )),
-                    ),
+                                SizeConfig.blockSizeHorizontal * 3)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.blockSizeHorizontal * 3),
+                          // Image border
+                          child: Image.network(
+                            (content![index].image != null)
+                                ? content![index].image!
+                                : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
+                            fit: BoxFit.fill,
+                          ),
+                        )),
                   );
                 }),
           ),

@@ -134,7 +134,7 @@ class HomeScreenView extends StatelessWidget {
               ),
               Icon(
                 HabitozIcons.downArrow,
-                size: SizeConfig.blockSizeHorizontal * 2.7,
+                size: 10,
               )
             ],
           ),
@@ -146,7 +146,7 @@ class HomeScreenView extends StatelessWidget {
   Widget _buildIcons(BuildContext context, HomePageModelContent? content) {
     return Padding(
       padding: EdgeInsets.only(
-          top: SizeConfig.blockSizeHorizontal * 4,
+          top: SizeConfig.blockSizeHorizontal * 5,
           left: SizeConfig.blockSizeHorizontal * 4),
       child: CategoryListTile(
         content: content!.content,
@@ -157,24 +157,27 @@ class HomeScreenView extends StatelessWidget {
 
   Widget _buildRectangleTiles(
       BuildContext context, HomePageModelContent? content) {
-    return RectangleBannerTile(
-      title: content!.title,
-      content: content.content,
-      fcDetailBloc: fcDetailBloc,
-      seeAllPressed: () {
-        // route to fitness listing page with slug
-        fcListBloc.add(LoadListingPage(
-          forceRefresh: true,
-          slug: 'fc',
-          pageNo: 1,
-        ));
+    return Padding(
+      padding:  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*4),
+      child: RectangleBannerTile(
+        title: content!.title,
+        content: content.content,
+        fcDetailBloc: fcDetailBloc,
+        seeAllPressed: () {
+          // route to fitness listing page with slug
+          fcListBloc.add(LoadListingPage(
+            forceRefresh: true,
+            slug: 'fc',
+            pageNo: 1,
+          ));
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => FitnessCenterListView(
-                    title: content.title!.toUpperCase(), slug: 'fc')));
-      },
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FitnessCenterListView(
+                      title: content.title!.toUpperCase(), slug: 'fc')));
+        },
+      ),
     );
   }
 

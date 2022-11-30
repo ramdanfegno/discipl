@@ -18,7 +18,7 @@ class PercentageTile extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius:
-                BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2.5),
+                BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
                   offset: const Offset(0, 8),
@@ -39,7 +39,7 @@ class PercentageTile extends StatelessWidget {
                   'Please complete your profile',
                   style: TextStyle(
                       fontFamily: Constants.fontMedium,
-                      fontSize: SizeConfig.blockSizeHorizontal * 4.3),
+                      fontSize: 15),
                 ),
               ],
             ),
@@ -71,7 +71,7 @@ class PercentageTile extends StatelessWidget {
                   '${value.toString()} %',
                   style: TextStyle(
                       fontFamily: Constants.fontRegular,
-                      fontSize: SizeConfig.blockSizeHorizontal * 3.5),
+                      fontSize: 12),
                 )
               ],
             ),
@@ -86,7 +86,7 @@ class PercentageTile extends StatelessWidget {
                 Text('Continue to add more information',
                     style: TextStyle(
                         fontFamily: Constants.fontRegular,
-                        fontSize: SizeConfig.blockSizeHorizontal * 3.8,
+                        fontSize: 13,
                         color: Constants.secondaryColor)),
               ],
             ),

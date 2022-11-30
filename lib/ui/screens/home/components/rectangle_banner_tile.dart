@@ -35,9 +35,8 @@ class RectangleBannerTile extends StatelessWidget {
                     width: SizeConfig.blockSizeHorizontal * 76,
                     child: Text(
                       (title != null) ? title! : '',
-                      style: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 6,
-                          fontFamily: Constants.fontMedium),
+                      style: const TextStyle(
+                          fontSize: 18, fontFamily: Constants.fontMedium),
                     ),
                   ),
                 ),
@@ -50,10 +49,10 @@ class RectangleBannerTile extends StatelessWidget {
                   onTap: () {
                     seeAllPressed!();
                   },
-                  child: Text(
+                  child: const Text(
                     'See all',
                     style: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 4.5,
+                        fontSize: 16,
                         fontFamily: Constants.fontMedium,
                         color: Constants.primaryColor),
                   ),
@@ -78,6 +77,7 @@ class RectangleBannerTile extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, int index) {
+                      ContentContent _context = content![index];
                       return InkWell(
                         onTap: () {
                           //route to fitness detail page
@@ -108,6 +108,7 @@ class RectangleBannerTile extends StatelessWidget {
                                     SizeConfig.blockSizeHorizontal * 3),
                                 color: Constants.appbarColor),
                             child: Stack(
+                              alignment: Alignment.centerLeft,
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(
@@ -120,34 +121,113 @@ class RectangleBannerTile extends StatelessWidget {
                                     fit: BoxFit.fill,
                                   ),
                                 ),
-                                Positioned(
-                                    left: SizeConfig.blockSizeHorizontal * 4,
-                                    bottom: SizeConfig.blockSizeHorizontal * 4,
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              content![index].name != null
-                                                  ? content![index].name!
-                                                  : '',
-                                              style: TextStyle(color: Colors.white),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: SizeConfig.blockSizeHorizontal * 35,
+                                      left: SizeConfig.blockSizeHorizontal * 4),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            content![index].name ?? '',
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height:
+                                            SizeConfig.blockSizeHorizontal * 2,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.location_on,
+                                            color: Colors.white,
+                                            size: 15,
+                                          ),
+                                          SizedBox(
+                                            width:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    1,
+                                          ),
+                                          SizedBox(
+                                            width:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    15,
+                                            child: Center(
+                                              child: Text(
+                                                content![index].zone.toString() ??
+                                                    'Location',
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    color: Colors.white),
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              content![index].location != null
-                                                  ? content![index].location
-                                                  : 'location',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ))
+                                          ),
+                                          SizedBox(
+                                            height:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    3.7,
+                                            width:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    40,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: content![index]
+                                                    .category!
+                                                    .length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: SizeConfig
+                                                                .blockSizeHorizontal *
+                                                            1,
+                                                      ),
+                                                      Container(
+                                                        height: SizeConfig
+                                                                .blockSizeHorizontal *
+                                                            5,
+                                                        width: SizeConfig
+                                                                .blockSizeHorizontal *
+                                                            0.2,
+                                                        color: Colors.white,
+                                                      ),
+                                                      SizedBox(
+                                                        width: SizeConfig
+                                                                .blockSizeHorizontal *
+                                                            1,
+                                                      ),
+                                                      Text(
+                                                        _context
+                                                                .category![
+                                                                    index]
+                                                                .name ??
+                                                            '',
+                                                        style: const TextStyle(
+                                                            fontSize: 12,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ],
+                                                  );
+                                                }),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ),
