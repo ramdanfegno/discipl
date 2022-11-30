@@ -85,7 +85,6 @@ class _AppState extends State<App> {
     // TODO: implement initState
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-
   }
 
 

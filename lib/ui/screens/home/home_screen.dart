@@ -1,4 +1,5 @@
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -51,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _fcDetailBloc = BlocProvider.of<FCDetailBloc>(context);
     _homeBloc = BlocProvider.of<HomeBloc>(context);
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
+    updateProfileDetails();
   }
 
   @override
@@ -163,5 +165,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   showToast(String msg){
     Fluttertoast.showToast(msg: msg);
+  }
+
+  updateProfileDetails() async {
+    try{
+      //store profile details
+      Response? response2 = await userRepository.getUserProfile(true);
+      print('updateProfileDetails');
+      print(response2!.statusCode);
+      print(response2.data);
+      print(response2.statusMessage);
+      if(response2 != null && response2.statusCode == 200){
+        UserProfile userProfile = UserProfile.fromJson(response2.data);
+        await userRepository.storeProfileDetails(userProfile);
+      }
+    }catch(e){
+      print(e.toString());
+    }
   }
 }

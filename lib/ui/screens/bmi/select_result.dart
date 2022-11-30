@@ -47,7 +47,9 @@ class _SelectResultState extends State<SelectResult> {
                     return ResultView(
                         resultType: 'BMI',
                         fitnessResponse: widget.fitnessResponse,
-                        data: widget.data,isFromProfile: true);
+                        data: widget.data,
+                        isFromProfile: true
+                    );
                   }));
                 },
                 result: '${widget.fitnessResponse.bmi!.toStringAsFixed(2)} Kg/m2'

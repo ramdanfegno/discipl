@@ -334,6 +334,7 @@ class _CalculateViewState extends State<CalculateView> {
       });
       Response? response = await userRepository.fitnessCalculate(_profileDetails);
       if(response != null){
+        print('_submit');
         print(response.statusCode);
         print(response.statusMessage);
         print(response.data);

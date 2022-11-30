@@ -90,7 +90,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
     );
     submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
-          border: Border.all(color: Constants.primaryColor),
+          border: Border.all(color: Constants.fontColor1),
           borderRadius: BorderRadius.circular(8),
           color: Colors.white
       ),
@@ -277,7 +277,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         controller: textEditingController,
         onSubmitted: (String pin) {
           if (!isOtpTimedOut) {
-            //verifyOtp(pin, widget.otpResponseModel);
+            verifyOtp(pin, widget.otpResponseModel);
           }
         },
         defaultPinTheme: defaultPinTheme,
@@ -316,7 +316,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
             child: Text(
               'Resend',
               style: TextStyle(
-                  color: Constants.primaryColor,
+                  color: (isOtpTimedOut) ? Constants.primaryColor : const Color.fromRGBO(179, 179, 179, 1),
                   fontSize: 14,
                   fontFamily: (isOtpTimedOut)
                       ? Constants.fontSemiBold
@@ -463,6 +463,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
   }
 
   void resendOtp() async {
+    textEditingController.text = '';
     setState(() {
       isOtpTimedOut = false;
       _start = 2 * 60;
