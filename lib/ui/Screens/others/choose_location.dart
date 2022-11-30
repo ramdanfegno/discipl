@@ -5,7 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:habitoz_fitness_app/bloc/location_bloc/location_bloc.dart';
+import 'package:habitoz_fitness_app/models/location_response_model.dart';
+import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/models/zone_list_model.dart';
+import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 import 'package:location/location.dart' as l;
 
@@ -15,7 +18,7 @@ import '../../widgets/others/app_bar.dart';
 import '../../widgets/others/color_loader.dart';
 
 class ChooseLocation extends StatefulWidget {
-  final Function() onLocationUpdated;
+  final Function(ZoneResult) onLocationUpdated;
 
   const ChooseLocation({Key? key,required this.onLocationUpdated}) : super(key: key);
 
@@ -32,6 +35,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
   final _scrollController = ScrollController();
   late bool isLoading,forceRefresh;
   final ProductRepository productRepository = ProductRepository();
+  final UserRepository userRepository = UserRepository();
 
   late String? _currentPlace;
   late double? _currentLat,_currentLong;
@@ -164,10 +168,10 @@ class _ChooseLocationState extends State<ChooseLocation> {
         onTap: (){
 
           if(_currentLat != null && _currentLong != null){
-            Map<String,dynamic> data = {
-              'lattitude' : _currentLat,
-              'longitude' : _currentLong,
-              'location_name' : _currentPlace
+            Map<String,String> data = {
+              'lattitude' : _currentLat.toString(),
+              'longitude' : _currentLong.toString(),
+              'location_name' : _currentPlace!
             };
             setLocationApi(data);
           }
@@ -394,6 +398,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
                   onTap: (){
                     Map<String,dynamic> data = {
                       'zone_id' : zoneList[index].id,
+                      'location_name' : '',
                     };
                     setLocationApi(data);
                   },
@@ -410,12 +415,16 @@ class _ChooseLocationState extends State<ChooseLocation> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          (zoneList[index].name != null) ? zoneList[index].name! : '',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontFamily: Constants.fontMedium,
-                              fontSize: 14),
+
+                        Padding(
+                          padding: const EdgeInsets.only(left: 23.0),
+                          child: Text(
+                            (zoneList[index].name != null) ? zoneList[index].name! : '',
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontFamily: Constants.fontMedium,
+                                fontSize: 14),
+                          ),
                         ),
 
                         Container(
@@ -488,9 +497,20 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
       Response? response = await productRepository.setLocation(data);
 
+      print('setLocationApi');
+      print(data);
+      print(response!.statusCode);
+      print(response.statusMessage);
+      print(response.data);
+
       if(response != null){
         if(response.statusCode == 200){
-          widget.onLocationUpdated();
+          // store location local
+          LocationResponseModel locationResponseModel = LocationResponseModel.fromJson(response.data);
+          if(locationResponseModel.zone != null){
+            await userRepository.storeZoneDetails(locationResponseModel.zone!);
+            widget.onLocationUpdated(locationResponseModel.zone!);
+          }
           if (!mounted) return;
           Navigator.pop(context);
         }
@@ -567,22 +587,6 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
           // From coordinates
           List<Placemark> placeMarks = await placemarkFromCoordinates(_currentLat!, _currentLong!);
-          print('placeMarks[0].locality');
-          print(placeMarks[0].locality);
-          print('placeMarks[0].name');
-          print(placeMarks[0].name);
-          print('placeMarks[0].administrativeArea');
-          print(placeMarks[0].administrativeArea);
-          print('placeMarks[0].street');
-          print(placeMarks[0].street);
-          print('placeMarks[0].postalCode');
-          print(placeMarks[0].postalCode);
-          print('placeMarks[0].subLocality');
-          print(placeMarks[0].subLocality);
-          print('placeMarks[0].subAdministrativeArea');
-          print(placeMarks[0].subAdministrativeArea);
-          print('placeMarks[0].subThoroughfare');
-          print(placeMarks[0].subThoroughfare);
           _currentPlace = placeMarks[0].locality;
           if(mounted){
             setState(() {});
@@ -608,23 +612,14 @@ class _ChooseLocationState extends State<ChooseLocation> {
       location.getLocation().then((value) async {
         _currentLat = value.latitude;
         _currentLong = value.longitude;
+
         // From coordinates
         List<Placemark> placeMarks = await placemarkFromCoordinates(_currentLat!, _currentLong!);
-        print('placeMarks[0].locality');
-        print(placeMarks[0].locality);
-        print('placeMarks[0].name');
-        print(placeMarks[0].name);
-        print('placeMarks[0].administrativeArea');
-        print(placeMarks[0].administrativeArea);
-        print('placeMarks[0].street');
-        print(placeMarks[0].street);
-        print('placeMarks[0].subLocality');
-        print(placeMarks[0].subLocality);
-        print('placeMarks[0].subAdministrativeArea');
-        print(placeMarks[0].subAdministrativeArea);
-        print('placeMarks[0].subThoroughfare');
-        print(placeMarks[0].subThoroughfare);
-
+        _currentPlace = '';
+        if(placeMarks[0].subLocality != null){
+          _currentPlace = _currentPlace! + placeMarks[0].subLocality!;
+          _currentPlace = '${_currentPlace!},';
+        }
         _currentPlace = placeMarks[0].locality;
 
         if(mounted){

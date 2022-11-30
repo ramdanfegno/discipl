@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:habitoz_fitness_app/bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
+import '../../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import '../../../../models/home_page_model.dart';
-import '../../gym/fitnes_center_details/fitness_center_detail_page.dart';
+import '../../../Screens/gym/fitnes_center_details/fitness_center_detail_page.dart';
 
 class RectangleBannerTile extends StatelessWidget {
+
   final String? title;
   final List<ContentContent>? content;
   final Function()? seeAllPressed;
@@ -34,7 +35,7 @@ class RectangleBannerTile extends StatelessWidget {
                   child: SizedBox(
                     width: SizeConfig.blockSizeHorizontal * 76,
                     child: Text(
-                      (title != null) ? title! : '',
+                      'Popular fitness centers near you',
                       style: TextStyle(
                           fontSize: SizeConfig.blockSizeHorizontal * 6,
                           fontFamily: Constants.fontMedium),
@@ -150,8 +151,7 @@ class RectangleBannerTile extends StatelessWidget {
                                     ))
                               ],
                             ),
-                          ),
-                        ),
+                          ))
                       );
                     }),
               ),

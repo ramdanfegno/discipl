@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:habitoz_fitness_app/bloc/fc_list_bloc/fc_list_bloc.dart';
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import 'package:habitoz_fitness_app/ui/Screens/gym/fitnes_center_details/fitness_center_detail_page.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
@@ -19,7 +20,8 @@ class FitnessCenterListView extends StatefulWidget {
   final String? title;
   final String? slug;
   final String? categoryId;
-  const FitnessCenterListView({Key? key,required this.title,required this.slug,this.categoryId}) : super(key: key);
+  final ZoneResult? zone;
+  const FitnessCenterListView({Key? key,required this.title,required this.slug,this.categoryId,required this.zone}) : super(key: key);
 
   @override
   _FitnessCenterListViewState createState() => _FitnessCenterListViewState();
@@ -33,6 +35,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
   late HomeBloc _homeBloc;
 
   late int _pageNo;
+  late ZoneResult? _zone;
   late List<FitnessCenterModel> _fcList;
   late TextEditingController textEditingController;
 
@@ -40,6 +43,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _zone = widget.zone;
     _scrollController.addListener(_onScroll);
     _fcListBloc = BlocProvider.of<FCListBloc>(context);
     _fcDetailBloc = BlocProvider.of<FCDetailBloc>(context);
@@ -64,7 +68,8 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
         forceRefresh: true,
         pageNo: _pageNo,
         slug: widget.slug,
-        categoryId: widget.categoryId
+        categoryId: widget.categoryId,
+        zone: widget.zone
       ));
     }
   }
@@ -103,8 +108,6 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                     height: SizeConfig.blockSizeHorizontal * 7,
                   ),
 
-                  locationWidget(),
-
                   BlocBuilder<FCListBloc, FCListState>(
                     builder: (context, state) {
                       if (state is FCListingFetchSuccess) {
@@ -140,7 +143,18 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
     );
   }
 
-  Widget locationWidget(){
+  Widget locationWidget(List<FitnessCenterModel> fcList){
+
+    String s = '';
+    if(_zone != null && _zone!.name != null){
+      s = _zone!.name!;
+    }
+
+    String v = '';
+    if(fcList.isNotEmpty){
+      v = fcList.length.toString();
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2.0),
       child: Row(
@@ -149,7 +163,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
             width: SizeConfig.blockSizeHorizontal * 4,
           ),
           Text(
-            'Showing 23 results for Fitness centers in Kochi',
+            'Showing $v results for Fitness centers in $s',
             style: TextStyle(
                 fontSize: SizeConfig.blockSizeHorizontal * 3.4,
                 fontFamily: Constants.fontMedium,
@@ -165,15 +179,17 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                   MaterialPageRoute(
                       builder: (context) =>
                           ChooseLocation(
-                            onLocationUpdated: (){
+                            onLocationUpdated: (zone){
                               _pageNo = 1;
+                              _zone = zone;
                               _fcListBloc.add(LoadListingPage(
                                   forceRefresh: true,
                                   slug: widget.slug,
                                   pageNo: _pageNo,
-                                  categoryId: widget.categoryId
+                                  categoryId: widget.categoryId,
+                                  zone: zone,
                               ));
-                              _homeBloc.add(LoadHome(forceRefresh: true));
+                              _homeBloc.add(LoadHome(forceRefresh: true,zone: _zone));
                             },
                           )));
             },
@@ -228,7 +244,8 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                           pageNo: _pageNo,
                           slug: widget.slug,
                           searchQ: textEditingController.text,
-                          categoryId: widget.categoryId
+                          categoryId: widget.categoryId,
+                          zone: _zone
                       ));
                     });
                   },
@@ -300,7 +317,8 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                               forceRefresh: true,
                               pageNo: _pageNo,
                               slug: widget.slug,
-                              categoryId: widget.categoryId
+                              categoryId: widget.categoryId,
+                              zone: _zone
                           ));
                         }) :
                     Icon(
@@ -314,134 +332,15 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
           ),
         )
     );
-
-    return Padding(
-      padding: EdgeInsets.only(
-          left: SizeConfig.blockSizeHorizontal * 4,
-          right: SizeConfig.blockSizeHorizontal * 4),
-      child: Container(
-        height: SizeConfig.blockSizeHorizontal * 10,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            color: Colors.white, border: Border.all(color: Colors.black,width: 1) ,
-            borderRadius: BorderRadius.circular(5)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: TextFormField(
-                textInputAction: TextInputAction.done,
-                keyboardType: TextInputType.text,
-                controller: textEditingController,
-                autofocus: false,
-                style: TextStyle(
-                    color: Colors.grey[800],
-                    fontSize: 14,
-                    fontFamily: Constants.fontMedium),
-                onFieldSubmitted: (val) {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                onChanged: (v) {
-                  EasyDebounce.debounce(
-                      'Search-Debounce', const Duration(milliseconds: 500), () {
-                        _pageNo = 1;
-                        _fcList.clear();
-                            _fcListBloc.add(SearchListingPage(
-                                forceRefresh: true,
-                                pageNo: _pageNo,
-                                slug: widget.slug,
-                                searchQ: textEditingController.text
-                            ));
-
-                      });
-                },
-                decoration: InputDecoration(
-                  hintText: 'Search here ...',
-                  hintStyle: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                      fontFamily: Constants.fontMedium),
-                  //suffixIcon:
-                  contentPadding: EdgeInsets.only(
-                      top: SizeConfig.blockSizeHorizontal * 5,
-                      bottom: SizeConfig.blockSizeHorizontal * 2,
-                      right: SizeConfig.blockSizeHorizontal * 2,
-                      left: SizeConfig.blockSizeHorizontal * 3),
-                  errorStyle: const TextStyle(color: Colors.red),
-                  focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15)),
-                      borderSide:
-                      BorderSide(color: Colors.red[400]!, width: 2)),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15)),
-                      borderSide:
-                      BorderSide(color: Colors.red[400]!, width: 2)),
-                  enabledBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15)),
-                      borderSide:
-                      BorderSide(color: Colors.transparent, width: 1)),
-                  focusedBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15)),
-                      borderSide:
-                      BorderSide(color: Colors.transparent, width: 1)),
-                  disabledBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15)),
-                      borderSide:
-                      BorderSide(color: Colors.transparent, width: 1)),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 2),
-              child: SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 10,
-                height: SizeConfig.blockSizeHorizontal * 10,
-                child: (textEditingController.text != '') ?
-                IconButton(
-                    icon: Icon(
-                      Icons.close_rounded,
-                      size: 20,
-                      color: Colors.red[500],
-                    ),
-                    onPressed: () {
-                      textEditingController.text = '';
-                      _pageNo = 1;
-                      _fcList.clear();
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      _fcListBloc.add(RefreshListingPage(
-                          forceRefresh: true,
-                          pageNo: _pageNo,
-                          slug: widget.slug
-                      ));
-                    }) :
-                Icon(
-                  Icons.search,
-                  size: 17,
-                  color: Colors.grey[700],
-                )
-              ),
-            ),
-          ],
-        ),
-      )
-    );
   }
 
   Widget fcListView(List<FitnessCenterModel> fcList,bool isLoading){
     return Column(
       children: [
+
+        (fcList.isNotEmpty)?
+        locationWidget(fcList):Container(),
+
         ListView.builder(
             shrinkWrap: true,
             itemCount: fcList.length,
@@ -510,7 +409,8 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
         forceRefresh: true,
         pageNo: _pageNo,
         slug: widget.slug,
-        categoryId: widget.categoryId
+        categoryId: widget.categoryId,
+        zone: _zone
     ));
     await Future.delayed(const Duration(seconds: 2), () {});
   }
