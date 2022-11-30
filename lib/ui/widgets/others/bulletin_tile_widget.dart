@@ -53,7 +53,7 @@ class BulletinTileWidget extends StatelessWidget {
                             fontFamily: Constants.fontMedium,
                             color: Constants.bulletinColor),
                       ),
-                      SizedBox(0
+                      SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 2,
                       ),
                       SizedBox(
