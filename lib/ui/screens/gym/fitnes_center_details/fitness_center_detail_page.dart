@@ -31,6 +31,7 @@ class FitnessCenterDetailPage extends StatefulWidget {
 class _FitnessCenterDetailPageState
     extends State<FitnessCenterDetailPage> {
 
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
