@@ -25,7 +25,7 @@ class HomeScreenView extends StatelessWidget {
   final Function(ZoneResult) onLocationChanged;
   final Function() onProfileClicked;
 
-  final ZoneResult zoneResult;
+  final ZoneResult? zoneResult;
 
   const HomeScreenView(
       {Key? key,
@@ -131,8 +131,8 @@ class HomeScreenView extends StatelessWidget {
                 width: SizeConfig.blockSizeHorizontal * 3,
               ),
               Text(
-                  (zoneResult != null && zoneResult.name != null)
-                      ? zoneResult.name!
+                  (zoneResult != null && zoneResult!.name != null)
+                      ? zoneResult!.name!
                       : (homeData!.zone != null && homeData!.zone!.name != null) ? homeData!.zone!.name! : '',
                   style: const TextStyle(fontFamily: Constants.fontRegular)),
               SizedBox(

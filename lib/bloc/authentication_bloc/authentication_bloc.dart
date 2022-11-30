@@ -56,8 +56,6 @@ class AuthenticationBloc
       bool? isGuest = await _userRepository.isGuest();
       LoginResponse? userData = await _userRepository.getLoginResponse();
       ZoneResult? zoneResult = await _userRepository.getZoneDetailsLocal();
-      print('zoneResult!.name');
-      print(zoneResult!.name);
 
       if(isLogged!){
         // also need to check if token expired

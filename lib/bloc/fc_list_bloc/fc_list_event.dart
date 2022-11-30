@@ -11,7 +11,7 @@ class LoadListingPage extends FCListEvent {
   final int pageNo;
   final String? searchQ;
   final String? categoryId;
-  final ZoneResult zone;
+  final ZoneResult? zone;
 
   LoadListingPage({
     required this.forceRefresh,
@@ -29,7 +29,7 @@ class RefreshListingPage extends FCListEvent {
   final int pageNo;
   final String? searchQ;
   final String? categoryId;
-  final ZoneResult zone;
+  final ZoneResult? zone;
 
   RefreshListingPage({
     required this.forceRefresh,
@@ -47,7 +47,7 @@ class SearchListingPage extends FCListEvent {
   final String? searchQ;
   final int pageNo;
   final String? categoryId;
-  final ZoneResult zone;
+  final ZoneResult? zone;
 
   SearchListingPage({
     required this.forceRefresh,
@@ -66,7 +66,7 @@ class PaginateListingPage extends FCListEvent {
   final String? searchQ;
   final List<FitnessCenterModel>? fcList;
   final String? categoryId;
-  final ZoneResult zone;
+  final ZoneResult? zone;
 
   PaginateListingPage({
     required this.forceRefresh,

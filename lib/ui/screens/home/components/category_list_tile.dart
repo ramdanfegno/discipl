@@ -10,7 +10,7 @@ import '../../gym/fitness_center_list/fitness_center_listview.dart';
 class CategoryListTile extends StatelessWidget {
   final List<ContentContent>? content;
   final FCListBloc fcListBloc;
-  final ZoneResult zoneResult;
+  final ZoneResult? zoneResult;
 
   const CategoryListTile(
       {Key? key,

@@ -106,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
             fcDetailBloc: _fcDetailBloc,
             fcListBloc: _fcListBloc,
             isProfileCompleted: (widget.isLoggedIn) ? false : true,
-            zoneResult: zoneResult!,
+            zoneResult: zoneResult,
             onLocationChanged: (val){
               _zone = val;
               _homeBloc.add(LoadHome(forceRefresh: true,zone: _zone!));

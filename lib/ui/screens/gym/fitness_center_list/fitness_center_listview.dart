@@ -20,7 +20,7 @@ class FitnessCenterListView extends StatefulWidget {
   final String? title;
   final String? slug;
   final String? categoryId;
-  final ZoneResult zone;
+  final ZoneResult? zone;
   const FitnessCenterListView({Key? key,required this.title,required this.slug,this.categoryId,required this.zone}) : super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
   late HomeBloc _homeBloc;
 
   late int _pageNo;
-  late ZoneResult _zone;
+  late ZoneResult? _zone;
   late List<FitnessCenterModel> _fcList;
   late TextEditingController textEditingController;
 
@@ -146,8 +146,8 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
   Widget locationWidget(List<FitnessCenterModel> fcList){
 
     String s = '';
-    if(_zone != null && _zone.name != null){
-      s = _zone.name!;
+    if(_zone != null && _zone!.name != null){
+      s = _zone!.name!;
     }
 
     String v = '';

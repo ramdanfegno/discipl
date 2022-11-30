@@ -29,7 +29,6 @@ class HomeBloc
   }
 
   Stream<HomeState> _mapLoadHomeToState(bool forceRefresh,ZoneResult? zoneResult) async* {
-    try{
 
       yield HomeFetchLoading();
       Response? response = await _productRepository.getHomePage(forceRefresh,zoneResult);
@@ -44,7 +43,7 @@ class HomeBloc
             zone = zoneResult;
             await _userRepository.storeZoneDetails(zone);
           }
-          yield HomeFetchSuccess(homeDate: homePageModel,isLoading: false,zone: zone!);
+          yield HomeFetchSuccess(homeDate: homePageModel,isLoading: false,zone: zone);
         }
         else{
           yield const HomeFetchFailure(message: 'Error loading data');
@@ -53,6 +52,7 @@ class HomeBloc
       else{
         yield const HomeFetchFailure(message: 'Error loading data');
       }
+      try{
 
       }
 
