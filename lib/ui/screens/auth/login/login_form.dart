@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../../../bloc/authentication_bloc/authentication_bloc.dart';
@@ -34,6 +35,7 @@ class _LoginFormState extends State<LoginForm> {
   final _controller = ScrollController();
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _phoneController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool get isPopulated => _phoneController.text.isNotEmpty;
   late LoginBloc _loginBloc;
@@ -142,6 +144,7 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget loginForm(LoginState state) {
     return Form(
+      key: _formKey,
       child: Container(
         color: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -255,8 +258,15 @@ class _LoginFormState extends State<LoginForm> {
               FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
             ],
             enabled: (state.isSubmitting) ? false : true,
-            //validator: (state.),
-            cursorColor: Constants.primaryColor,
+            validator: (String? v) {
+              if (v!.isEmpty) {
+                return 'Enter phone number';
+              }
+              if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(v)) {
+                return 'Enter 10 digit phone number';
+              }
+              return null;
+            },            cursorColor: Constants.primaryColor,
             cursorHeight: 20,
             style: TextStyle(
                 color: Colors.grey[800],
@@ -443,12 +453,20 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _onFormSubmitted() {
+
     FocusScope.of(context).requestFocus(FocusNode());
-    _loginBloc.add(
-      LoginWithCredentials(
-        phone: _phoneController.text,
-      ),
-    );
+
+    if ( _formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      _loginBloc.add(
+        LoginWithCredentials(
+          phone: _phoneController.text,
+        ),
+      );
+    }
+    else{
+      Fluttertoast.showToast(msg: 'Please fill in your mobile number');
+    }
   }
 
   void _notifyError() {
