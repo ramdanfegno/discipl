@@ -277,7 +277,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         controller: textEditingController,
         onSubmitted: (String pin) {
           if (!isOtpTimedOut) {
-            verifyOtp(pin, widget.otpResponseModel);
+            //verifyOtp(pin, widget.otpResponseModel);
           }
         },
         defaultPinTheme: defaultPinTheme,
@@ -340,23 +340,14 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         onPressed: () {
           if (!isLoading) {
             if (!isOtpTimedOut) {
-              verifyOtp(currentText, widget.otpResponseModel);
+              if(currentText != '' && currentText.length == 4){
+                verifyOtp(currentText, widget.otpResponseModel);
+              }
+              else{
+                showSnackBar('Enter OTP');
+              }
             } else {
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(SnackBar(
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Timed out',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      Icon(Icons.error)
-                    ],
-                  ),
-                  backgroundColor: const Color.fromRGBO(244, 145, 42, 1),
-                ));
+              showSnackBar('Timed out');
             }
           }
         });
@@ -393,6 +384,24 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
     textEditingController.text = otpCode;
   }
 
+  showSnackBar(String msg){
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              msg,
+              style: const TextStyle(color: Colors.black),
+            ),
+            const Icon(Icons.error)
+          ],
+        ),
+        backgroundColor: const Color.fromRGBO(244, 145, 42, 1),
+      ));
+  }
+
   void verifyOtp(String pin, OtpResponse? otpResponseModel) async {
     try {
       setState(() {
@@ -400,7 +409,10 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
       });
       Response? response = await widget.userRepository.loginWithOtp(
           otpResponseModel!.mobile!, pin);
+
+      print('verifyOtp');
       print(response!.data);
+      print(response.statusCode);
       print(response.statusCode);
 
       LoginResponse loginResponse = LoginResponse.fromJson(response.data);
@@ -412,7 +424,12 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         currentText = '';
         textEditingController.text = '';
         await widget.userRepository.setLoginResponse(loginResponse);
-        _authBloc.add(AuthenticationLoggedIn(otpResponse: widget.otpResponseModel!,loginResponse: loginResponse));
+        _authBloc.add(
+            AuthenticationLoggedIn(
+                otpResponse: widget.otpResponseModel!,
+                loginResponse: loginResponse,
+                zoneResult: otpResponseModel.zoneResult
+            ));
         Future.delayed(const Duration(milliseconds: 400),(){
           Navigator.pushNamedAndRemoveUntil(
               context, HabitozRoutes.app, (route) => false);
@@ -455,24 +472,6 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         "${widget.otpResponseModel!.id}");
     textEditingController.text = currentText;
     if (response!.statusCode == 200) {}
-  }
-
-  showSnackBar(String msg){
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              msg,
-              style: const TextStyle(color: Colors.black),
-            ),
-            const Icon(Icons.error)
-          ],
-        ),
-        backgroundColor: Colors.red,
-      ));
   }
 
   Future<bool> _onBackPressed() async {

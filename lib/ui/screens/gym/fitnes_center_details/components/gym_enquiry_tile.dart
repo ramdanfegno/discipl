@@ -20,7 +20,7 @@ class GymEnquiryTile extends StatelessWidget {
           Row(
             children: [
               SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 3,
+                width: SizeConfig.blockSizeHorizontal * 4,
               ),
               const Text(
                 'Enquire',
@@ -34,7 +34,7 @@ class GymEnquiryTile extends StatelessWidget {
           Row(
             children: [
               SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 3,
+                width: SizeConfig.blockSizeHorizontal * 4,
               ),
               SizedBox(
                   width: SizeConfig.blockSizeHorizontal * 88,

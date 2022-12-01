@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
+
 import 'fitness_center_list_model.dart';
 
 HomePageModel homePageModelFromJson(String str) => HomePageModel.fromJson(json.decode(str));
@@ -17,12 +19,12 @@ class HomePageModel {
     this.zone
   });
 
-  Zone? zone;
+  ZoneResult? zone;
   int? profilePercentage;
   List<HomePageModelContent>? content;
 
   factory HomePageModel.fromJson(Map<String, dynamic> json) => HomePageModel(
-    zone: json["zone"] == null ? null : Zone.fromJson(json["zone"]),
+    zone: json["zone"] == null ? null : ZoneResult.fromJson(json["zone"]),
     profilePercentage: json["profile_percentage"] == null ? null : json["profile_percentage"],
     content: json["content"] == null ? null : List<HomePageModelContent>.from(json["content"].map((x) => HomePageModelContent.fromJson(x))),
   );
@@ -131,7 +133,7 @@ class ContentContent {
   int? zone;
   String? title;
   String? image;
-  Zone? fitnessCenter;
+  ZoneResult? fitnessCenter;
 
   factory ContentContent.fromJson(Map<String, dynamic> json) => ContentContent(
     id: json["id"],
@@ -158,7 +160,7 @@ class ContentContent {
     zone: json["zone"] == null ? null : json["zone"],
     title: json["title"] == null ? null : json["title"],
     image: json["image"] == null ? null : json["image"],
-    fitnessCenter: json["fitness_center"] == null ? null : Zone.fromJson(json["fitness_center"]),
+    fitnessCenter: json["fitness_center"] == null ? null : ZoneResult.fromJson(json["fitness_center"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -187,26 +189,6 @@ class ContentContent {
     "title": title == null ? null : title,
     "image": image == null ? null : image,
     "fitness_center": fitnessCenter == null ? null : fitnessCenter!.toJson(),
-  };
-}
-
-class Zone {
-  Zone({
-    this.id,
-    this.name,
-  });
-
-  int? id;
-  String? name;
-
-  factory Zone.fromJson(Map<String, dynamic> json) => Zone(
-    id: json["id"] == null ? null : json["id"],
-    name: json["name"] == null ? null : json["name"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
   };
 }
 

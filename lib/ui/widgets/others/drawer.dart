@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/repositories/product_repo.dart';
+import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/profile_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../bloc/authentication_bloc/authentication_bloc.dart';
+import '../dialog/custom_dialog.dart';
 
 class CustomDrawer extends StatefulWidget {
   final String userName;
@@ -18,7 +23,6 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-
   late ProfileBloc _profileBloc;
 
   @override
@@ -30,7 +34,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Drawer(
       child: SafeArea(
@@ -177,4 +180,47 @@ class _CustomDrawerState extends State<CustomDrawer> {
       ],
     );
   }
+
+  Widget buildLogout(BuildContext context) {
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: InkWell(
+        onTap: () {
+          showDialog(
+              context: context,
+              //barrierDismissible: false,
+              builder: (_) {
+                return CustomDialog(
+                  title: 'Log Out',
+                  subtitle: 'Do you want to log out? ',
+                  yesTitle: 'Yes',
+                  noTitle: 'Cancel',
+                  yes: () {
+                    //logout
+                    Navigator.pop(context, true);
+                    BlocProvider.of<AuthenticationBloc>(context)
+                        .add(AuthenticationLoggedOut());
+                  },
+                  no: () {
+                    Navigator.pop(context, false);
+                  },
+                );
+              });
+        },
+        child: Container(
+          color: Colors.white,
+          width: SizeConfig.screenWidth,
+          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
+          alignment: Alignment.centerLeft,
+          child: const Text('Logout',
+              style: TextStyle(
+                  color: Color.fromRGBO(34, 34, 34, 1),
+                  fontSize: 16,
+                  fontFamily: Constants.fontSemiBold)),
+        ),
+      ),
+    );
+  }
+
 }

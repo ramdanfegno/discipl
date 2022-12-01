@@ -61,13 +61,17 @@ class GymDetailContainer extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 10,
+                width: SizeConfig.blockSizeHorizontal * 15,
               ),
-              Text('$distance Kms away your location',
-                  style: TextStyle(
-                      color: Constants.blackLowerShade,
-                      fontSize: SizeConfig.blockSizeHorizontal * 4,
-                      fontFamily: Constants.fontRegular)),
+              Row(
+                children: [
+                  Text('$distance Kms away your location',
+                      style: const TextStyle(
+                          color: Constants.blackLowerShade,
+                          fontSize: 13,
+                          fontFamily: Constants.fontRegular)),
+                ],
+              ),
             ],
           ),
           SizedBox(
@@ -89,12 +93,12 @@ class GymDetailContainer extends StatelessWidget {
                 child: RatingBar.builder(
                     itemSize: SizeConfig.blockSizeHorizontal * 5,
                     initialRating: 3,
-                    minRating: 1,
+                    minRating: 0,
                     itemCount: 5,
                     itemPadding: EdgeInsets.symmetric(
                         horizontal: SizeConfig.blockSizeHorizontal * 0.5),
                     allowHalfRating: true,
-                    itemBuilder: (context, _) => Icon(
+                    itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: Constants.starColor,
                         ),
@@ -103,23 +107,26 @@ class GymDetailContainer extends StatelessWidget {
                     }),
               ),
               SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 2.3,
+                width: SizeConfig.blockSizeHorizontal * 1,
               ),
-              Text(
+              const Text(
                 '10 Reviwes',
                 style: TextStyle(
                     fontFamily: Constants.fontRegular,
-                    fontSize: SizeConfig.blockSizeHorizontal * 3.8,
+                    fontSize: 13,
                     color: Constants.appbarColor),
               )
             ],
           ),
           SizedBox(
-            height: SizeConfig.blockSizeHorizontal*5,
+            height: SizeConfig.blockSizeHorizontal * 5,
           ),
           SizedBox(
-            width: SizeConfig.blockSizeHorizontal*93,
-              child: Text(description,style: TextStyle(color: Constants.appbarColor),))
+              width: SizeConfig.blockSizeHorizontal * 93,
+              child: Text(
+                description,
+                style: const TextStyle(color: Constants.appbarColor),
+              ))
         ],
       ),
     );

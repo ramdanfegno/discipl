@@ -39,7 +39,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (Validators.isValidPhoneNumber(phone)) {
         Response? response = await _userRepository.sendOtp(phone);
         print("============ \n\n\n ${response!.data} \n\n\n===========");
-
+        print(response.statusCode);
         if(response != null && response.statusCode == 200){
           OtpResponse otpResponse = OtpResponse.fromJson(response.data);
           yield LoginState.success(otpResponseModel: otpResponse);

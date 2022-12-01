@@ -11,8 +11,16 @@ class LoadListingPage extends FCListEvent {
   final int pageNo;
   final String? searchQ;
   final String? categoryId;
+  final ZoneResult? zone;
 
-  LoadListingPage({required this.forceRefresh,required this.slug,required this.pageNo,this.searchQ,this.categoryId});
+  LoadListingPage({
+    required this.forceRefresh,
+    required this.slug,
+    required this.pageNo,
+    this.searchQ,
+    this.categoryId,
+    required this.zone
+  });
 }
 
 class RefreshListingPage extends FCListEvent {
@@ -21,8 +29,16 @@ class RefreshListingPage extends FCListEvent {
   final int pageNo;
   final String? searchQ;
   final String? categoryId;
+  final ZoneResult? zone;
 
-  RefreshListingPage({required this.forceRefresh,required this.slug,required this.pageNo,this.searchQ,this.categoryId});
+  RefreshListingPage({
+    required this.forceRefresh,
+    required this.slug,
+    required this.pageNo,
+    this.searchQ,
+    this.categoryId,
+    required this.zone
+  });
 }
 
 class SearchListingPage extends FCListEvent {
@@ -31,8 +47,16 @@ class SearchListingPage extends FCListEvent {
   final String? searchQ;
   final int pageNo;
   final String? categoryId;
+  final ZoneResult? zone;
 
-  SearchListingPage({required this.forceRefresh,required this.slug,required this.searchQ,required this.pageNo,this.categoryId});
+  SearchListingPage({
+    required this.forceRefresh,
+    required this.slug,
+    required this.searchQ,
+    required this.pageNo,
+    required this.zone,
+    this.categoryId
+  });
 }
 
 class PaginateListingPage extends FCListEvent {
@@ -42,6 +66,15 @@ class PaginateListingPage extends FCListEvent {
   final String? searchQ;
   final List<FitnessCenterModel>? fcList;
   final String? categoryId;
+  final ZoneResult? zone;
 
-  PaginateListingPage({required this.forceRefresh,this.searchQ,required this.slug,required this.pageNo,required this.fcList,this.categoryId});
+  PaginateListingPage({
+    required this.forceRefresh,
+    this.searchQ,
+    required this.slug,
+    required this.pageNo,
+    required this.fcList,
+    required this.zone,
+    this.categoryId
+  });
 }

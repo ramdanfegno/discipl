@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
+
 import 'home_page_model.dart';
 
 FitnessCenterListModel fitnessCenterListModelFromJson(String str) => FitnessCenterListModel.fromJson(json.decode(str));
@@ -183,38 +185,18 @@ class Institution {
 
   int? id;
   String? name;
-  Zone? zone;
+  ZoneResult? zone;
 
   factory Institution.fromJson(Map<String, dynamic> json) => Institution(
     id: json["id"] == null ? null : json["id"],
     name: json["name"] == null ? null : json["name"],
-    zone: json["zone"] == null ? null : Zone.fromJson(json["zone"]),
+    zone: json["zone"] == null ? null : ZoneResult.fromJson(json["zone"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
     "zone": zone == null ? null : zone!.toJson(),
-  };
-}
-
-class Zone {
-  Zone({
-    this.id,
-    this.name,
-  });
-
-  int? id;
-  String? name;
-
-  factory Zone.fromJson(Map<String, dynamic> json) => Zone(
-    id: json["id"] == null ? null : json["id"],
-    name: json["name"] == null ? null : json["name"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
   };
 }
 

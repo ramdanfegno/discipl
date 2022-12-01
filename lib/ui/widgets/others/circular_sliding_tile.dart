@@ -8,71 +8,75 @@ class CircularSlidingTile extends StatelessWidget {
   final String? title;
 
   const CircularSlidingTile(
-      {Key? key,
-        required this.content,
-        required this.title
-        })
+      {Key? key, required this.content, required this.title})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.only(
-              left: SizeConfig.blockSizeHorizontal * 0),
-          child: SizedBox(
-            width: SizeConfig.blockSizeHorizontal * 75,
-            child: Text(
+        Row(
+          children: [
+            SizedBox(
+              width: SizeConfig.blockSizeHorizontal * 4,
+            ),
+            Text(
               title!,
               style: TextStyle(
                   fontSize: SizeConfig.blockSizeHorizontal * 6,
                   fontFamily: Constants.fontMedium),
             ),
-          ),
+          ],
         ),
-        (content != null) ?
         SizedBox(
-          height: SizeConfig.blockSizeHorizontal * 27,
-          width: MediaQuery.of(context).size.width,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: content.length,
-              physics: const AlwaysScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, int index) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                      left: SizeConfig.blockSizeHorizontal * 1.5,
-                      right: SizeConfig.blockSizeHorizontal * 1.5),
-                  child: Column(
-                    children: [
-                      Container(
-                          height: SizeConfig.blockSizeHorizontal*19.5,
-                          width: SizeConfig.blockSizeHorizontal * 19.5,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Constants.primaryColor),
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(3),
-                          child: Image.network(
-                            (content[index].logo != null) ? content[index].logo! : '',
-                            fit: BoxFit.contain,
-                          )
-                      ),
-                      SizedBox(
-                        height: SizeConfig.blockSizeHorizontal*2,
-                      ),
-                      Text(
-                        (content[index].name != null) ? content[index].name! : '',
-                        style: const TextStyle(
-                            fontFamily: Constants.fontRegular
-                        ),),
-                    ],
-                  ),
-                );
-              }),
-        ) : Container()
+          height: SizeConfig.blockSizeHorizontal * 3,
+        ),
+        (content != null)
+            ? SizedBox(
+                height: SizeConfig.blockSizeHorizontal * 27,
+                width: MediaQuery.of(context).size.width,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: content.length,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, int index) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                            left: SizeConfig.blockSizeHorizontal * 4,
+                            right: SizeConfig.blockSizeHorizontal * 1.5),
+                        child: Column(
+                          children: [
+                            Container(
+                                height: SizeConfig.blockSizeHorizontal * 19.5,
+                                width: SizeConfig.blockSizeHorizontal * 19.5,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Constants.primaryColor),
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(3),
+                                child: Image.network(
+                                  (content[index].logo != null)
+                                      ? content[index].logo!
+                                      : '',
+                                  fit: BoxFit.contain,
+                                )),
+                            SizedBox(
+                              height: SizeConfig.blockSizeHorizontal * 2,
+                            ),
+                            Text(
+                              (content[index].name != null)
+                                  ? content[index].name!
+                                  : 'Amenities',
+                              style: const TextStyle(
+                                  fontFamily: Constants.fontRegular),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+              )
+            : Container()
       ],
     );
   }

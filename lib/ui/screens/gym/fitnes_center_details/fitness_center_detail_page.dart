@@ -28,9 +28,7 @@ class FitnessCenterDetailPage extends StatefulWidget {
       _FitnessCenterDetailPageState();
 }
 
-class _FitnessCenterDetailPageState
-    extends State<FitnessCenterDetailPage> {
-
+class _FitnessCenterDetailPageState extends State<FitnessCenterDetailPage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -42,17 +40,15 @@ class _FitnessCenterDetailPageState
           child: SingleChildScrollView(
             child: Column(
               children: [
-
                 BlocBuilder<FCDetailBloc, FCDetailState>(
                   builder: (context, state) {
                     if (state is FCDetailFetchSuccess) {
-                      if(state.errorMsg != null){
+                      if (state.errorMsg != null) {
                         showToast(state.errorMsg!);
                       }
-                      if(state.details != null){
+                      if (state.details != null) {
                         return fcDetailView(state.details!, state.isLoading);
-                      }
-                      else{
+                      } else {
                         return buildErrorView('List is empty!');
                       }
                     }
@@ -65,7 +61,6 @@ class _FitnessCenterDetailPageState
                     return Container();
                   },
                 ),
-
               ],
             ),
           ),
@@ -74,43 +69,44 @@ class _FitnessCenterDetailPageState
     );
   }
 
-  Widget fcDetailView(FitnessCenterModel details,bool isLoading){
-
+  Widget fcDetailView(FitnessCenterModel details, bool isLoading) {
     String address = '';
-    if(details.addressLine1 != null){
+    if (details.addressLine1 != null) {
       address += details.addressLine1!;
     }
-    if(details.addressLine2 != null){
+    if (details.addressLine2 != null) {
       address += ', ';
       address += details.addressLine2!;
     }
-    if(details.addressLine3 != null){
+    if (details.addressLine3 != null) {
       address += ', ';
       address += details.addressLine3!;
     }
-    if(details.addressLine4 != null){
+    if (details.addressLine4 != null) {
       address += ', ';
       address += details.addressLine4!;
       address += '.';
     }
 
     List<Amenities> amenities = [];
-    if(details.amenities != null){
+    if (details.amenities != null) {
       amenities.add(details.amenities!);
     }
 
     return Column(
       children: [
-
         const GymImageContainer(),
 
         /*=========Gym Detail Container=========*/
 
         GymDetailContainer(
-          description: (details.description != null) ? details.description! : '',
+          description:
+              (details.description != null) ? details.description! : '',
           gymnasium: 'Gymnasium',
           gymName: (details.name != null) ? details.name! : '',
-          place: (details.location != null) ? details.location! : '',
+          place: (details.institution != null)
+              ? details.institution!.zone!.name!
+              : 'Location',
           distance: '5',
         ),
 
@@ -122,10 +118,11 @@ class _FitnessCenterDetailPageState
 
         /*=======Gym time Tile========*/
 
-        (details.workingTime != null) ?
-        GymWorkingTimeTile(
-          time: details.workingTime,
-        ) : Container(),
+        (details.workingTime != null)
+            ? GymWorkingTimeTile(
+                time: details.workingTime,
+              )
+            : Container(),
 
         /*=======Gym amenities Tile========*/
 
@@ -144,8 +141,8 @@ class _FitnessCenterDetailPageState
         /*=======Gym rules Tile========*/
 
         BulletinTileWidget(
-            bulletinHeading: 'Rules',
-            category: details.rules,
+          bulletinHeading: 'Rules',
+          category: details.rules,
         ),
 
         /*=======Gym plan Tile========*/
@@ -162,44 +159,42 @@ class _FitnessCenterDetailPageState
                 context,
                 MaterialPageRoute(
                     builder: (context) => RequestCallBackPage(
-                      fitnessCenterID: details.id.toString(),
-                      categoryList: details.category!,
-                    )));
+                          fitnessCenterID: details.id.toString(),
+                          categoryList: details.category!,
+                        )));
           },
         )
       ],
     );
   }
 
-  Widget buildErrorView(String msg){
+  Widget buildErrorView(String msg) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: SizeConfig.blockSizeVertical*60,
+      height: SizeConfig.blockSizeVertical * 60,
       child: Center(
         child: Text(
           msg,
           style: const TextStyle(
               color: Constants.fontColor1,
               fontSize: 22,
-              fontFamily: Constants.fontRegular
-          ),
+              fontFamily: Constants.fontRegular),
         ),
       ),
     );
   }
 
-  Widget buildLoadingView(){
+  Widget buildLoadingView() {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: SizeConfig.blockSizeVertical*60,
+      height: SizeConfig.blockSizeVertical * 60,
       child: Center(
         child: ColorLoader5(),
       ),
     );
   }
 
-  showToast(String msg){
+  showToast(String msg) {
     Fluttertoast.showToast(msg: msg);
   }
-
 }

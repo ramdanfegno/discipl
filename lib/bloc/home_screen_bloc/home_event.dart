@@ -7,5 +7,7 @@ abstract class HomeEvent extends Equatable {
 
 class LoadHome extends HomeEvent {
   final bool forceRefresh;
-  LoadHome({required this.forceRefresh});
+  final ZoneResult? zone;
+
+  LoadHome({required this.forceRefresh,required this.zone});
 }

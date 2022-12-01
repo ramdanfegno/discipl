@@ -20,7 +20,10 @@ class AuthenticationSuccess extends AuthenticationState {
   final String? message,userName;
   final bool isGuest;
   final bool isLoggedIn;
+  final ZoneResult? zoneResult;
+
   const AuthenticationSuccess({this.message,required this.isLoggedIn,
+    required this.zoneResult,
     required this.isGuest,this.userName});
 
   @override

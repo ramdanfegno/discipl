@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
-import '../../../../models/home_page_model.dart';
-
 class SquareBannerTile extends StatelessWidget {
-  final String? title;
+  final String title;
   final List<ContentContent>? content;
-  final Function()? seeAllPressed;
+  final Function() seeAllPressed;
 
   const SquareBannerTile(
       {Key? key,
@@ -32,7 +31,7 @@ class SquareBannerTile extends StatelessWidget {
                 child: SizedBox(
                   width: SizeConfig.blockSizeHorizontal * 75,
                   child: Text(
-                    (title != null) ? title! : '',
+                    'Featured Transformation',
                     style: TextStyle(
                         fontSize: 18,
                         fontFamily: Constants.fontMedium),

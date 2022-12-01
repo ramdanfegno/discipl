@@ -44,7 +44,6 @@ class GymWorkingTimeTile extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: time!.length,
                       itemBuilder: (context, int index) {
-
                         String s = '';
                         if(time![index].opensAt != null){
                           s += time![index].opensAt!;
@@ -59,7 +58,7 @@ class GymWorkingTimeTile extends StatelessWidget {
                               left: SizeConfig.blockSizeHorizontal * 1.5,
                               right: SizeConfig.blockSizeHorizontal * 1.5),
                           child: Container(
-                            width: SizeConfig.blockSizeHorizontal * 35,
+                            width: SizeConfig.blockSizeHorizontal * 38,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                     SizeConfig.blockSizeHorizontal * 2),
@@ -68,6 +67,7 @@ class GymWorkingTimeTile extends StatelessWidget {
                                 child: Text(
                               s,
                               style: const TextStyle(
+                                fontSize: 12.5,
                                   color: Constants.primaryColor,
                                   fontFamily: Constants.fontMedium),
                             )),
