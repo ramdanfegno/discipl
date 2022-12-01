@@ -418,7 +418,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
       LoginResponse loginResponse = LoginResponse.fromJson(response.data);
       //store login response
 
-      if (response.statusCode == 202) {
+      if (response.statusCode == 202 || response.statusCode == 200) {
         // getCartFromApi(cart);
         _timer.cancel();
         currentText = '';
@@ -472,7 +472,11 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
     Response? response = await widget.userRepository.reSendOtp(
         "${widget.otpResponseModel!.id}");
     textEditingController.text = currentText;
-    if (response!.statusCode == 200) {}
+    print(response!.statusCode);
+    print(response.statusMessage);
+    print(response.data);
+
+    if (response.statusCode == 200) {}
   }
 
   Future<bool> _onBackPressed() async {

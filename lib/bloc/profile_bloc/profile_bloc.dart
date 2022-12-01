@@ -28,12 +28,13 @@ class ProfileBloc
   }
 
   Stream<ProfileState> _mapLoadProfileToState() async* {
-    try{
+    print('_mapLoadProfileToState');
       yield ProfileFetchLoading();
       UserProfile? userProfile1 = await _userRepository.getProfileDetailsLocal();
       UserProfile? userProfile2;
       Map<String,dynamic> data = {};
       if(userProfile1 != null){
+        print('userProfile1 not null');
         if(userProfile1.heightCm != null){
           data['height_cm'] = userProfile1.heightCm;
         }
@@ -50,9 +51,14 @@ class ProfileBloc
       }
       Response? response = await _userRepository.getUserProfile(true);
       if(response != null){
+        print('getUserProfile');
+        print(response.statusCode);
+        print(response.statusMessage);
+        print(response.data);
         if(response.statusCode == 200){
           userProfile2 = UserProfile.fromJson(response.data);
           if(userProfile2 != null){
+            print('userProfile2 not null');
             if(userProfile2.heightCm != null){
               data['height_cm'] = userProfile2.heightCm;
             }
@@ -60,10 +66,10 @@ class ProfileBloc
               data['weight'] = userProfile2.weight;
             }
             if(userProfile2.neck != null){
-              data['neck'] = userProfile2.weight;
+              data['neck'] = userProfile2.neck;
             }
             if(userProfile2.waist != null){
-              data['waist'] = userProfile2.weight;
+              data['waist'] = userProfile2.waist;
             }
           }
           yield ProfileFetchSuccess(userProfile: userProfile2,isLoading: false,data: data);
@@ -84,16 +90,18 @@ class ProfileBloc
               data['weight'] = userProfile2.weight;
             }
             if(userProfile2.neck != null){
-              data['neck'] = userProfile2.weight;
+              data['neck'] = userProfile2.neck;
             }
             if(userProfile2.waist != null){
-              data['waist'] = userProfile2.weight;
+              data['waist'] = userProfile2.waist;
             }
           }
           yield ProfileFetchSuccess(userProfile: userProfile1,isLoading: false,errorMsg: 'Unable to load profile details',data: data);
         }
       }
-    }
+      try{
+
+      }
     catch(e){
       print(e.toString());
       yield ProfileFetchFailure(message: e.toString());

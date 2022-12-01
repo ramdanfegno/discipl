@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/select_result.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/color_loader.dart';
@@ -21,8 +23,9 @@ import 'components/select_gender.dart';
 
 class CalculateView extends StatefulWidget {
   final UserProfile? profile;
+  final bool isFromProfile;
 
-  const CalculateView({Key? key,required this.profile}) : super(key: key);
+  const CalculateView({Key? key,required this.profile,required this.isFromProfile}) : super(key: key);
 
   @override
   _CalculateViewState createState() => _CalculateViewState();
@@ -63,8 +66,8 @@ class _CalculateViewState extends State<CalculateView> {
       if(widget.profile!.dob != null && widget.profile!.dob != ""){
         _currentTab = 2;
         var s  = widget.profile!.dob!.split('-');
-        //DateTime t = DateTime(int.parse(s[0]),[]);
-        DateTime? t = DateTime.tryParse(widget.profile!.dob!);
+        DateTime t = DateTime(int.parse(s[0]),int.parse(s[1]),int.parse(s[2]));
+        //DateTime? t = DateTime.tryParse(widget.profile!.dob!);
         if(t != null){
           _dob = t;
         }
@@ -332,6 +335,8 @@ class _CalculateViewState extends State<CalculateView> {
       setState(() {
         isLoading = true;
       });
+      print('_submit');
+      print(_profileDetails);
       Response? response = await userRepository.fitnessCalculate(_profileDetails);
       if(response != null){
         print('_submit');
@@ -378,6 +383,7 @@ class _CalculateViewState extends State<CalculateView> {
   }
 
   routeToResultPage(FitnessResponse response){
+    BlocProvider.of<ProfileBloc>(context).add(LoadProfile());
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return SelectResult(fitnessResponse: response, data: _profileDetails);
     }));

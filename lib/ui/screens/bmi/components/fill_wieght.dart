@@ -19,6 +19,7 @@ class _FillWeightState extends State<FillWeight> {
 
   double? _weight;
   int? _kg,_gm;
+  int? _startingPosition;
 
   @override
   void initState() {
@@ -27,11 +28,22 @@ class _FillWeightState extends State<FillWeight> {
     if(widget.weight != null){
       print(widget.weight);
       _weight = widget.weight;
+      _kg = _weight!.toInt();
+      _gm = ((_weight!*1000) - (_weight!.toInt()*1000)).toInt();
+      print('_kg');
+      print(_kg);
+
+      print('_gm');
+      print(_gm);
     }
     else{
       _weight = 60.0;
       _kg = 60;
       _gm = 0;
+    }
+    _startingPosition = 0;
+    if(_gm != null && _gm != 0){
+      _startingPosition = _gm! ~/ 100;
     }
   }
 
@@ -84,9 +96,8 @@ class _FillWeightState extends State<FillWeight> {
             child: WheelChooser.integer(
               onValueChanged: (v){
                 _kg = v;
-                int i = _weight!.round();
-                _weight = _weight! - i;
-                _weight = _weight! + _kg!;
+                _gm = ((_weight!*1000) - (_weight!.toInt()*1000)).toInt();
+                _weight = ((_kg! * 1000) + _gm!) / 1000 ;
                 setState(() {});
                 print('_weight');
                 print(_weight);
@@ -146,15 +157,14 @@ class _FillWeightState extends State<FillWeight> {
               ],
               onValueChanged: (v){
                 _gm = v;
-                int i = _weight!.round();
-                print('i');
-                print(i);
-                _weight = i + (_gm!/1000);
+                _kg = _weight!.toInt();
+                _weight = ((_kg! * 1000) + _gm!) / 1000 ;
                 setState(() {});
                 print('_weight');
                 print(_weight);
                 widget.onFilled(_weight!);
               },
+              startPosition: _startingPosition,
               selectTextStyle: const TextStyle(
                   color: Constants.fontColor1,
                   fontSize: 14,
