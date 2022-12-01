@@ -265,8 +265,12 @@ class _LoginFormState extends State<LoginForm> {
               if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(v)) {
                 return 'Enter 10 digit phone number';
               }
+              if(v == '0000000000' || v[0] == '0'){
+                return 'Enter a valid phone number';
+              }
               return null;
-            },            cursorColor: Constants.primaryColor,
+            },
+            cursorColor: Constants.primaryColor,
             cursorHeight: 20,
             style: TextStyle(
                 color: Colors.grey[800],

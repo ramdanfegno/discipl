@@ -19,7 +19,10 @@ class AuthenticationLoggedOut extends AuthenticationEvent {}
 
 class AuthenticationSkip extends AuthenticationEvent {}
 
-class AuthenticationRetry extends AuthenticationEvent {}
+class AuthenticationRetry extends AuthenticationEvent {
+  final String? msg;
+  AuthenticationRetry({this.msg});
+}
 
 class AuthenticationSkipProfile extends AuthenticationEvent {
   final Map<String,dynamic> data;

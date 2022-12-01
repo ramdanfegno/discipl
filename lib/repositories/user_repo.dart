@@ -220,10 +220,14 @@ class UserRepository{
         'Content-Type': 'multipart/form-data',
       };
 
+      print('updateUserDetails');
       print('body');
       print(body);
 
       Response? response = await apiQuery.putQuery(Constants.apiUserProfile,headers,formData, 'UpdateProfile');
+      print(response!.statusCode);
+      print(response.statusMessage);
+      print(response.data);
       return response;
     } catch (exception) {
       print(exception.toString());

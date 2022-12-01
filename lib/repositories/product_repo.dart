@@ -148,6 +148,7 @@ class ProductRepository{
 
   //post enquiry
   Future<Response?> postEnquiry(Map<String,dynamic> details) async {
+    try {
 
     LoginResponse? loginResponse = await userRepository.getLoginResponse();
     Map<String,String> headers = {};
@@ -162,7 +163,6 @@ class ProductRepository{
 
     print(body);
 
-    try {
       Response? response = await apiQuery.postQuery(
           Constants.apiPostEnquiry,headers, body, 'PostEnquiry');
       return response;
@@ -177,11 +177,11 @@ class ProductRepository{
   Future<Response?> setLocation(Map<String,dynamic> data) async {
 
     LoginResponse? loginResponse = await userRepository.getLoginResponse();
-    String? token = loginResponse!.token;
-
-    Map<String,String> headers = {
-      'Authorization' : 'Token $token'
-    };
+    Map<String,String> headers = {};
+    if(loginResponse != null){
+      String? token = loginResponse.token;
+      headers['Authorization'] = 'Token $token';
+    }
 
     Map<String, dynamic> body = {};
 
