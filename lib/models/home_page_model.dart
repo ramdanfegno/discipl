@@ -111,7 +111,7 @@ class ContentContent {
   String? name;
   String? description;
   String? logo;
-  Amenities? amenities;
+  List<Amenities>? amenities;
   Institution? institution;
   List<Plan>? plans;
   List<Amenities>? rules;
@@ -140,7 +140,7 @@ class ContentContent {
     name: json["name"] == null ? null : json["name"],
     description: json["description"] == null ? null : json["description"],
     logo: json["logo"] == null ? null : json["logo"],
-    amenities: json["amenities"] == null ? null : Amenities.fromJson(json["amenities"]),
+    amenities: json["amenities"] == null ? null : List<Amenities>.from(json["amenities"].map((x) => Amenities.fromJson(x))),
     institution: json["institution"] == null ? null : Institution.fromJson(json["institution"]),
     plans: json["plans"] == null ? null : List<Plan>.from(json["plans"].map((x) => Plan.fromJson(x))),
     rules: json["rules"] == null ? null : List<Amenities>.from(json["rules"].map((x) => Amenities.fromJson(x))),
@@ -168,7 +168,7 @@ class ContentContent {
     "name": name == null ? null : name,
     "description": description == null ? null : description,
     "logo": logo == null ? null : logo,
-    "amenities": amenities == null ? null : amenities!.toJson(),
+    "amenities": amenities == null ? null : List<dynamic>.from(amenities!.map((x) => x.toJson())),
     "institution": institution == null ? null : institution!.toJson(),
     "plans": plans == null ? null : List<dynamic>.from(plans!.map((x) => x.toJson())),
     "rules": rules == null ? null : List<dynamic>.from(rules!.map((x) => x.toJson())),

@@ -15,13 +15,12 @@ class ProductRepository{
 
   //home page
   Future<Response?> getHomePage(bool forceRefresh,ZoneResult? zone) async {
-    try {
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
-      String? token = loginResponse!.token;
-
-      Map<String,String> headers = {
-        'Authorization' : 'Token $token'
-      };
+      Map<String,String> headers = {};
+      if(loginResponse != null){
+        String? token = loginResponse.token;
+        headers['Authorization'] = 'Token $token';
+      }
 
       Map<String,dynamic> queryParams = {};
       if(zone != null){
@@ -32,7 +31,9 @@ class ProductRepository{
           Constants.apiHome, headers, queryParams,
           'HomeApi', true, true, forceRefresh);
       return response;
-    }
+      try {
+
+      }
     catch(e){
       print(e.toString());
       return null;
@@ -43,11 +44,11 @@ class ProductRepository{
   Future<Response?> getFitnessCenterList(bool forceRefresh,String? slug,int pageNo,String? searchQ,String? categoryId,int? zoneId) async {
     try {
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
-      String? token = loginResponse!.token;
-
-      Map<String,String> headers = {
-        'Authorization' : 'Token $token'
-      };
+      Map<String,String> headers = {};
+      if(loginResponse != null){
+        String? token = loginResponse.token;
+        headers['Authorization'] = 'Token $token';
+      }
 
       Map<String,dynamic> queryParams = {
         'page' : pageNo.toString()
@@ -90,11 +91,11 @@ class ProductRepository{
     try {
       print('getFitnessCenterDetail');
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
-      String? token = loginResponse!.token;
-
-      Map<String,String> headers = {
-        'Authorization' : 'Token $token'
-      };
+      Map<String,String> headers = {};
+      if(loginResponse != null){
+        String? token = loginResponse.token;
+        headers['Authorization'] = 'Token $token';
+      }
 
       Response? response = await apiQuery.getQuery(
           '${Constants.apiFitnessCenterList}fc/$id/', headers, {},
@@ -116,11 +117,11 @@ class ProductRepository{
   Future<Response?> getZoneList(bool forceRefresh,int pageNo,String? searchQ) async {
     try {
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
-      String? token = loginResponse!.token;
-
-      Map<String,String> headers = {
-        'Authorization' : 'Token $token'
-      };
+      Map<String,String> headers = {};
+      if(loginResponse != null){
+        String? token = loginResponse.token;
+        headers['Authorization'] = 'Token $token';
+      }
 
       Map<String,String> queryParams = {
         'page' : pageNo.toString()
@@ -149,11 +150,11 @@ class ProductRepository{
   Future<Response?> postEnquiry(Map<String,dynamic> details) async {
 
     LoginResponse? loginResponse = await userRepository.getLoginResponse();
-    String? token = loginResponse!.token;
-
-    Map<String,String> headers = {
-      'Authorization' : 'Token $token'
-    };
+    Map<String,String> headers = {};
+    if(loginResponse != null){
+      String? token = loginResponse.token;
+      headers['Authorization'] = 'Token $token';
+    }
 
     Map<String, dynamic> body = {};
 
