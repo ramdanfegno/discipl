@@ -103,11 +103,11 @@ class UserRepository{
   Future<Response?> logOut(String userId) async {
     try {
       LoginResponse? loginResponse = await getLoginResponse();
-      String? token = loginResponse!.token;
-
-      Map<String,String> headers = {
-        'Authorization' : 'Token $token'
-      };
+      Map<String,String> headers = {};
+      if(loginResponse != null){
+        String? token = loginResponse.token;
+        headers['Authorization'] = 'Token $token';
+      }
 
       Map<String,dynamic> data = {
         'user_id' : userId,
@@ -126,11 +126,11 @@ class UserRepository{
   Future<Response?> getUserProfile(bool forceRefresh) async {
     try {
       LoginResponse? loginResponse = await getLoginResponse();
-      String? token = loginResponse!.token;
-
-      Map<String,String> headers = {
-        'Authorization' : 'Token $token'
-      };
+      Map<String,String> headers = {};
+      if(loginResponse != null){
+        String? token = loginResponse.token;
+        headers['Authorization'] = 'Token $token';
+      }
 
       Response? response = await apiQuery.getQuery(
           Constants.apiUserProfile, headers, {},
@@ -148,11 +148,11 @@ class UserRepository{
     try {
 
       LoginResponse? loginResponse = await getLoginResponse();
-      String? token = loginResponse!.token;
-
-      Map<String,String> headers = {
-        'Authorization' : 'Token $token'
-      };
+      Map<String,String> headers = {};
+      if(loginResponse != null){
+        String? token = loginResponse.token;
+        headers['Authorization'] = 'Token $token';
+      }
 
       Map<String, dynamic> body = {};
       if(details.isNotEmpty){

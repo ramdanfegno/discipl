@@ -96,8 +96,8 @@ class _FitnessCenterDetailPageState
     }
 
     List<Amenities> amenities = [];
-    if(details.amenities != null){
-      amenities.add(details.amenities!);
+    if(details.amenities!.isNotEmpty){
+      amenities.addAll(details.amenities!);
     }
 
     return Column(

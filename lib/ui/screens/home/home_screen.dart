@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
       key: _scaffoldKey,
       drawer: CustomDrawer(
         isGuest: widget.isGuest,
-        userName: widget.userName!,
+        userName: (widget.userName != null ) ? widget.userName! : null,
       ),
       appBar: CustomAppBar(
         drawerClicked: () {
@@ -169,15 +169,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   updateProfileDetails() async {
     try{
-      //store profile details
-      Response? response2 = await userRepository.getUserProfile(true);
-      print('updateProfileDetails');
-      print(response2!.statusCode);
-      print(response2.data);
-      print(response2.statusMessage);
-      if(response2 != null && response2.statusCode == 200){
-        UserProfile userProfile = UserProfile.fromJson(response2.data);
-        await userRepository.storeProfileDetails(userProfile);
+      if(!widget.isGuest){
+        //store profile details
+        Response? response2 = await userRepository.getUserProfile(true);
+        print('updateProfileDetails');
+        print(response2!.statusCode);
+        print(response2.data);
+        print(response2.statusMessage);
+        if(response2 != null && response2.statusCode == 200){
+          UserProfile userProfile = UserProfile.fromJson(response2.data);
+          await userRepository.storeProfileDetails(userProfile);
+        }
       }
     }catch(e){
       print(e.toString());
