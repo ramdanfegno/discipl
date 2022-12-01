@@ -31,6 +31,7 @@ class FitnessCenterDetailPage extends StatefulWidget {
 class _FitnessCenterDetailPageState
     extends State<FitnessCenterDetailPage> {
 
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -95,8 +96,8 @@ class _FitnessCenterDetailPageState
     }
 
     List<Amenities> amenities = [];
-    if(details.amenities != null){
-      amenities.add(details.amenities!);
+    if(details.amenities!.isNotEmpty){
+      amenities.addAll(details.amenities!);
     }
 
     return Column(

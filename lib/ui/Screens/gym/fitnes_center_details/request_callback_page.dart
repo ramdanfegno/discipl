@@ -50,11 +50,16 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
   }
 
   getProfile() async{
+
+    print('getProfile');
     isGuest = await userRepository.isGuest();
     if(!isGuest!){
+      print('isGuest false');
       UserProfile? userProfile = await userRepository.getProfileDetailsLocal();
       if(userProfile != null){
+        print('userProfile not null');
         if(userProfile.user != null){
+          print('userProfile user not null');
           if(userProfile.user!.firstName != null){
             _nameEditingController.text = userProfile.user!.firstName!;
           }
@@ -66,6 +71,9 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
           }
         }
       }
+      setState(() {
+
+      });
     }
   }
 
