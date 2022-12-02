@@ -3,6 +3,8 @@ import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
+import 'dart:math' as math;
+
 class GymImageContainer extends StatelessWidget {
   const GymImageContainer({Key? key}) : super(key: key);
 
@@ -32,10 +34,23 @@ class GymImageContainer extends StatelessWidget {
             child: Icon(
               HabitozIcons.clarityShareLine,
               color: Constants.primaryColor,
-              size: SizeConfig.blockSizeHorizontal*6.5,
+              size: SizeConfig.blockSizeHorizontal * 6.5,
             ),
           ),
-        )
+        ),
+        Positioned(
+            top: SizeConfig.blockSizeHorizontal * 8,
+            left: SizeConfig.blockSizeHorizontal * 4,
+            child: Transform.rotate(
+                angle: -math.pi,
+                child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      HabitozIcons.arrow,
+                      size: 32,
+                    )))),
       ],
     );
   }

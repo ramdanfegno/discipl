@@ -8,8 +8,7 @@ import '../../../../../utils/size_config.dart';
 class GymPlanTile extends StatelessWidget {
   final List<Plan> plan;
 
-  const GymPlanTile({Key? key, required this.plan})
-      : super(key: key);
+  const GymPlanTile({Key? key, required this.plan}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,9 @@ class GymPlanTile extends StatelessWidget {
                           width: SizeConfig.blockSizeHorizontal * 4,
                         ),
                         Text(
-                          (plan[index].amount != null) ? '${Constants.currencySymbol}${plan[index].amount.toString()}' : '',
+                          (plan[index].amount != null)
+                              ? '${Constants.currencySymbol}${plan[index].amount.toString()}'
+                              : '',
                           style: TextStyle(
                               fontFamily: Constants.fontBold,
                               fontSize: SizeConfig.blockSizeHorizontal * 5.5),
@@ -80,11 +81,17 @@ class GymPlanTile extends StatelessWidget {
                           SizedBox(
                             width: SizeConfig.blockSizeHorizontal * 2.5,
                           ),
-                          Text(
-                            (plan[index].duration != null) ? plan[index].duration! : '',
-                            style: const TextStyle(
-                                fontFamily: Constants.fontRegular,
-                                color: Constants.appbarColor),
+                          SizedBox(
+                            width: SizeConfig.blockSizeHorizontal*40,
+                            child: Text(
+                              (plan[index].duration != null)
+                                  ? plan[index].duration!
+                                  : '',
+                              style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontFamily: Constants.fontRegular,
+                                  color: Constants.appbarColor),
+                            ),
                           ),
                         ],
                       ),
@@ -106,11 +113,16 @@ class GymPlanTile extends StatelessWidget {
                           SizedBox(
                             width: SizeConfig.blockSizeHorizontal * 2.5,
                           ),
-                          Text(
-                            (plan[index].description != null) ? plan[index].description! : '',
-                            style: const TextStyle(
-                                fontFamily: Constants.fontRegular,
-                                color: Constants.appbarColor),
+                          SizedBox(
+                            width:SizeConfig.blockSizeHorizontal*85,
+                            child: Text(
+                              (plan[index].description != null)
+                                  ? plan[index].description!
+                                  : '',
+                              style: const TextStyle(
+                                  fontFamily: Constants.fontRegular,
+                                  color: Constants.appbarColor),
+                            ),
                           ),
                         ],
                       ),

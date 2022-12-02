@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:habitoz_fitness_app/models/fitness_center_list_model.dart';
+import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 class GymDetailContainer extends StatelessWidget {
-  final String gymName, place, distance, gymnasium, description;
+  final String gymName, place, distance, description;
+  final List<Amenities> category;
 
   const GymDetailContainer(
       {Key? key,
       required this.gymName,
       required this.place,
       required this.distance,
-      required this.gymnasium,
-      required this.description})
+      required this.description,
+      required this.category})
       : super(key: key);
 
   @override
@@ -42,16 +45,16 @@ class GymDetailContainer extends StatelessWidget {
           SizedBox(
             height: SizeConfig.blockSizeHorizontal * 3,
           ),
-          Row(
+          /* Row(
             children: [
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 2.5,
-              ),
-              const Icon(
+              ),*/
+          /*const Icon(
                 Icons.location_pin,
                 color: Constants.primaryColor,
-              ),
-              SizedBox(
+              ),*/
+          /*SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 26,
                 child: Text(
                   place,
@@ -59,11 +62,11 @@ class GymDetailContainer extends StatelessWidget {
                       fontSize: SizeConfig.blockSizeHorizontal * 4,
                       fontFamily: Constants.fontMedium),
                 ),
-              ),
-              SizedBox(
+              ),*/
+          /* SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 15,
-              ),
-              Row(
+              ),*/
+          /* Row(
                 children: [
                   Text('$distance Kms away your location',
                       style: const TextStyle(
@@ -72,8 +75,8 @@ class GymDetailContainer extends StatelessWidget {
                           fontFamily: Constants.fontRegular)),
                 ],
               ),
-            ],
-          ),
+           ],
+          ),*/
           SizedBox(
             height: SizeConfig.blockSizeHorizontal * 3,
           ),
@@ -82,14 +85,15 @@ class GymDetailContainer extends StatelessWidget {
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 4,
               ),
-              Text(gymnasium,
+
+              /*Text('',
                   style: TextStyle(
                       fontSize: SizeConfig.blockSizeHorizontal * 4,
-                      fontFamily: Constants.fontBold)),
-              SizedBox(
+                      fontFamily: Constants.fontBold)),*/
+              /*SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 16,
-              ),
-              SizedBox(
+              ),*/
+              /* SizedBox(
                 child: RatingBar.builder(
                     itemSize: SizeConfig.blockSizeHorizontal * 5,
                     initialRating: 3,
@@ -115,7 +119,7 @@ class GymDetailContainer extends StatelessWidget {
                     fontFamily: Constants.fontRegular,
                     fontSize: 13,
                     color: Constants.appbarColor),
-              )
+              )*/
             ],
           ),
           SizedBox(

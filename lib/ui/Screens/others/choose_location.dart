@@ -169,7 +169,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
           if(_currentLat != null && _currentLong != null){
             Map<String,String> data = {
-              'lattitude' : _currentLat.toString(),
+              'latitude' : _currentLat.toString(),
               'longitude' : _currentLong.toString(),
               'location_name' : _currentPlace!
             };

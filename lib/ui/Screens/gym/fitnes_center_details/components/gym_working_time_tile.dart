@@ -58,7 +58,7 @@ class GymWorkingTimeTile extends StatelessWidget {
                               left: SizeConfig.blockSizeHorizontal * 1.5,
                               right: SizeConfig.blockSizeHorizontal * 1.5),
                           child: Container(
-                            width: SizeConfig.blockSizeHorizontal * 38,
+                            width: SizeConfig.blockSizeHorizontal * 40,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                     SizeConfig.blockSizeHorizontal * 2),

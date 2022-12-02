@@ -89,8 +89,9 @@ class _FitnessCenterDetailPageState extends State<FitnessCenterDetailPage> {
     }
 
     List<Amenities> amenities = [];
-    if (details.amenities != null) {
-      amenities.add(details.amenities!);
+
+    if (details.amenities!.isNotEmpty) {
+      amenities.addAll(details.amenities!);
     }
 
     return Column(
@@ -100,13 +101,14 @@ class _FitnessCenterDetailPageState extends State<FitnessCenterDetailPage> {
         /*=========Gym Detail Container=========*/
 
         GymDetailContainer(
+          category: (details.category != null) ? details.category! : [],
           description:
               (details.description != null) ? details.description! : '',
-          gymnasium: 'Gymnasium',
           gymName: (details.name != null) ? details.name! : '',
-          place: (details.institution != null)
-              ? details.institution!.zone!.name!
-              : 'Location',
+          place:
+              (details.institution != null && details.institution!.zone != null)
+                  ? details.institution!.zone!.name!
+                  : 'Location',
           distance: '5',
         ),
 

@@ -15,6 +15,9 @@ class CircularSlidingTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: SizeConfig.blockSizeHorizontal*3,
+        ),
         Row(
           children: [
             SizedBox(

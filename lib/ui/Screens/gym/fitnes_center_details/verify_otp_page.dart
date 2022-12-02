@@ -92,7 +92,7 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
     );
     submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
-          border: Border.all(color: Constants.primaryColor),
+          border: Border.all(color: Constants.fontColor1),
           borderRadius: BorderRadius.circular(8),
           color: Colors.white
       ),
@@ -308,7 +308,7 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
             child: Text(
               'Resend',
               style: TextStyle(
-                  color: Constants.primaryColor,
+                  color: (isOtpTimedOut) ? Constants.primaryColor : const Color.fromRGBO(179, 179, 179, 1),
                   fontSize: 14,
                   fontFamily: (isOtpTimedOut)
                       ? Constants.fontSemiBold
@@ -437,6 +437,7 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
   }
 
   void resendOtp() async {
+    textEditingController.text = '';
     setState(() {
       isOtpTimedOut = false;
       _start = 2 * 60;

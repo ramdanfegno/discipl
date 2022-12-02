@@ -12,7 +12,7 @@ import '../../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../dialog/custom_dialog.dart';
 
 class CustomDrawer extends StatefulWidget {
-  final String userName;
+  final String? userName;
   final bool isGuest;
 
   const CustomDrawer({Key? key, required this.userName, required this.isGuest})
@@ -48,6 +48,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 12,
                 ),
+                (!widget.isGuest) ?
                 InkWell(
                     onTap: (){
                       _profileBloc.add(LoadProfile());
@@ -55,7 +56,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         return const ProfileScreen();
                       }));
                     },
-                    child: drawerTile(HabitozIcons.user, 'Profile')!),
+                    child: drawerTile(HabitozIcons.user, 'Profile')!) : Container(),
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 8,
                 ),
@@ -154,7 +155,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           width: SizeConfig.blockSizeHorizontal * 3,
         ),
         Text(
-          widget.userName,
+          (widget.userName != null) ? widget.userName! : 'LOGIN / SIGNUP',
           style: TextStyle(
               fontFamily: Constants.fontMedium,
               fontSize: SizeConfig.blockSizeHorizontal * 5.5),

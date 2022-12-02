@@ -9,21 +9,20 @@ class GymListViewTile extends StatelessWidget {
   final Function() onListTilePressed;
 
   const GymListViewTile(
-      {Key? key,
-        required this.fcData,
-        required this.onListTilePressed})
+      {Key? key, required this.fcData, required this.onListTilePressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     String categoryNames = '';
-    for(int i = 0; i < fcData!.category!.length; i++){
-     if(fcData!.category![i].name != null && fcData!.category![i].name != ''){
-       if( i != 0){
-         categoryNames += ',';
-       }
-       categoryNames += fcData!.category![i].name!;
-     }
+    for (int i = 0; i < fcData!.category!.length; i++) {
+      if (fcData!.category![i].name != null &&
+          fcData!.category![i].name != '') {
+        if (i != 0) {
+          categoryNames += ',';
+        }
+        categoryNames += fcData!.category![i].name!;
+      }
     }
     return Padding(
       padding:
@@ -40,7 +39,7 @@ class GymListViewTile extends StatelessWidget {
               ),
               Container(
                 height: SizeConfig.blockSizeHorizontal * 35.8,
-                width: SizeConfig.blockSizeHorizontal * 37.8,
+                width: SizeConfig.blockSizeHorizontal * 34.8,
                 decoration: BoxDecoration(
                     color: Colors.grey,
                     borderRadius: BorderRadius.circular(
@@ -63,7 +62,7 @@ class GymListViewTile extends StatelessWidget {
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 3,
                       ),
-                      Padding(
+                      /*Padding(
                         padding: EdgeInsets.only(
                             bottom: SizeConfig.blockSizeHorizontal * 1),
                         child: Icon(
@@ -71,7 +70,7 @@ class GymListViewTile extends StatelessWidget {
                           size: SizeConfig.blockSizeHorizontal * 3.8,
                           color: Constants.starColor,
                         ),
-                      ),
+                      ),*/
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 1,
                       ),
@@ -133,7 +132,9 @@ class GymListViewTile extends StatelessWidget {
                       /// need to verify data here
 
                       Text(
-                        (fcData!.location != null) ? fcData!.location.toString() : '',
+                        (fcData!.institution!.zone != null)
+                            ? fcData!.institution!.zone!.name!
+                            : 'Location',
                         style: TextStyle(
                             color: Constants.appbarColor,
                             fontFamily: Constants.fontRegular,
@@ -142,7 +143,7 @@ class GymListViewTile extends StatelessWidget {
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 1,
                       ),
-                      Container(
+                      /*Container(
                         width: SizeConfig.blockSizeHorizontal * 0.3,
                         height: SizeConfig.blockSizeHorizontal * 6,
                         color: Constants.appbarColor,
@@ -158,7 +159,7 @@ class GymListViewTile extends StatelessWidget {
                             color: Constants.appbarColor,
                             fontFamily: Constants.fontRegular,
                             fontSize: SizeConfig.blockSizeHorizontal * 3.5),
-                      )
+                      )*/
                     ],
                   )
                 ],
