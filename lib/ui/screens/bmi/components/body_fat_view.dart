@@ -17,32 +17,34 @@ class BodyFatView extends StatefulWidget {
 
 class _BodyFatViewState extends State<BodyFatView> {
 
-  late double _height,_weight,_neck,_waist;
+  late String? _height,_weight,_neck,_waist;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _height = 0;
-    _weight = 0;
-    _neck = 0;
-    _waist = 0;
+
+    _height = '';
+    _weight = '';
+    _neck = '';
+    _waist = '';
 
     print('widget.data');
     print(widget.data);
 
     if(widget.data.isNotEmpty){
+      print(widget.data);
       if(widget.data['height_cm'] != null){
-        _height = widget.data['height_cm'];
+        _height = widget.data['height_cm'].toStringAsFixed(0);
       }
       if(widget.data['weight'] != null){
-        _weight = widget.data['weight'];
+        _weight = widget.data['weight'].toStringAsFixed(0);
       }
       if(widget.data['neck'] != null){
-        _neck = widget.data['neck'];
+        _neck = widget.data['neck'].toStringAsFixed(0);
       }
       if(widget.data['waist'] != null){
-        _waist = widget.data['waist'];
+        _waist = widget.data['waist'].toStringAsFixed(0);
       }
     }
   }
@@ -299,7 +301,7 @@ class _BodyFatViewState extends State<BodyFatView> {
               ),
 
               Text(
-                '${_height.toStringAsFixed(0)} cm',
+                '$_height cm',
                 style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
@@ -324,7 +326,7 @@ class _BodyFatViewState extends State<BodyFatView> {
               ),
 
               Text(
-                '${_weight.toStringAsFixed(1)} Kg',
+                '$_weight Kg',
                 style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
@@ -349,7 +351,7 @@ class _BodyFatViewState extends State<BodyFatView> {
               ),
 
               Text(
-                '${_neck.toStringAsFixed(0)} cm',
+                '$_neck cm',
                 style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
@@ -374,7 +376,7 @@ class _BodyFatViewState extends State<BodyFatView> {
               ),
 
               Text(
-                '${_waist.toStringAsFixed(0)} cm',
+                '$_waist cm',
                 style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,

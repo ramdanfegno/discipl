@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:habitoz_fitness_app/repositories/product_repo.dart';
-import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
@@ -9,6 +7,7 @@ import 'package:habitoz_fitness_app/ui/screens/bmi/profile_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/authentication_bloc/authentication_bloc.dart';
+import '../../../utils/routes.dart';
 import '../dialog/custom_dialog.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -44,7 +43,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 10,
                 ),
-                profileimage()!,
+                profileImage()!,
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 12,
                 ),
@@ -69,8 +68,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 8,
                 ),
-                (!widget.isGuest)
-                    ? drawerTile(HabitozIcons.shutdown, 'Logout')!
+                (!widget.isGuest) ?
+                InkWell(
+                    onTap: (){
+                      buildLogout(context);
+                      },
+                    child: drawerTile(HabitozIcons.shutdown, 'Logout')!)
                     : Container(),
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 20,
@@ -139,7 +142,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
-  Widget? profileimage() {
+  Widget? profileImage() {
     return Row(
       children: [
         SizedBox(
@@ -148,17 +151,32 @@ class _CustomDrawerState extends State<CustomDrawer> {
         Container(
           height: SizeConfig.blockSizeHorizontal * 20,
           width: SizeConfig.blockSizeHorizontal * 20,
-          decoration: BoxDecoration(
-              color: Constants.appbarColor, shape: BoxShape.circle),
+          decoration: const BoxDecoration(
+              color: Constants.appbarColor,
+              shape: BoxShape.circle,
+            image: DecorationImage(
+              image: AssetImage('assets/images/png/user_image.png')
+            )
+          ),
         ),
         SizedBox(
           width: SizeConfig.blockSizeHorizontal * 3,
         ),
-        Text(
-          (widget.userName != null) ? widget.userName! : 'LOGIN / SIGNUP',
-          style: TextStyle(
-              fontFamily: Constants.fontMedium,
-              fontSize: SizeConfig.blockSizeHorizontal * 5.5),
+        InkWell(
+          onTap: (){
+            if(widget.isGuest){
+              BlocProvider.of<AuthenticationBloc>(context)
+                  .add(AuthenticationRetry(msg: 'Log in'));
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HabitozRoutes.app, (route) => false);
+            }
+          },
+          child: Text(
+            (widget.userName != null) ? widget.userName! : 'LOGIN / SIGNUP',
+            style: TextStyle(
+                fontFamily: Constants.fontMedium,
+                fontSize: SizeConfig.blockSizeHorizontal * 5.5),
+          ),
         ),
       ],
     );
@@ -182,46 +200,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
-  Widget buildLogout(BuildContext context) {
+  buildLogout(BuildContext context) {
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: InkWell(
-        onTap: () {
-          showDialog(
-              context: context,
-              //barrierDismissible: false,
-              builder: (_) {
-                return CustomDialog(
-                  title: 'Log Out',
-                  subtitle: 'Do you want to log out? ',
-                  yesTitle: 'Yes',
-                  noTitle: 'Cancel',
-                  yes: () {
-                    //logout
-                    Navigator.pop(context, true);
-                    BlocProvider.of<AuthenticationBloc>(context)
-                        .add(AuthenticationLoggedOut());
-                  },
-                  no: () {
-                    Navigator.pop(context, false);
-                  },
-                );
-              });
-        },
-        child: Container(
-          color: Colors.white,
-          width: SizeConfig.screenWidth,
-          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
-          alignment: Alignment.centerLeft,
-          child: const Text('Logout',
-              style: TextStyle(
-                  color: Color.fromRGBO(34, 34, 34, 1),
-                  fontSize: 16,
-                  fontFamily: Constants.fontSemiBold)),
-        ),
-      ),
-    );
+    print('buildLogout');
+    showDialog(
+        context: context,
+        //barrierDismissible: false,
+        builder: (_) {
+          return CustomDialog(
+            title: 'Log Out',
+            subtitle: 'Do you want to log out? ',
+            yesTitle: 'Yes',
+            noTitle: 'Cancel',
+            yes: () {
+              //logout
+              Navigator.pop(context, true);
+              BlocProvider.of<AuthenticationBloc>(context)
+                  .add(AuthenticationLoggedOut());
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HabitozRoutes.app, (route) => false);
+            },
+            no: () {
+              Navigator.pop(context, false);
+            },
+          );
+        });
   }
 
 }

@@ -45,6 +45,9 @@ class AuthenticationBloc
     else if (event is AuthenticationMoveToHomeScreen) {
       yield* _mapMoveToHomeState();
     }
+    else if (event is AuthenticationRetry) {
+      yield* _mapRetryLoginState(event.msg);
+    }
   }
 
   Stream<AuthenticationState> _mapAuthenticationStartedToState() async* {
@@ -115,9 +118,7 @@ class AuthenticationBloc
     _userRepository.clear();
     _userRepository.setIsLogged(false);
     _userRepository.setGuestFlag(false);
-    if (response!.statusCode == 200) {
-      yield const AuthenticationFailure(message: ' Logged out');
-    }
+    yield const AuthenticationFailure(message: ' Logged out');
   }
 
   Stream<AuthenticationState> _mapAuthenticationSkipToState() async* {
@@ -230,6 +231,13 @@ class AuthenticationBloc
     _userRepository.setIsLogged(true);
     ZoneResult? zoneResult = await _userRepository.getZoneDetailsLocal();
     yield AuthenticationSuccess(isGuest: false,isLoggedIn: true,zoneResult: zoneResult);
+  }
+
+  Stream<AuthenticationState> _mapRetryLoginState(String? msg) async*{
+    _userRepository.clear();
+    _userRepository.setGuestFlag(false);
+    _userRepository.setIsLogged(false);
+    yield AuthenticationFailure(message: msg!);
   }
 
 }

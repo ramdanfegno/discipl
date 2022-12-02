@@ -16,20 +16,21 @@ class BMRView extends StatefulWidget {
 
 class _BMRViewState extends State<BMRView> {
 
-  late double _height,_weight;
+  late String? _height,_weight;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _height = 0;
-    _weight = 0;
+    _height = '';
+    _weight = '';
     if(widget.data.isNotEmpty){
+      print(widget.data);
       if(widget.data['height_cm'] != null){
-        _height = widget.data['height_cm'];
+        _height = widget.data['height_cm'].toStringAsFixed(0);
       }
       if(widget.data['weight'] != null){
-        _weight = widget.data['weight'];
+        _weight = widget.data['weight'].toStringAsFixed(0);
       }
     }
   }
@@ -198,7 +199,7 @@ class _BMRViewState extends State<BMRView> {
               ),
 
               Text(
-                '${_height.toStringAsFixed(0)} cm',
+                '$_height cm',
                 style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,
@@ -223,7 +224,7 @@ class _BMRViewState extends State<BMRView> {
               ),
 
               Text(
-                '${_weight.toStringAsFixed(1)} Kg',
+                '$_weight Kg',
                 style: const TextStyle(
                     color: Color.fromRGBO(34, 34, 34, 1),
                     fontSize: 15,

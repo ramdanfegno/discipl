@@ -101,9 +101,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future pickImage(BuildContext context) async{
     try{
+      print('pickImage');
       final image = await ImagePicker().pickImage(source:ImageSource.gallery,imageQuality: 60);
-      if(image == null){
-        final imageTemporary = File(image!.path);
+      if(image != null){
+        print('image not null');
+        final imageTemporary = File(image.path);
         Map<String,dynamic> data = {
           'image' : imageTemporary
         };

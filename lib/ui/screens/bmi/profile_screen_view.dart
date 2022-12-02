@@ -216,6 +216,7 @@ class ProfileScreenView extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return CalculateView(
                     profile: userProfile,
+                    isFromProfile: true,
                   );
                 }));
               }
@@ -247,6 +248,7 @@ class ProfileScreenView extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return CalculateView(
                     profile: userProfile,
+                    isFromProfile: true,
                   );
                 }));
               }
@@ -278,6 +280,7 @@ class ProfileScreenView extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return CalculateView(
                     profile: userProfile,
+                    isFromProfile: true,
                   );
                 }));
               }

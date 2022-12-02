@@ -15,6 +15,8 @@ class ProductRepository{
 
   //home page
   Future<Response?> getHomePage(bool forceRefresh,ZoneResult? zone) async {
+    try {
+
       LoginResponse? loginResponse = await userRepository.getLoginResponse();
       Map<String,String> headers = {};
       if(loginResponse != null){
@@ -31,9 +33,8 @@ class ProductRepository{
           Constants.apiHome, headers, queryParams,
           'HomeApi', true, true, forceRefresh);
       return response;
-      try {
 
-      }
+    }
     catch(e){
       print(e.toString());
       return null;
@@ -148,21 +149,21 @@ class ProductRepository{
 
   //post enquiry
   Future<Response?> postEnquiry(Map<String,dynamic> details) async {
-
-    LoginResponse? loginResponse = await userRepository.getLoginResponse();
-    Map<String,String> headers = {};
-    if(loginResponse != null){
-      String? token = loginResponse.token;
-      headers['Authorization'] = 'Token $token';
-    }
-
-    Map<String, dynamic> body = {};
-
-    body = details;
-
-    print(body);
-
     try {
+
+      LoginResponse? loginResponse = await userRepository.getLoginResponse();
+      Map<String,String> headers = {};
+      if(loginResponse != null){
+        String? token = loginResponse.token;
+        headers['Authorization'] = 'Token $token';
+      }
+
+      Map<String, dynamic> body = {};
+
+      body = details;
+
+      print(body);
+
       Response? response = await apiQuery.postQuery(
           Constants.apiPostEnquiry,headers, body, 'PostEnquiry');
       return response;
@@ -175,21 +176,21 @@ class ProductRepository{
 
   //set location api
   Future<Response?> setLocation(Map<String,dynamic> data) async {
-
-    LoginResponse? loginResponse = await userRepository.getLoginResponse();
-    String? token = loginResponse!.token;
-
-    Map<String,String> headers = {
-      'Authorization' : 'Token $token'
-    };
-
-    Map<String, dynamic> body = {};
-
-    body = data;
-
-    print(body);
-
     try {
+
+      LoginResponse? loginResponse = await userRepository.getLoginResponse();
+      Map<String,String> headers = {};
+      if(loginResponse != null){
+        String? token = loginResponse.token;
+        headers['Authorization'] = 'Token $token';
+      }
+
+      Map<String, dynamic> body = {};
+
+      body = data;
+
+      print(body);
+
       Response? response = await apiQuery.postQuery(
           Constants.apiSetLocation,headers, body, 'SetLocation');
       return response;
