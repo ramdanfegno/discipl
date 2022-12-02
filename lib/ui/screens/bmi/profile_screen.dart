@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
+import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/profile_screen_view.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/color_loader.dart';
@@ -24,6 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   late UserProfile? userProfile;
   late ProfileBloc? _profileBloc;
+  final UserRepository userRepository = UserRepository();
 
   @override
   void initState() {
@@ -109,8 +112,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Map<String,dynamic> data = {
           'image' : imageTemporary
         };
-        _profileBloc!.add(UpdateProfile(details: data));
-        Fluttertoast.showToast(msg: 'Updating profile image....');
+        showToast('Updating profile picture');
+
+        Response? response = await userRepository.updateProfileImage(data);
+        if(response != null){
+          print('updateProfileImage 123');
+          print(response.statusCode);
+          print(response.statusMessage);
+          print(response.data);
+          if(response.statusCode == 200){
+            _profileBloc!.add(LoadProfile());
+          }
+          else{
+            showToast('Error updating profile picture');
+          }
+        }
+        else{
+          showToast('Error updating profile picture');
+        }
+        //_profileBloc!.add(UpdateProfileImage(details: data));
+        //Fluttertoast.showToast(msg: 'Updating profile image....');
       }
     }
     on PlatformException {

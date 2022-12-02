@@ -3,10 +3,9 @@ import 'package:habitoz_fitness_app/bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/fc_list_bloc/fc_list_bloc.dart';
 import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/models/zone_list_model.dart';
-import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/screens/feed/feed_pageview.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/components/category_list_tile.dart';
-import 'package:habitoz_fitness_app/ui/screens/others/choose_location.dart';
+import 'package:habitoz_fitness_app/ui/screens/zone_search/choose_location.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 import '../../../utils/constants.dart';

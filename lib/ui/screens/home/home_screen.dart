@@ -9,6 +9,7 @@ import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/models/zone_list_model.dart';
+import 'package:habitoz_fitness_app/repositories/product_repo.dart';
 import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
@@ -17,9 +18,11 @@ import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 import '../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import '../../../bloc/fc_list_bloc/fc_list_bloc.dart';
+import '../../../bloc/search_center_bloc/search_center_bloc.dart';
 import '../../widgets/others/color_loader.dart';
 import '../../widgets/others/drawer.dart';
 import '../bmi/profile_screen.dart';
+import '../search/search_page.dart';
 import 'home_screen_view.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late ProfileBloc _profileBloc;
   ZoneResult? _zone;
   final UserRepository userRepository = UserRepository();
+  final ProductRepository productRepository = ProductRepository();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -73,6 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
         isHomeAppBar: true,
         onBackPressed: (){
           //Navigator.pop(context);
+        },
+        searchClicked: (){
+          Navigator.push(context, _createSearchRoute());
         },
       ),
       backgroundColor: Colors.white,
@@ -185,4 +192,27 @@ class _HomeScreenState extends State<HomeScreen> {
       print(e.toString());
     }
   }
+
+  Route _createSearchRoute() {
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => BlocProvider(
+          create: (context) => SearchBLoc(
+            productRepository: productRepository,
+          ),
+          child: SearchPage(),
+        ),
+        transitionDuration: const Duration(milliseconds: 400),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = const Offset(0.0, 1.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+          var tween =
+          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        });
+  }
+
 }

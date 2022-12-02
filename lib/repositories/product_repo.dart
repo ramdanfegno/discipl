@@ -67,7 +67,7 @@ class ProductRepository{
       String apiName = 'FitnessCenterListApi$slug${pageNo.toString()}';
 
       if(searchQ != null){
-        queryParams['q'] = searchQ;
+        queryParams['search'] = searchQ;
         apiName += searchQ;
       }
 
@@ -132,7 +132,7 @@ class ProductRepository{
       String apiName = 'ZoneListApi${pageNo.toString()}';
 
       if(searchQ != null){
-        queryParams['q'] = searchQ;
+        queryParams['search'] = searchQ;
         apiName += searchQ;
       }
 
