@@ -70,11 +70,11 @@ class BannerTile extends StatelessWidget {
                       fcDetailBloc.add(LoadDetailPage(
                           forceRefresh: true,
                           id: content![index].id.toString()));
-                      Navigator.push(
+                     /* Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  const FitnessCenterDetailPage()));
+                                  const FitnessCenterDetailPage()));*/
                     },
                     child: Container(
                         height: SizeConfig.blockSizeHorizontal * 50,

@@ -44,6 +44,16 @@ class GymListViewTile extends StatelessWidget {
                     color: Colors.grey,
                     borderRadius: BorderRadius.circular(
                         SizeConfig.blockSizeHorizontal * 2)),
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2),
+                  child: Image.network(
+                    fcData!.images!.isNotEmpty
+                        ? fcData!.images![0].image!
+                        : 'https://blacksquad.dev.fegno.com/src/contents/Rectangle_358_1.jpg',
+                    fit: BoxFit.fill,
+                  ),
+                ),
               ),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 3,
@@ -105,7 +115,7 @@ class GymListViewTile extends StatelessWidget {
 
                   /// need to get data here
 
-                  Text(
+                  /*Text(
                     'Free trial not available',
                     style: TextStyle(
                         fontFamily: Constants.fontRegular,
@@ -113,7 +123,7 @@ class GymListViewTile extends StatelessWidget {
                         color: (false)
                             ? Constants.fontColor3
                             : Constants.primaryColor),
-                  ),
+                  ),*/
                   SizedBox(
                     height: SizeConfig.blockSizeHorizontal * 5,
                   ),

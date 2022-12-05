@@ -104,7 +104,8 @@ class ContentContent {
     this.title,
     this.image,
     this.fitnessCenter,
-    this.workingTime
+    this.workingTime,
+    this.images
   });
 
   int? id;
@@ -117,6 +118,7 @@ class ContentContent {
   List<Amenities>? rules;
   List<Amenities>? category;
   List<WorkingTime>? workingTime;
+  List<ImageModel>? images;
   String? opensAt;
   String? closesAt;
   String? mobile;
@@ -140,6 +142,7 @@ class ContentContent {
     name: json["name"] == null ? null : json["name"],
     description: json["description"] == null ? null : json["description"],
     logo: json["logo"] == null ? null : json["logo"],
+    images: json["images"] == null ? null : List<ImageModel>.from(json["images"].map((x) => ImageModel.fromJson(x))),
     amenities: json["amenities"] == null ? null : List<Amenities>.from(json["amenities"].map((x) => Amenities.fromJson(x))),
     institution: json["institution"] == null ? null : Institution.fromJson(json["institution"]),
     plans: json["plans"] == null ? null : List<Plan>.from(json["plans"].map((x) => Plan.fromJson(x))),
@@ -176,6 +179,7 @@ class ContentContent {
     "working_time": workingTime == null ? null : List<dynamic>.from(workingTime!.map((x) => x.toJson())),
     "mobile": mobile == null ? null : mobile,
     "email": email == null ? null : email,
+    "images": images == null ? null : List<dynamic>.from(images!.map((x) => x.toJson())),
     "location": location,
     "contact": contact == null ? null : contact,
     "address_line1": addressLine1 == null ? null : addressLine1,
@@ -189,6 +193,26 @@ class ContentContent {
     "title": title == null ? null : title,
     "image": image == null ? null : image,
     "fitness_center": fitnessCenter == null ? null : fitnessCenter!.toJson(),
+  };
+}
+
+class ImageModel {
+  ImageModel({
+    this.id,
+    this.image,
+  });
+
+  int? id;
+  String? image;
+
+  factory ImageModel.fromJson(Map<String, dynamic> json) => ImageModel(
+    id: json["id"] == null ? null : json["id"],
+    image: json["image"] == null ? null : json["image"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "image": image,
   };
 }
 

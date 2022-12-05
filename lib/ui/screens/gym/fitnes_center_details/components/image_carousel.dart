@@ -1,6 +1,6 @@
-/*
 import 'package:flutter/material.dart';
 
+import '../../../../../models/home_page_model.dart';
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/size_config.dart';
 
@@ -9,7 +9,7 @@ class ImageCarousel extends StatefulWidget {
   final double aspectRatio;
   final List<String?>? productRangeList;
   final List<String?>? titleList;
-  final List<b.Banner?>? banners;
+  final List<ImageModel>? images;
 
   // ignore: use_key_in_widget_constructors
   const ImageCarousel(
@@ -17,7 +17,7 @@ class ImageCarousel extends StatefulWidget {
       this.aspectRatio = 2,
       this.productRangeList,
       this.titleList,
-      this.banners});
+      this.images});
 
   @override
   State<StatefulWidget> createState() => ImageCarouselState();
@@ -47,45 +47,43 @@ class ImageCarouselState extends State<ImageCarousel> {
     ThemeData themeData = Theme.of(context);
 
     return Stack(children: [
-      AspectRatio(
-        aspectRatio: 2.56,
-        child: PageView(
-          controller: _controller,
-          pageSnapping: true,
-          allowImplicitScrolling: true,
-          onPageChanged: (index) {
-            setState(() {
-              _current = index;
-            });
-          },
-          children: List.generate(
-              widget.imageList!.length,
-              (index) => InkWell(
-                    onTap: () {
-                      Map<String, dynamic>? query = {
-                        "product_range": widget.banners![index]!.id
-                      };
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: Image.network(
-                            (widget.imageList![index] != null)
-                                ? widget.imageList![index]!
-                                : 'https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg',
-                            fit: BoxFit.fill,
-                          ),
-                        ),
+      PageView(
+        controller: _controller,
+        pageSnapping: true,
+        allowImplicitScrolling: true,
+        onPageChanged: (index) {
+          setState(() {
+            _current = index;
+          });
+        },
+        children: List.generate(
+            widget.imageList!.length,
+            (index) => InkWell(
+                  onTap: () {
+                    Map<String, dynamic>? query = {
+                      "product_range": widget.images![index]!.id
+                    };
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(
+                              SizeConfig.blockSizeHorizontal * 3),
+                          bottomLeft: Radius.circular(
+                              SizeConfig.blockSizeHorizontal * 3)),
+                      child: Image.network(
+                        (widget.imageList![index] != null)
+                            ? widget.imageList![index]!
+                            : 'https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg',
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  )),
-        ),
+                  ),
+                )),
       ),
       Positioned(
           bottom: 15,
@@ -118,4 +116,3 @@ class ImageCarouselState extends State<ImageCarousel> {
     ]);
   }
 }
-*/

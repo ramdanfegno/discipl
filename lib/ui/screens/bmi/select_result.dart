@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habitoz_fitness_app/models/fitness_response.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/result_display.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
+import '../../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../../utils/constants.dart';
+import '../../../utils/routes.dart';
 import 'components/result_tile_1.dart';
 
 class SelectResult extends StatefulWidget {
@@ -20,71 +23,74 @@ class _SelectResultState extends State<SelectResult> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
 
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 40,),
-              child:  Text(
-                'Your Results!',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 22,
-                    fontFamily: Constants.fontMedium),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 40,),
+                child:  Text(
+                  'Your Results!',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 22,
+                      fontFamily: Constants.fontMedium),
+                ),
               ),
-            ),
 
-            ResultTile(
-                title: 'BMI',
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ResultView(
-                        resultType: 'BMI',
-                        fitnessResponse: widget.fitnessResponse,
-                        data: widget.data,
-                        isFromProfile: true
-                    );
-                  }));
-                },
-                result: '${widget.fitnessResponse.bmi!.toStringAsFixed(2)} Kg/m2'
-            ),
+              ResultTile(
+                  title: 'BMI',
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return ResultView(
+                          resultType: 'BMI',
+                          fitnessResponse: widget.fitnessResponse,
+                          data: widget.data,
+                          isFromProfile: false
+                      );
+                    }));
+                  },
+                  result: '${widget.fitnessResponse.bmi!.toStringAsFixed(2)} Kg/m2'
+              ),
 
-            ResultTile(
-                title: 'BMR',
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ResultView(
-                        resultType: 'BMR',
-                        fitnessResponse: widget.fitnessResponse,
-                        data: widget.data,
-                        isFromProfile: true);
-                  }));
-                },
-                result: '${widget.fitnessResponse.bmr!.toStringAsFixed(2)} Calories/day'
-            ),
+              ResultTile(
+                  title: 'BMR',
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return ResultView(
+                          resultType: 'BMR',
+                          fitnessResponse: widget.fitnessResponse,
+                          data: widget.data,
+                          isFromProfile: false);
+                    }));
+                  },
+                  result: '${widget.fitnessResponse.bmr!.toStringAsFixed(2)} Calories/day'
+              ),
 
-            ResultTile(
-                title: 'Body Fat',
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ResultView(
-                        resultType: 'Body Fat',
-                        fitnessResponse: widget.fitnessResponse,
-                        data: widget.data,
-                        isFromProfile: true
-                    );
-                  }));
-                },
-                result: '${widget.fitnessResponse.bfp!.toString()} %'
-            ),
-          ],
-        )
+              ResultTile(
+                  title: 'Body Fat',
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return ResultView(
+                          resultType: 'Body Fat',
+                          fitnessResponse: widget.fitnessResponse,
+                          data: widget.data,
+                          isFromProfile: false
+                      );
+                    }));
+                  },
+                  result: '${widget.fitnessResponse.bfp!.toStringAsFixed(2)} %'
+              ),
+            ],
+          )
+        ),
       ),
     );
   }
@@ -111,6 +117,14 @@ class _SelectResultState extends State<SelectResult> {
         ),
       ),
     );
+  }
+
+  Future<bool> _onBackPressed() async {
+    BlocProvider.of<AuthenticationBloc>(context)
+        .add(AuthenticationMoveToHomeScreen());
+    Navigator.pushNamedAndRemoveUntil(
+        context, HabitozRoutes.app, (route) => false);
+    return false;
   }
 }
 

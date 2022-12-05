@@ -32,13 +32,13 @@ class AuthenticationSuccess extends AuthenticationState {
 
 /// To login screen
 class AuthenticationFailure extends AuthenticationState {
-  final String message;
+  final String? message;
 
   const AuthenticationFailure({required this.message});
 
   @override
   // TODO: implement props
-  List<Object> get props => [message];
+  List<Object> get props => [message!];
 
   @override
   String toString() => 'AuthenticationFailure';

@@ -15,7 +15,8 @@ class GymDetailContainer extends StatelessWidget {
       required this.place,
       required this.distance,
       required this.description,
-      required this.category})
+      required this.category,
+      })
       : super(key: key);
 
   @override
@@ -45,16 +46,16 @@ class GymDetailContainer extends StatelessWidget {
           SizedBox(
             height: SizeConfig.blockSizeHorizontal * 3,
           ),
-          /* Row(
+          Row(
             children: [
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 2.5,
-              ),*/
-          /*const Icon(
+              ),
+              const Icon(
                 Icons.location_pin,
                 color: Constants.primaryColor,
-              ),*/
-          /*SizedBox(
+              ),
+              SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 26,
                 child: Text(
                   place,
@@ -62,11 +63,11 @@ class GymDetailContainer extends StatelessWidget {
                       fontSize: SizeConfig.blockSizeHorizontal * 4,
                       fontFamily: Constants.fontMedium),
                 ),
-              ),*/
-          /* SizedBox(
+              ),
+              /* SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 15,
               ),*/
-          /* Row(
+              /*Row(
                 children: [
                   Text('$distance Kms away your location',
                       style: const TextStyle(
@@ -74,9 +75,9 @@ class GymDetailContainer extends StatelessWidget {
                           fontSize: 13,
                           fontFamily: Constants.fontRegular)),
                 ],
-              ),
-           ],
-          ),*/
+              ),*/
+            ],
+          ),
           SizedBox(
             height: SizeConfig.blockSizeHorizontal * 3,
           ),

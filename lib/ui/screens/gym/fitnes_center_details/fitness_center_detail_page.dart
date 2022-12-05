@@ -96,7 +96,9 @@ class _FitnessCenterDetailPageState extends State<FitnessCenterDetailPage> {
 
     return Column(
       children: [
-        const GymImageContainer(),
+        GymImageContainer(
+          imageCarousel: details.images!.isNotEmpty ? details.images! : [],
+        ),
 
         /*=========Gym Detail Container=========*/
 

@@ -12,6 +12,7 @@ import '../../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../../utils/routes.dart';
 import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/dialog/custom_dialog.dart';
+import 'calculate_view.dart';
 
 class ResultView extends StatefulWidget {
   final String? resultType;
@@ -106,9 +107,9 @@ class _ResultViewState extends State<ResultView> {
             child: BodyFatView(
               data: widget.data,
               result: (widget.userProfile != null && widget.userProfile!.bodyFatPercentage != null)
-                  ? widget.userProfile!.bodyFatPercentage!.toString() :
+                  ? widget.userProfile!.bodyFatPercentage!.toStringAsFixed(2) :
               (widget.fitnessResponse != null && widget.fitnessResponse!.bfp != null)
-                  ? widget.fitnessResponse!.bfp!.toString() : '0',
+                  ? widget.fitnessResponse!.bfp!.toStringAsFixed(2) : '0',
             ),
           );
       }
@@ -129,14 +130,26 @@ class _ResultViewState extends State<ResultView> {
 
   Widget homeButton() {
     return CustomButton(
-      title: 'Go to Home',
+      title: (widget.isFromProfile) ? 'Update' : 'Go to Home',
       backgroundColor: Constants.primaryColor,
       borderColor: Constants.primaryColor,
       titleColor: Colors.white,
       onPressed: () {
-        _authBloc.add(AuthenticationMoveToHomeScreen());
-        Navigator.pushNamedAndRemoveUntil(
-            context, HabitozRoutes.app, (route) => false);
+        if(!widget.isFromProfile){
+          _authBloc.add(AuthenticationMoveToHomeScreen());
+          Navigator.pushNamedAndRemoveUntil(
+              context, HabitozRoutes.app, (route) => false);
+        }
+        else{
+          //route to calculate bmi
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return CalculateView(
+              profile: widget.userProfile,
+              isFromProfile: false,
+            );
+          }));
+        }
+
       },
       height: SizeConfig.blockSizeHorizontal * 13,
       width: SizeConfig.blockSizeHorizontal* 40,

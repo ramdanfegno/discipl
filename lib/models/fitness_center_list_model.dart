@@ -64,7 +64,8 @@ class FitnessCenterModel {
     this.youtubeUrl,
     this.zone,
     this.rating,
-    this.workingTime
+    this.workingTime,
+    this.images
   });
 
   int? id;
@@ -74,6 +75,7 @@ class FitnessCenterModel {
   List<Amenities>? rules;
   List<Amenities>? category;
   List<WorkingTime>? workingTime;
+  List<ImageModel>? images;
   String? name;
   String? rating;
   String? description;
@@ -107,6 +109,7 @@ class FitnessCenterModel {
     logo: json["logo"] == null ? null : json["logo"],
     location: json["count"] == null ? null : json["location"],
     contact: json["contact"] == null ? null : json["contact"],
+    images: json["images"] == null ? null : List<ImageModel>.from(json["images"].map((x) => ImageModel.fromJson(x))),
     addressLine1: json["address_line1"] == null ? null : json["address_line1"],
     addressLine2: json["address_line2"] == null ? null : json["address_line2"],
     addressLine3: json["address_line3"] == null ? null : json["address_line3"],
@@ -130,6 +133,7 @@ class FitnessCenterModel {
     "working_time": workingTime == null ? null : List<dynamic>.from(workingTime!.map((x) => x.toJson())),
     "mobile": mobile == null ? null : mobile,
     "email": email == null ? null : email,
+    "images": images == null ? null : List<dynamic>.from(images!.map((x) => x.toJson())),
     "logo": logo == null ? null : logo,
     "location": location,
     "contact": contact == null ? null : contact,

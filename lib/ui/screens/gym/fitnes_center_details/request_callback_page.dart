@@ -9,6 +9,7 @@ import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/screens/gym/fitnes_center_details/verify_otp_page.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
+import 'package:scroll_date_picker/scroll_date_picker.dart';
 
 import '../../../../models/otp_response_model.dart';
 import '../../../widgets/buttons/auth_button.dart';
@@ -183,7 +184,6 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
       ),
       child: SizedBox(
         width: SizeConfig.blockSizeVertical * 86.6,
-        height: SizeConfig.blockSizeHorizontal*14,
         child: TextFormField(
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.text,
@@ -255,7 +255,6 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
         // top: SizeConfig.screenHeight / 3const 0
       ),
       child: SizedBox(
-        height: SizeConfig.blockSizeHorizontal*14,
         width: SizeConfig.blockSizeVertical * 86.6,
         child: TextFormField(
           inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]'))],
@@ -272,6 +271,9 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
             }
             if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(v)) {
               return 'Enter 10 digit phone number';
+            }
+            if(v == '0000000000' || v[0] == '0'){
+              return 'Enter a valid phone number';
             }
             return null;
           },
@@ -337,7 +339,6 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
         // top: SizeConfig.screenHeight / 3const 0
       ),
       child: SizedBox(
-        height: SizeConfig.blockSizeHorizontal*14,
         width: SizeConfig.blockSizeVertical * 86.6,
         child: TextFormField(
           textInputAction: TextInputAction.next,
@@ -562,13 +563,13 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
       if ( _formKey.currentState!.validate()) {
         _formKey.currentState!.save();
         if(_selectedCategory != null){
-          verifyPhoneNumber();
-          /*if(isGuest!){
+          //verifyPhoneNumber();
+          if(isGuest!){
             verifyPhoneNumber();
           }
           else{
             requestApi();
-          }*/
+          }
         }
         else{
           Fluttertoast.showToast(msg: 'Please pick a service');
@@ -644,6 +645,9 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
       details['title'] = _messageEditingController.text;
       details['category'] = _selectedCategory!.id!;
       details['fitness_center'] = widget.fitnessCenterID;
+
+      print('details');
+      print(details);
 
       Response? response = await productRepository.postEnquiry(details);
       print('requestApi');

@@ -42,7 +42,7 @@ class InviteTile extends StatelessWidget {
                   'Invite your friends',
                   style: TextStyle(
                       fontFamily: Constants.fontMedium,
-                      fontSize: SizeConfig.blockSizeHorizontal * 5.5),
+                      fontSize: 20),
                 ),
                 SizedBox(
                   width: SizeConfig.blockSizeHorizontal * 10,
@@ -72,7 +72,7 @@ class InviteTile extends StatelessWidget {
                     'Let your friends explore the way to a healthy life.',
                     style: TextStyle(
                         color: Constants.bulletinColor,
-                        fontSize: SizeConfig.blockSizeHorizontal * 4.5),
+                        fontSize: 16),
                   ),
                 ),
               ],

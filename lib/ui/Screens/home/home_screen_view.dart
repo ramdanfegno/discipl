@@ -6,6 +6,7 @@ import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/screens/feed/feed_pageview.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/components/category_list_tile.dart';
+import 'package:habitoz_fitness_app/ui/screens/home/components/invite_tile.dart';
 import 'package:habitoz_fitness_app/ui/screens/others/choose_location.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
@@ -61,11 +62,12 @@ class HomeScreenView extends StatelessWidget {
                         },
                         child: PercentageTile(
                             value: (homeData!.profilePercentage != null)
-                                ? homeData!.profilePercentage!.toDouble()
-                                : 0),
+                                ? (homeData!.profilePercentage!*10)!.toInt()                                : 0),
                       )
                     : Container(),
                 _content(context, homeData!.content!),
+                SizedBox(height: SizeConfig.blockSizeHorizontal*4,),
+                InviteTile(),
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal*6,
                 )

@@ -100,7 +100,7 @@ class RectangleBannerTile extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     boxShadow: [
                                       BoxShadow(
-                                          color: Colors.black.withOpacity(0.08),
+                                          color: Colors.black.withOpacity(0.01),
                                           offset: const Offset(0, 8),
                                           blurRadius: 36)
                                     ],

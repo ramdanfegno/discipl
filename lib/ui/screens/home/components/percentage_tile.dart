@@ -3,7 +3,7 @@ import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 class PercentageTile extends StatelessWidget {
-  final double value;
+  final int value;
 
   const PercentageTile({Key? key, required this.value}) : super(key: key);
 
@@ -22,7 +22,7 @@ class PercentageTile extends StatelessWidget {
                 BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                  offset: Offset(0, 8),
+                  offset: const Offset(0, 8),
                   blurRadius: 20,
                   color: Colors.black.withOpacity(0.09))
             ]),
@@ -36,7 +36,7 @@ class PercentageTile extends StatelessWidget {
                 SizedBox(
                   width: SizeConfig.blockSizeHorizontal * 4,
                 ),
-                Text(
+                const Text(
                   'Please complete your profile',
                   style: TextStyle(
                       fontFamily: Constants.fontMedium,
@@ -70,7 +70,7 @@ class PercentageTile extends StatelessWidget {
                 ),
                 Text(
                   '${value.toString()} %',
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontFamily: Constants.fontRegular,
                       fontSize: 12),
                 )
@@ -84,7 +84,7 @@ class PercentageTile extends StatelessWidget {
                 SizedBox(
                   width: SizeConfig.blockSizeHorizontal * 4,
                 ),
-                Text('Continue to add more information',
+                const Text('Continue to add more information',
                     style: TextStyle(
                         fontFamily: Constants.fontRegular,
                         fontSize: 13,
