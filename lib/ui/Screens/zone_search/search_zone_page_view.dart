@@ -16,26 +16,29 @@ import 'components/searchlist_tile.dart';
 
 class SearchZonePage extends StatelessWidget {
   final ProductRepository productRepository;
+  final Function() onBackPressed;
   final Function(Map<String,dynamic>?) onZoneSelected;
 
   // ignore: use_key_in_widget_constructors
-  const SearchZonePage({required this.productRepository,required this.onZoneSelected});
+  const SearchZonePage({required this.productRepository,required this.onZoneSelected,required this.onBackPressed});
 
   @override
   Widget build(BuildContext context) {
     return SearchZone(
       productRepository: productRepository,
       onZoneSelected: onZoneSelected,
+      onBackPressed: onBackPressed,
     );
   }
 }
 
 class SearchZone extends StatefulWidget {
   final ProductRepository productRepository;
+  final Function() onBackPressed;
   final Function(Map<String,dynamic>?) onZoneSelected;
 
   // ignore: use_key_in_widget_constructors
-  const SearchZone({required this.productRepository,required this.onZoneSelected});
+  const SearchZone({required this.productRepository,required this.onZoneSelected,required this.onBackPressed});
 
   @override
   _SearchZoneState createState() => _SearchZoneState();
@@ -59,52 +62,60 @@ class _SearchZoneState extends State<SearchZone> {
     _searchBLoc = BlocProvider.of<SearchZoneBLoc>(context);
   }
 
+  Future<bool> _onBackPressed() async {
+    widget.onBackPressed();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            /*(searchList!.isNotEmpty)?
-          displaySearchResult(searchList) : Container(),*/
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: [
+              /*(searchList!.isNotEmpty)?
+            displaySearchResult(searchList) : Container(),*/
 
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              color: const Color.fromRGBO(244, 244, 244, 1),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: SizeConfig.blockSizeHorizontal * 20,
-                      bottom: SizeConfig.blockSizeHorizontal * 20),
-                  child: BlocBuilder<SearchZoneBLoc, SearchZoneState>(
-                      builder: (context, state) {
-                        if (state is SearchDisplay) {
-                          return displaySearchResult(
-                              state.locationList);
-                        }
-                        if (state is SearchLoading) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height,
-                            child: Center(
-                              child: ColorLoader5(),
-                            ),
-                          );
-                        }
-                        if (state is SearchEmpty) {
-                          return emptySearch();
-                        }
-                        if (state is SearchFailure || state is SearchError) {
-                          return failedSearch();
-                        }
-                        return Container();
-                      }),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: const Color.fromRGBO(244, 244, 244, 1),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: SizeConfig.blockSizeHorizontal * 20,
+                        bottom: SizeConfig.blockSizeHorizontal * 20),
+                    child: BlocBuilder<SearchZoneBLoc, SearchZoneState>(
+                        builder: (context, state) {
+                          if (state is SearchDisplay) {
+                            return displaySearchResult(
+                                state.locationList);
+                          }
+                          if (state is SearchLoading) {
+                            return SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              child: Center(
+                                child: ColorLoader5(),
+                              ),
+                            );
+                          }
+                          if (state is SearchEmpty) {
+                            return emptySearch();
+                          }
+                          if (state is SearchFailure || state is SearchError) {
+                            return failedSearch();
+                          }
+                          return Container();
+                        }),
+                  ),
                 ),
               ),
-            ),
-            _topBar(context),
-          ],
+              _topBar(context),
+            ],
+          ),
         ),
       ),
     );
@@ -124,6 +135,7 @@ class _SearchZoneState extends State<SearchZone> {
           GestureDetector(
             onTap: () {
               //dismiss search page
+              widget.onBackPressed();
               Navigator.pop(context, true);
             },
             child: Container(

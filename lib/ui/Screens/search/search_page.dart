@@ -23,13 +23,25 @@ class _SearchPageState extends State<SearchPage> {
 
 
 class SearchPage extends StatelessWidget {
-  SearchPage({Key? key}) : super(key: key);
+  final Function() onBackPressed;
+  SearchPage({Key? key,required this.onBackPressed}) : super(key: key);
   final ProductRepository _productRepository = ProductRepository();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SearchPageBody(productRepository: _productRepository),
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        body: SearchPageBody(
+            productRepository: _productRepository,
+          onBackPressed: onBackPressed,
+        ),
+      ),
     );
+  }
+
+  Future<bool> _onBackPressed() async {
+    onBackPressed();
+    return true;
   }
 }

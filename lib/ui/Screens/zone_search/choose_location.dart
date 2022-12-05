@@ -21,8 +21,9 @@ import '../../widgets/others/color_loader.dart';
 
 class ChooseLocation extends StatefulWidget {
   final Function(ZoneResult) onLocationUpdated;
+  final Function() onBackPressed;
 
-  const ChooseLocation({Key? key,required this.onLocationUpdated}) : super(key: key);
+  const ChooseLocation({Key? key,required this.onLocationUpdated,required this.onBackPressed}) : super(key: key);
 
   @override
   _ChooseLocationState createState() => _ChooseLocationState();
@@ -68,87 +69,97 @@ class _ChooseLocationState extends State<ChooseLocation> {
     }
   }
 
+  Future<bool> _onBackPressed() async {
+    widget.onBackPressed();
+    return true;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     _locationBloc.add(LoadLocationPage(forceRefresh: forceRefresh, pageNo: 1,isLoading: forceRefresh));
     forceRefresh = false;
     SizeConfig().init(context);
-    return Scaffold(
-      appBar: CustomAppBar(
-        appBarTitle: 'Select your location',
-        isHomeAppBar: false,
-        onBackPressed: (){
-          Navigator.pop(context);
-        },
-      ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: GlowingOverscrollIndicator(
-                axisDirection: AxisDirection.down,
-                color: Constants.primaryColor.withOpacity(0.3),
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: SizeConfig.blockSizeHorizontal * 7,
-                        width: MediaQuery.of(context).size.width,
-                      ),
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        appBar: CustomAppBar(
+          appBarTitle: 'Select your location',
+          isHomeAppBar: false,
+          onBackPressed: (){
+            widget.onBackPressed();
+            Navigator.pop(context);
+          },
+        ),
+        body: SafeArea(
+          child: Stack(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: GlowingOverscrollIndicator(
+                  axisDirection: AxisDirection.down,
+                  color: Constants.primaryColor.withOpacity(0.3),
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: SizeConfig.blockSizeHorizontal * 7,
+                          width: MediaQuery.of(context).size.width,
+                        ),
 
-                      searchWidget(),
+                        searchWidget(),
 
-                      SizedBox(
-                        height: SizeConfig.blockSizeHorizontal * 4,
-                      ),
+                        SizedBox(
+                          height: SizeConfig.blockSizeHorizontal * 4,
+                        ),
 
-                      currentLocation(),
+                        currentLocation(),
 
-                      BlocBuilder<LocationBloc, LocationState>(
-                        builder: (context, state) {
-                          if (state is LocationFetchSuccess) {
-                            _pageNo = state.pageNo;
-                            _zoneList.clear();
-                            _zoneList = state.locationList;
-                            if(state.errorMsg != null){
-                              showToast(state.errorMsg!);
+                        BlocBuilder<LocationBloc, LocationState>(
+                          builder: (context, state) {
+                            if (state is LocationFetchSuccess) {
+                              _pageNo = state.pageNo;
+                              _zoneList.clear();
+                              _zoneList = state.locationList;
+                              if(state.errorMsg != null){
+                                showToast(state.errorMsg!);
+                              }
+                              if(state.locationList.isNotEmpty){
+                                return zoneListView(state.locationList, state.isLoading);
+                              }
+                              else{
+                                return buildErrorView('List is empty!');
+                              }
                             }
-                            if(state.locationList.isNotEmpty){
-                              return zoneListView(state.locationList, state.isLoading);
+                            if (state is LocationFetchFailure) {
+                              return buildErrorView(state.message);
                             }
-                            else{
-                              return buildErrorView('List is empty!');
+                            if (state is LocationFetchLoading) {
+                              return buildLoadingView();
                             }
-                          }
-                          if (state is LocationFetchFailure) {
-                            return buildErrorView(state.message);
-                          }
-                          if (state is LocationFetchLoading) {
-                            return buildLoadingView();
-                          }
-                          return Container();
-                        },
-                      ),
+                            return Container();
+                          },
+                        ),
 
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            (isLoading) ? Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.center,
-              color: Colors.black.withOpacity(0.2),
-              child: ColorLoader5(),
-            ):Container()
+              (isLoading) ? Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+                color: Colors.black.withOpacity(0.2),
+                child: ColorLoader5(),
+              ):Container()
 
-          ],
-        )
+            ],
+          )
+        ),
       ),
     );
   }
@@ -455,6 +466,15 @@ class _ChooseLocationState extends State<ChooseLocation> {
             productRepository: productRepository,
             onZoneSelected: (data){
               setLocationApi(data!);
+            },
+            onBackPressed: (){
+              _pageNo = 1;
+              //_zoneList.clear();
+              _locationBloc.add(LoadLocationPage(
+                forceRefresh: true,
+                isLoading: true,
+                pageNo: _pageNo,
+              ));
             },
           )
         ),

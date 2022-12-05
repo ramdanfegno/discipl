@@ -64,9 +64,19 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
     super.dispose();
   }
 
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   void _onScroll() {
+    //print('_onScroll');
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
+      print('PaginateListingPage');
+      print(_pageNo);
       //service();
       _fcListBloc.add(PaginateListingPage(
           fcList: _fcList,
@@ -144,16 +154,20 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                   BlocBuilder<FCListBloc, FCListState>(
                     builder: (context, state) {
                       if (state is FCListingFetchSuccess) {
+                        print('FCListingFetchSuccess');
                         _pageNo = state.pageNo;
+                        print(_pageNo);
                         _fcList.clear();
                         _fcList = state.fcList;
                         if(state.errorMsg != null){
                           showToast(state.errorMsg!);
                         }
                         if(state.fcList.isNotEmpty){
+                          print('state.fcList.isNotEmpty');
                           return fcListView(state.fcList, state.isLoading);
                         }
                         else{
+                          print('state.fcList.empty');
                           return buildErrorView('List is empty!');
                         }
                       }
@@ -223,6 +237,18 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                                 zone: zone,
                               ));
                               _homeBloc.add(LoadHome(forceRefresh: true,zone: _zone));
+                            },
+                            onBackPressed: (){
+                              print('ChooseLocation onBackPressed');
+                              _pageNo = 1;
+                              _fcList.clear();
+                              _fcListBloc.add(RefreshListingPage(
+                                  forceRefresh: true,
+                                  pageNo: _pageNo,
+                                  slug: widget.slug,
+                                  categoryId: widget.categoryId,
+                                  zone: _zone
+                              ));
                             },
                           )));
             },
@@ -373,8 +399,20 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                            const FitnessCenterDetailPage()));
+                            builder: (context) => FitnessCenterDetailPage(
+                              onBackPressed: (){
+                                print('FitnessCenterDetailPage onBackPressed');
+                                _pageNo = 1;
+                                _fcList.clear();
+                                _fcListBloc.add(RefreshListingPage(
+                                    forceRefresh: true,
+                                    pageNo: _pageNo,
+                                    slug: widget.slug,
+                                    categoryId: widget.categoryId,
+                                    zone: _zone
+                                ));
+                              },
+                            )));
                   });
             }),
 
@@ -440,7 +478,20 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
           create: (context) => SearchBLoc(
             productRepository: productRepository,
           ),
-          child: SearchPage(),
+          child: SearchPage(
+            onBackPressed: (){
+              print('SearchPage onBackPressed');
+              _pageNo = 1;
+              _fcList.clear();
+              _fcListBloc.add(RefreshListingPage(
+                  forceRefresh: true,
+                  pageNo: _pageNo,
+                  slug: widget.slug,
+                  categoryId: widget.categoryId,
+                  zone: _zone
+              ));
+            },
+          ),
         ),
         transitionDuration: const Duration(milliseconds: 400),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {

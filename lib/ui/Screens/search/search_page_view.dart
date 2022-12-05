@@ -16,9 +16,10 @@ import 'components/searchlist_tile.dart';
 
 class SearchPageBody extends StatefulWidget {
   final ProductRepository productRepository;
+  final Function() onBackPressed;
 
   // ignore: use_key_in_widget_constructors
-  const SearchPageBody({required this.productRepository});
+  const SearchPageBody({required this.productRepository,required this.onBackPressed});
 
   @override
   _SearchPageBodyState createState() => _SearchPageBodyState();
@@ -105,6 +106,7 @@ class _SearchPageBodyState extends State<SearchPageBody> {
           GestureDetector(
             onTap: () {
               //dismiss search page
+              widget.onBackPressed();
               Navigator.pop(context, true);
             },
             child: Container(
@@ -247,8 +249,7 @@ class _SearchPageBodyState extends State<SearchPageBody> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                              const FitnessCenterDetailPage()));
+                              builder: (context) => FitnessCenterDetailPage(onBackPressed: (){},)));
                     },
                   ));
             })

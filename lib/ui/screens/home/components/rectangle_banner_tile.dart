@@ -89,7 +89,7 @@ class RectangleBannerTile extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const FitnessCenterDetailPage()));
+                                      FitnessCenterDetailPage(onBackPressed: (){},)));
                         },
                         child: Padding(
                           padding: EdgeInsets.only(

@@ -122,6 +122,9 @@ class HomeScreenView extends StatelessWidget {
                           onLocationUpdated: (val) {
                             onLocationChanged(val);
                           },
+                      onBackPressed: (){
+
+                      },
                         )));
           },
           child: Row(
