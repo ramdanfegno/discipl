@@ -12,7 +12,7 @@ class Constants {
   //api names
   static const String apiSendOtp = 'user/enter_mobile/';
   static const String apiResendOtp = 'user/resent_otp/';
-  static const String apiLoginWithOtp = 'user/token/login/';
+  static const String apiLoginWithOtp = 'user/enter_otp/';
   static const String apiUserProfile = 'user/profile/';
   static const String apiLogout = 'user/logout/';
   static const String apiHome = 'user/index/';
@@ -22,6 +22,7 @@ class Constants {
   static const String apiPostEnquiry = 'user/enquiry/';
   static const String apiZoneList = 'fitness_center/zone/';
   static const String apiSetLocation = 'user/location/';
+  static const String apiAddImage = 'user/profile/image/add/';
 
 
   //fonts styles

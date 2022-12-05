@@ -77,6 +77,20 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
   }
 
   @override
+  void codeUpdated() {
+    print('codeUpdated');
+    setState(() {
+      currentText = code!;
+    });
+  }
+
+  updatePin(String otpCode) {
+    currentText = otpCode;
+    textEditingController.text = otpCode;
+    verifyOtp(currentText, widget.otpResponseModel);
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -105,6 +119,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
     listenForCode();
     code1 = SmsAutoFill().code;
     code1.listen((event) {
+      print('code1 listen');
       updatePin(event);
     });
     startTimer();
@@ -370,18 +385,6 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         },
       ),
     );
-  }
-
-  @override
-  void codeUpdated() {
-    setState(() {
-      currentText = code!;
-    });
-  }
-
-  updatePin(String otpCode) {
-    currentText = otpCode;
-    textEditingController.text = otpCode;
   }
 
   showSnackBar(String msg){

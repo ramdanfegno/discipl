@@ -9,13 +9,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? appBarTitle;
   final Function() onBackPressed;
   final Function()? drawerClicked;
+  final Function()? searchClicked;
 
   const CustomAppBar(
       {Key? key,
         required this.isHomeAppBar,
         required this.appBarTitle,
         required this.onBackPressed,
-        this.drawerClicked})
+        this.drawerClicked,
+      this.searchClicked})
       : super(key: key);
 
   @override
@@ -103,9 +105,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               child: Row(
                 children: [
-                  Icon(
-                    HabitozIcons.epSearch,
-                    size: SizeConfig.blockSizeHorizontal * 6,
+                  InkWell(
+                    onTap: (){
+                      searchClicked!();
+                      },
+                    child: Icon(
+                      HabitozIcons.epSearch,
+                      size: SizeConfig.blockSizeHorizontal * 6,
+                    ),
                   ),
                   SizedBox(
                     width: SizeConfig.blockSizeHorizontal * 5,

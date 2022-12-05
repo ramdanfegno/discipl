@@ -194,6 +194,42 @@ class UserRepository{
       String name = loginResponse.user!;
       DateTime now = DateTime.now();
 
+      if(details.isNotEmpty){
+        body = details;
+      }
+
+      Map<String,String> headers = {
+        'Authorization' : 'Token $token',
+        'Content-Type': 'multipart/form-data',
+      };
+
+      print('updateUserDetails 345345');
+      print('body');
+      print(body);
+
+      Response? response = await apiQuery.putQuery(Constants.apiUserProfile,headers,body, 'UpdateProfile');
+      print('updateUserDetails 546456');
+      print(response!.statusCode);
+      print(response.statusMessage);
+      print(response.data);
+      return response;
+    } catch (exception) {
+      print(exception.toString());
+      return null;
+    }
+  }
+
+  //update profileImage details
+  Future<Response?> updateProfileImage(Map<String,dynamic> details) async {
+    try {
+
+      LoginResponse? loginResponse = await getLoginResponse();
+      String? token = loginResponse!.token;
+
+      Map<String, dynamic> body = {};
+      String name = loginResponse.user!;
+      DateTime now = DateTime.now();
+
 
       File userImage;
       MultipartFile? imgFile1;
@@ -224,7 +260,7 @@ class UserRepository{
       print('body');
       print(body);
 
-      Response? response = await apiQuery.putQuery(Constants.apiUserProfile,headers,formData, 'UpdateProfile');
+      Response? response = await apiQuery.postQuery(Constants.apiAddImage,headers,formData, 'UpdateProfileImage');
       print(response!.statusCode);
       print(response.statusMessage);
       print(response.data);

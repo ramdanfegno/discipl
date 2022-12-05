@@ -19,8 +19,11 @@ import '../../../../utils/size_config.dart';
 import '../../../widgets/others/color_loader.dart';
 
 class FitnessCenterDetailPage extends StatefulWidget {
+  final Function() onBackPressed;
+
   const FitnessCenterDetailPage({
     Key? key,
+    required this.onBackPressed
   }) : super(key: key);
 
   @override
@@ -32,42 +35,50 @@ class _FitnessCenterDetailPageState
     extends State<FitnessCenterDetailPage> {
 
 
+  Future<bool> _onBackPressed() async {
+    widget.onBackPressed();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      body: SafeArea(
-        child: GlowingOverscrollIndicator(
-          axisDirection: AxisDirection.down,
-          color: Constants.primaryColor.withOpacity(0.3),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        body: SafeArea(
+          child: GlowingOverscrollIndicator(
+            axisDirection: AxisDirection.down,
+            color: Constants.primaryColor.withOpacity(0.3),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
 
-                BlocBuilder<FCDetailBloc, FCDetailState>(
-                  builder: (context, state) {
-                    if (state is FCDetailFetchSuccess) {
-                      if(state.errorMsg != null){
-                        showToast(state.errorMsg!);
+                  BlocBuilder<FCDetailBloc, FCDetailState>(
+                    builder: (context, state) {
+                      if (state is FCDetailFetchSuccess) {
+                        if(state.errorMsg != null){
+                          showToast(state.errorMsg!);
+                        }
+                        if(state.details != null){
+                          return fcDetailView(state.details!, state.isLoading);
+                        }
+                        else{
+                          return buildErrorView('List is empty!');
+                        }
                       }
-                      if(state.details != null){
-                        return fcDetailView(state.details!, state.isLoading);
+                      if (state is FCDetailFetchFailure) {
+                        return buildErrorView(state.message);
                       }
-                      else{
-                        return buildErrorView('List is empty!');
+                      if (state is FCDetailFetchLoading) {
+                        return buildLoadingView();
                       }
-                    }
-                    if (state is FCDetailFetchFailure) {
-                      return buildErrorView(state.message);
-                    }
-                    if (state is FCDetailFetchLoading) {
-                      return buildLoadingView();
-                    }
-                    return Container();
-                  },
-                ),
+                      return Container();
+                    },
+                  ),
 
-              ],
+                ],
+              ),
             ),
           ),
         ),

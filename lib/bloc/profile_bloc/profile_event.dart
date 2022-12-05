@@ -11,3 +11,8 @@ class UpdateProfile extends ProfileEvent {
   final Map<String,dynamic> details;
   UpdateProfile({required this.details});
 }
+
+class UpdateProfileImage extends ProfileEvent {
+  final Map<String,dynamic> details;
+  UpdateProfileImage({required this.details});
+}

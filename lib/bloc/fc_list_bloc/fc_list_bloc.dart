@@ -10,12 +10,11 @@ import '../../repositories/product_repo.dart';
 import '../../repositories/user_repo.dart';
 
 part 'fc_list_event.dart';
+
 part 'fc_list_state.dart';
 
-class FCListBloc
-    extends Bloc<FCListEvent, FCListState> {
+class FCListBloc extends Bloc<FCListEvent, FCListState> {
   final ProductRepository _productRepository;
-
 
   FCListBloc({required ProductRepository productRepository})
       : _productRepository = productRepository,
@@ -26,74 +25,136 @@ class FCListBloc
   @override
   Stream<FCListState> mapEventToState(FCListEvent event) async* {
     if (event is LoadListingPage) {
-      yield* _mapLoadDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ,event.categoryId,event.zone);
+      print('LoadListingPage');
+      yield* _mapLoadDetailPageToState(event.forceRefresh, event.slug,
+          event.pageNo, event.searchQ, event.categoryId, event.zone);
     }
     if (event is RefreshListingPage) {
-      yield* _mapLoadDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ,event.categoryId,event.zone);
+      print('RefreshListingPage');
+      yield* _mapLoadDetailPageToState(event.forceRefresh, event.slug,
+          event.pageNo, event.searchQ, event.categoryId, event.zone);
     }
     if (event is SearchListingPage) {
-      yield* _mapLoadDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ!,event.categoryId,event.zone);
+      print('SearchListingPage');
+      yield* _mapLoadDetailPageToState(event.forceRefresh, event.slug,
+          event.pageNo, event.searchQ!, event.categoryId, event.zone);
     }
     if (event is PaginateListingPage) {
-      yield* _mapPaginateDetailPageToState(event.forceRefresh,event.slug,event.pageNo,event.searchQ,event.fcList!,event.categoryId,event.zone);
+      print('PaginateListingPage');
+      yield* _mapPaginateDetailPageToState(
+          event.forceRefresh,
+          event.slug,
+          event.pageNo,
+          event.searchQ,
+          event.fcList!,
+          event.categoryId,
+          event.zone);
     }
   }
 
-  Stream<FCListState> _mapLoadDetailPageToState(bool forceRefresh,String? slug,int pageNo,String? searchQ,String? categoryId,ZoneResult? zoneResult) async* {
-    try{
+  Stream<FCListState> _mapLoadDetailPageToState(
+      bool forceRefresh,
+      String? slug,
+      int pageNo,
+      String? searchQ,
+      String? categoryId,
+      ZoneResult? zoneResult) async* {
+    try {
+      print('_mapLoadDetailPageToState');
       yield FCListingFetchLoading();
-      Response? response = await _productRepository.getFitnessCenterList(forceRefresh,slug!,pageNo,searchQ,categoryId,(zoneResult != null) ?zoneResult.id : null);
-      if(response != null){
-        if(response.statusCode == 200){
-          FitnessCenterListModel fitnessCenterModel = FitnessCenterListModel.fromJson(response.data);
+      Response? response = await _productRepository.getFitnessCenterList(
+          forceRefresh,
+          slug!,
+          pageNo,
+          searchQ,
+          categoryId,
+          (zoneResult != null) ? zoneResult.id : null);
+      if (response != null) {
+        if (response.statusCode == 200) {
+          print('response 200');
+          FitnessCenterListModel fitnessCenterModel =
+              FitnessCenterListModel.fromJson(response.data);
           yield FCListingFetchSuccess(
               fcList: (fitnessCenterModel.results != null)
-                  ? fitnessCenterModel.results! : [],
+                  ? fitnessCenterModel.results!
+                  : [],
               isLoading: false,
-              pageNo: 1
-          );
+              pageNo: 1);
+        } else {
+          print('response not 200');
+          print(response.statusCode);
+          yield const FCListingFetchFailure(
+              message: 'Error loading data', fcList: []);
         }
-        else{
-          yield const FCListingFetchFailure(message: 'Error loading data',fcList: []);
-        }
+      } else {
+        print('response null');
+        yield const FCListingFetchFailure(
+            message: 'Error loading data', fcList: []);
       }
-      else{
-        yield const FCListingFetchFailure(message: 'Error loading data',fcList: []);
-      }
-    }
-    catch(e){
+    } catch (e) {
+      print('response catch error');
       print(e.toString());
-      yield FCListingFetchFailure(message: e.toString(),fcList: const []);
+      yield FCListingFetchFailure(message: e.toString(), fcList: const []);
     }
   }
 
-  Stream<FCListState> _mapPaginateDetailPageToState(bool forceRefresh,String? slug,int pageNo,String? searchQ,List<FitnessCenterModel> fcList,String? categoryId,ZoneResult? zoneResult) async* {
-    try{
-      yield FCListingFetchSuccess(fcList: fcList, isLoading: true,pageNo: pageNo);
+  Stream<FCListState> _mapPaginateDetailPageToState(
+      bool forceRefresh,
+      String? slug,
+      int pageNo,
+      String? searchQ,
+      List<FitnessCenterModel> fcList,
+      String? categoryId,
+      ZoneResult? zoneResult) async* {
+    try {
+      print('_mapPaginateDetailPageToState');
+      yield FCListingFetchSuccess(fcList: fcList, isLoading: true, pageNo: pageNo);
       List<FitnessCenterModel> fCList = fcList;
-      Response? response = await _productRepository.getFitnessCenterList(forceRefresh,slug!,pageNo++,searchQ,categoryId,(zoneResult != null) ?zoneResult.id : null);
-      if(response != null){
-        if(response.statusCode == 200){
-          FitnessCenterListModel fitnessCenterModel = FitnessCenterListModel.fromJson(response.data);
+      print(fCList.length);
+      int pgNo = 1;
+      pgNo = pageNo;
+      pgNo += 1;
+      Response? response = await _productRepository.getFitnessCenterList(
+          forceRefresh,
+          slug!,
+          pgNo,
+          searchQ,
+          categoryId,
+          (zoneResult != null) ? zoneResult.id : null);
+      if (response != null) {
+        if (response.statusCode == 200) {
+          FitnessCenterListModel fitnessCenterModel =
+              FitnessCenterListModel.fromJson(response.data);
           fCList.addAll(fitnessCenterModel.results!);
-          yield FCListingFetchSuccess(fcList: fCList,isLoading: false,pageNo: pageNo++);
+          print('response.statusCode == 200');
+          print(fCList.length);
+          yield FCListingFetchSuccess(
+              fcList: fCList, isLoading: false, pageNo: pgNo);
+        } else if (response.statusCode == 404) {
+          yield FCListingFetchSuccess(
+              fcList: fcList, isLoading: true, pageNo: pageNo);
+        } else {
+          yield FCListingFetchSuccess(
+              fcList: fcList,
+              isLoading: true,
+              pageNo: pageNo,
+              errorMsg: 'Error loading data');
         }
-        else if(response.statusCode == 404){
-          yield FCListingFetchSuccess(fcList: fcList, isLoading: true,pageNo: pageNo);
-        }
-        else{
-          yield FCListingFetchSuccess(fcList: fcList, isLoading: true,pageNo: pageNo,errorMsg: 'Error loading data');
-        }
+
+      } else {
+        yield FCListingFetchSuccess(
+            fcList: fcList,
+            isLoading: true,
+            pageNo: pageNo,
+            errorMsg: 'Error loading data');
       }
-      else{
-        yield FCListingFetchSuccess(fcList: fcList, isLoading: true,pageNo: pageNo,errorMsg: 'Error loading data');
-      }
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
-      yield FCListingFetchSuccess(fcList: fcList, isLoading: false,pageNo: pageNo, errorMsg: 'Error loading data : ${e.toString()}');
+      yield FCListingFetchSuccess(
+          fcList: fcList,
+          isLoading: false,
+          pageNo: pageNo,
+          errorMsg: 'Error loading data : ${e.toString()}');
     }
   }
-
-
 }

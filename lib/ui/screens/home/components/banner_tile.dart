@@ -66,8 +66,7 @@ class BannerTile extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                              const FitnessCenterDetailPage()));
+                              builder: (context) => FitnessCenterDetailPage(onBackPressed: (){},)));
                     },
                     child: Padding(
                       padding: EdgeInsets.only(

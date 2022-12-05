@@ -63,11 +63,10 @@ class ProductRepository{
         queryParams['zone_id'] = zoneId;
       }
 
-      print(queryParams);
       String apiName = 'FitnessCenterListApi$slug${pageNo.toString()}';
 
       if(searchQ != null){
-        queryParams['q'] = searchQ;
+        queryParams['search'] = searchQ;
         apiName += searchQ;
       }
 
@@ -75,6 +74,10 @@ class ProductRepository{
       if(slug != null){
         url += '$slug/';
       }
+
+      print('getFitnessCenterList');
+      print(url);
+      print(queryParams);
 
       Response? response = await apiQuery.getQuery(
           url, headers, queryParams,
@@ -132,7 +135,7 @@ class ProductRepository{
       String apiName = 'ZoneListApi${pageNo.toString()}';
 
       if(searchQ != null){
-        queryParams['q'] = searchQ;
+        queryParams['search'] = searchQ;
         apiName += searchQ;
       }
 
