@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
+import 'package:habitoz_fitness_app/ui/screens/bmi/components/update_dob.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:intl/intl.dart';
 
@@ -55,10 +56,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         }
       }
       if(widget.userProfile!.dob != null){
-        DateTime? t = DateTime.tryParse(widget.userProfile!.dob!);
-        if(t != null){
-          _dob = t;
-        }
+        var s  = widget.userProfile!.dob!.split('-');
+        DateTime? t = DateTime(int.parse(s[0]),int.parse(s[1]),int.parse(s[2]));
+        //DateTime? t = DateTime.tryParse(widget.profile!.dob!);
+        _dob = t;
       }
       if(widget.userProfile!.gender != null){
         _gender = widget.userProfile!.gender;
@@ -284,7 +285,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         TextFormField(
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.emailAddress,
-          autofocus: true,
+          autofocus: false,
           initialValue: _email,
           onChanged: (v){
             _email = v;
@@ -332,6 +333,15 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     return InkWell(
       onTap: (){
         //change dob
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return UpdateDob(
+            currentDob: _dob,
+            onUpdated: (v){
+                _dob = v;
+                setState(() {});
+                },
+              );
+        }));
       },
       child: Column(
         children: [
@@ -541,9 +551,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         if(response.statusCode == 200){
           // next page
           Fluttertoast.showToast(msg: 'Profile updated');
+          Navigator.pop(context);
           _profileBloc.add(LoadProfile());
+
           /*Future.delayed(const Duration(seconds: 2), (){
-            Navigator.pop(context);
           });*/
         }
         else{

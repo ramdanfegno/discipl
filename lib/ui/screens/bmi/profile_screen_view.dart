@@ -543,10 +543,10 @@ class ProfileScreenView extends StatelessWidget {
               isExtendedAvailable: false
           ),
 
-          MeasurementTile(
+          /*MeasurementTile(
               title: 'Wrist',
               onPressed: (){
-                /*Navigator.push(context, MaterialPageRoute(builder: (context) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return UpdateMeasurement(
                     title: 'Wrist',
                     slug: '',
@@ -555,11 +555,11 @@ class ProfileScreenView extends StatelessWidget {
 
                     isExtendedAvailable: false,
                   );
-                }));*/
+                }));
               },
               relaxedReading: null,
               isExtendedAvailable: false
-          ),
+          ),*/
 
           MeasurementTile(
               title: 'Hip',

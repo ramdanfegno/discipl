@@ -38,7 +38,7 @@ class _BodyFatViewState extends State<BodyFatView> {
         _height = widget.data['height_cm'].toStringAsFixed(0);
       }
       if(widget.data['weight'] != null){
-        _weight = widget.data['weight'].toStringAsFixed(0);
+        _weight = widget.data['weight'].toStringAsFixed(1);
       }
       if(widget.data['neck'] != null){
         _neck = widget.data['neck'].toStringAsFixed(0);

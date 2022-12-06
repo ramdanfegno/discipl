@@ -30,7 +30,7 @@ class _BMRViewState extends State<BMRView> {
         _height = widget.data['height_cm'].toStringAsFixed(0);
       }
       if(widget.data['weight'] != null){
-        _weight = widget.data['weight'].toStringAsFixed(0);
+        _weight = widget.data['weight'].toStringAsFixed(1);
       }
     }
   }

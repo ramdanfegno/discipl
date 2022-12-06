@@ -34,7 +34,7 @@ class _BMIViewState extends State<BMIView> {
         _height = widget.data['height_cm'].toStringAsFixed(0);
       }
       if(widget.data['weight'] != null){
-        _weight = widget.data['weight'].toStringAsFixed(0);
+        _weight = widget.data['weight'].toStringAsFixed(1);
       }
     }
   }
@@ -191,9 +191,37 @@ class _BMIViewState extends State<BMIView> {
   }
 
   Widget bmiStatus() {
-    return const Text(
-      'Normal',
-      style: TextStyle(
+    String s = '';
+    double val = 0;
+    try{
+      val = double.parse(widget.result);
+      if(val > 0){
+        if(val < 20){
+          s = 'UnderWeight';
+        }
+        else if(val > 20 && val < 40){
+          s = 'Normal';
+        }
+        else if(val > 40 && val < 60){
+          s = 'Over Weight';
+        }
+        else if(val > 60 && val < 80){
+          s = 'Obese';
+        }
+        else if(val > 80){
+          s = 'Extremely Obese';
+        }
+      }
+
+    }
+    catch(e){
+      print('bmiStatus');
+      print(e.toString());
+    }
+
+    return Text(
+      s,
+      style: const TextStyle(
           color: Colors.green,
           fontSize: 12,
           fontFamily: Constants.fontRegular),
@@ -280,7 +308,7 @@ class _BMIViewState extends State<BMIView> {
           children: const [
             WeightIndicator(color: Colors.orange, title: 'Obese'),
             SizedBox(width: 25,),
-            WeightIndicator(color: Colors.green, title: 'Extremely Obese'),
+            WeightIndicator(color: Colors.red, title: 'Extremely Obese'),
           ],
         ),
         //SizedBox(height: SizeConfig.blockSizeHorizontal * 10),

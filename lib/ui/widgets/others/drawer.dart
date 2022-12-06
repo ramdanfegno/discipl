@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/models/user_profile_model.dart';
+import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
@@ -23,12 +25,28 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
   late ProfileBloc _profileBloc;
+  String? _profileImage ,_userName;
+  final UserRepository userRepository = UserRepository();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
+    getProfileImage();
+  }
+
+  getProfileImage() async{
+    UserProfile? userProfile = await userRepository.getProfileDetailsLocal();
+    if(userProfile != null){
+      if(userProfile.image != null){
+        _profileImage = userProfile.image;
+      }
+      if(userProfile.user != null && userProfile.user!.firstName != null){
+        _userName = userProfile.user!.firstName;
+      }
+      setState(() {});
+    }
   }
 
   @override
@@ -151,10 +169,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
         Container(
           height: SizeConfig.blockSizeHorizontal * 20,
           width: SizeConfig.blockSizeHorizontal * 20,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               color: Constants.appbarColor,
               shape: BoxShape.circle,
-            image: DecorationImage(
+            image: (_profileImage != null) ? DecorationImage(
+                image: NetworkImage(_profileImage!)
+            )
+                : const DecorationImage(
               image: AssetImage('assets/images/png/user_image.png')
             )
           ),
@@ -172,7 +193,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             }
           },
           child: Text(
-            (widget.userName != null) ? widget.userName! : 'LOGIN / SIGNUP',
+            (_userName != null) ?_userName! : 'LOGIN / SIGNUP',
             style: TextStyle(
                 fontFamily: Constants.fontMedium,
                 fontSize: SizeConfig.blockSizeHorizontal * 5.5),
