@@ -352,20 +352,20 @@ class _RequestCallBackPageState extends State<RequestCallBackPage> {
             _emailEditingController.text = v;
             FocusScope.of(context).requestFocus(focusNode1);
           },
-          validator: (val1) => val1!.isNotEmpty ? null : 'Enter your email',
+          //validator: (val1) => val1!.isNotEmpty ? null : 'Enter your email',
 
-          /*validator: (String? v) {
+          validator: (String? v) {
             if (v!.isEmpty) {
               return 'Enter Email';
             }
-            if (!RegExp(
-                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            if (!
+            //RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                 .hasMatch(v)) {
               return 'Enter a valid Email';
             }
-
             return null;
-          },*/
+          },
           decoration: InputDecoration(
               hintText: 'Email',
               hintStyle: const TextStyle(

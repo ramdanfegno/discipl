@@ -180,7 +180,7 @@ class _BodyFatViewState extends State<BodyFatView> {
             children: const [
               WeightIndicator(color: Colors.orange, title: 'Obese'),
               SizedBox(width: 25,),
-              WeightIndicator(color: Colors.green, title: 'Extremely Obese'),
+              WeightIndicator(color: Colors.red, title: 'Extremely Obese'),
             ],
           ),
         ],

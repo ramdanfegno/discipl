@@ -173,7 +173,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
               color: Constants.appbarColor,
               shape: BoxShape.circle,
             image: (_profileImage != null) ? DecorationImage(
-                image: NetworkImage(_profileImage!)
+                image: NetworkImage(_profileImage!),
+              fit: BoxFit.fill
             )
                 : const DecorationImage(
               image: AssetImage('assets/images/png/user_image.png')

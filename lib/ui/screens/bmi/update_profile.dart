@@ -233,7 +233,18 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
             _phone = v;
           },
           enabled: !isLoading,
-          validator: (val1)=> val1!.isNotEmpty ? null: 'Enter Your Phone Number',
+          validator: (String? v) {
+            if (v!.isEmpty) {
+              return 'Enter phone number';
+            }
+            if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(v)) {
+              return 'Enter 10 digit phone number';
+            }
+            if(v == '0000000000' || v[0] == '0'){
+              return 'Enter a valid phone number';
+            }
+            return null;
+          },
           style: TextStyle(
               color: Colors.grey[800],
               fontSize: 14,
@@ -294,7 +305,19 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
             _email = v;
           },
           enabled: !isLoading,
-          validator: (val1)=> val1!.isNotEmpty ? null: 'Enter Your Email Id',
+          //validator: (val1)=> val1!.isNotEmpty ? null: 'Enter Your Email Id',
+          validator: (String? v) {
+            if (v!.isEmpty) {
+              return 'Enter Email';
+            }
+            if (!
+            //RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                .hasMatch(v)) {
+              return 'Enter a valid Email';
+            }
+            return null;
+          },
           style: TextStyle(
               color: Colors.grey[800],
               fontSize: 14,
@@ -537,10 +560,9 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
       Map<String,dynamic> user = {};
       Map<String,dynamic> details = {};
 
-      user['first_name'] = _name;
-      user['email'] = _email;
-      user['mobile'] = _phone;
-      details['user'] = user;
+      details['first_name'] = _name;
+      details['email'] = _email;
+      details['mobile'] = _phone;
       details['gender'] = _gender;
       details['dob'] = DateFormat('yyyy-MM-dd').format(_dob!);
 
