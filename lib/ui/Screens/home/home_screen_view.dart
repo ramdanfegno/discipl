@@ -3,17 +3,17 @@ import 'package:habitoz_fitness_app/bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/fc_list_bloc/fc_list_bloc.dart';
 import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/models/zone_list_model.dart';
-import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/screens/feed/feed_pageview.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/components/category_list_tile.dart';
-import 'package:habitoz_fitness_app/ui/screens/home/components/invite_tile.dart';
-import 'package:habitoz_fitness_app/ui/screens/others/choose_location.dart';
+
+import 'package:habitoz_fitness_app/ui/screens/zone_search/choose_location.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 import '../../../utils/constants.dart';
 import '../../../utils/habitoz_icons.dart';
 import '../gym/fitness_center_list/fitness_center_listview.dart';
 import 'components/banner_tile.dart';
+import 'components/invite_tile.dart';
 import 'components/percentage_tile.dart';
 import 'components/rectangle_banner_tile.dart';
 import 'components/square_banner_tile.dart';
@@ -30,13 +30,13 @@ class HomeScreenView extends StatelessWidget {
 
   const HomeScreenView(
       {Key? key,
-        required this.onLocationChanged,
-        required this.onProfileClicked,
-        required this.isProfileCompleted,
-        required this.homeData,
-        required this.fcListBloc,
-        required this.zoneResult,
-        required this.fcDetailBloc})
+      required this.onLocationChanged,
+      required this.onProfileClicked,
+      required this.isProfileCompleted,
+      required this.homeData,
+      required this.fcListBloc,
+      required this.zoneResult,
+      required this.fcDetailBloc})
       : super(key: key);
 
   @override
@@ -62,14 +62,17 @@ class HomeScreenView extends StatelessWidget {
                         },
                         child: PercentageTile(
                             value: (homeData!.profilePercentage != null)
-                                ? (homeData!.profilePercentage!*10)!.toInt()                                : 0),
+                                ? (homeData!.profilePercentage! * 10)!.toInt()
+                                : 0),
                       )
                     : Container(),
                 _content(context, homeData!.content!),
-                SizedBox(height: SizeConfig.blockSizeHorizontal*4,),
-                InviteTile(),
                 SizedBox(
-                  height: SizeConfig.blockSizeHorizontal*6,
+                  height: SizeConfig.blockSizeHorizontal * 4,
+                ),
+                const InviteTile(),
+                SizedBox(
+                  height: SizeConfig.blockSizeHorizontal * 6,
                 )
               ],
             ),
@@ -128,6 +131,7 @@ class HomeScreenView extends StatelessWidget {
                           onLocationUpdated: (val) {
                             onLocationChanged(val);
                           },
+                          onBackPressed: () {},
                         )));
           },
           child: Row(
@@ -138,14 +142,16 @@ class HomeScreenView extends StatelessWidget {
               Text(
                   (zoneResult != null && zoneResult!.name != null)
                       ? zoneResult!.name!
-                      : (homeData!.zone != null && homeData!.zone!.name != null) ? homeData!.zone!.name! : '',
+                      : (homeData!.zone != null && homeData!.zone!.name != null)
+                          ? homeData!.zone!.name!
+                          : '',
                   style: const TextStyle(fontFamily: Constants.fontRegular)),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 7,
               ),
               Icon(
                 HabitozIcons.downArrow,
-                size: 10,
+                size: 9,
               )
             ],
           ),
@@ -169,8 +175,6 @@ class HomeScreenView extends StatelessWidget {
 
   Widget _buildRectangleTiles(
       BuildContext context, HomePageModelContent? content) {
-
-
     return RectangleBannerTile(
       title: content!.title,
       content: content.content,
@@ -178,17 +182,16 @@ class HomeScreenView extends StatelessWidget {
       seeAllPressed: () {
         // route to fitness listing page with slug
         fcListBloc.add(LoadListingPage(
-          forceRefresh: true,
-          slug: 'fc',
-          pageNo: 1,
-          zone: zoneResult
-        ));
+            forceRefresh: true, slug: 'fc', pageNo: 1, zone: zoneResult));
 
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => FitnessCenterListView(
-                    title: content.title!.toUpperCase(), slug: 'fc',zone: zoneResult,)));
+                      title: content.title!.toUpperCase(),
+                      slug: 'fc',
+                      zone: zoneResult,
+                    )));
       },
     );
   }

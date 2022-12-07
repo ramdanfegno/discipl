@@ -73,8 +73,8 @@ class BannerTile extends StatelessWidget {
                      /* Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const FitnessCenterDetailPage()));*/
+
+                              builder: (context) => FitnessCenterDetailPage(onBackPressed: (){},)));*/
                     },
                     child: Container(
                         height: SizeConfig.blockSizeHorizontal * 50,

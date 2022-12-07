@@ -88,28 +88,29 @@ class RectangleBannerTile extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const FitnessCenterDetailPage()));
+                                        FitnessCenterDetailPage(
+                                          onBackPressed: () {},
+                                        )));
                           },
                           child: Padding(
                               padding: EdgeInsets.only(
                                   left: SizeConfig.blockSizeHorizontal * 1.5,
                                   right: SizeConfig.blockSizeHorizontal * 1.5),
                               child: Container(
-                                height: SizeConfig.blockSizeHorizontal * 50,
-                                width: SizeConfig.blockSizeHorizontal * 79,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.01),
-                                          offset: const Offset(0, 8),
-                                          blurRadius: 36)
-                                    ],
-                                    borderRadius: BorderRadius.circular(
-                                        SizeConfig.blockSizeHorizontal * 3),
-                                    color: Colors.white),
-                                child: Stack(
-                                  alignment: Alignment.centerLeft,
-                                  children: [
+                                  height: SizeConfig.blockSizeHorizontal * 50,
+                                  width: SizeConfig.blockSizeHorizontal * 79,
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.08),
+                                            offset: const Offset(0, 8),
+                                            blurRadius: 36)
+                                      ],
+                                      borderRadius: BorderRadius.circular(
+                                          SizeConfig.blockSizeHorizontal * 3),
+                                      color: Constants.appbarColor),
+                                  child: Stack(children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(
                                           SizeConfig.blockSizeHorizontal * 3),
@@ -121,123 +122,7 @@ class RectangleBannerTile extends StatelessWidget {
                                         fit: BoxFit.fill,
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          top: SizeConfig.blockSizeHorizontal *
-                                              35,
-                                          left: SizeConfig.blockSizeHorizontal *
-                                              4),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                content![index].name ?? '',
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height:
-                                                SizeConfig.blockSizeHorizontal *
-                                                    2,
-                                          ),
-                                          content![index].institution != null
-                                              ? Row(
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.location_on,
-                                                      color: Colors.white,
-                                                      size: 15,
-                                                    ),
-                                                    SizedBox(
-                                                      width: SizeConfig
-                                                              .blockSizeHorizontal *
-                                                          1,
-                                                    ),
-                                                    SizedBox(
-                                                      width: SizeConfig
-                                                              .blockSizeHorizontal *
-                                                          17,
-                                                      child: Center(
-                                                        child: Text(
-                                                          content![index]
-                                                              .institution!
-                                                              .zone!
-                                                              .name!,
-                                                          style: const TextStyle(
-                                                              fontSize: 12,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    content![index].category !=
-                                                            null
-                                                        ? SizedBox(
-                                                            height: SizeConfig
-                                                                    .blockSizeHorizontal *
-                                                                3.7,
-                                                            width: SizeConfig
-                                                                    .blockSizeHorizontal *
-                                                                40,
-                                                            child: ListView
-                                                                .builder(
-                                                                    scrollDirection:
-                                                                        Axis
-                                                                            .horizontal,
-                                                                    itemCount: content![
-                                                                            index]
-                                                                        .category!
-                                                                        .length,
-                                                                    itemBuilder:
-                                                                        (BuildContext
-                                                                                context,
-                                                                            int index) {
-                                                                      return Row(
-                                                                        children: [
-                                                                          SizedBox(
-                                                                            width:
-                                                                                SizeConfig.blockSizeHorizontal * 1,
-                                                                          ),
-                                                                          Container(
-                                                                            height:
-                                                                                SizeConfig.blockSizeHorizontal * 5,
-                                                                            width:
-                                                                                SizeConfig.blockSizeHorizontal * 0.2,
-                                                                            color:
-                                                                                Constants.bulletinColor,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            width:
-                                                                                SizeConfig.blockSizeHorizontal * 1,
-                                                                          ),
-                                                                          Text(
-                                                                            _context.category![index].name ??
-                                                                                '',
-                                                                            style: const TextStyle(
-                                                                                fontSize: 12,
-                                                                                overflow: TextOverflow.ellipsis,
-                                                                                color: Colors.white),
-                                                                          ),
-                                                                        ],
-                                                                      );
-                                                                    }),
-                                                          )
-                                                        : Container()
-                                                  ],
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )));
+                                  ]))));
                     }),
               ),
             ),

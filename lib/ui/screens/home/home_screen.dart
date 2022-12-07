@@ -9,6 +9,7 @@ import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/models/zone_list_model.dart';
+import 'package:habitoz_fitness_app/repositories/product_repo.dart';
 import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
@@ -17,9 +18,12 @@ import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 import '../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import '../../../bloc/fc_list_bloc/fc_list_bloc.dart';
+import '../../../bloc/search_center_bloc/search_center_bloc.dart';
+import '../../widgets/dialog/custom_dialog.dart';
 import '../../widgets/others/color_loader.dart';
 import '../../widgets/others/drawer.dart';
 import '../bmi/profile_screen.dart';
+import '../search/search_page.dart';
 import 'home_screen_view.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late ProfileBloc _profileBloc;
   ZoneResult? _zone;
   final UserRepository userRepository = UserRepository();
+  final ProductRepository productRepository = ProductRepository();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -59,39 +64,45 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
 
     SizeConfig().init(context);
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: CustomDrawer(
-        isGuest: widget.isGuest,
-        userName: (widget.userName != null ) ? widget.userName! : null,
-      ),
-      appBar: CustomAppBar(
-        drawerClicked: () {
-          _scaffoldKey.currentState!.openDrawer();
-        },
-        appBarTitle: '',
-        isHomeAppBar: true,
-        onBackPressed: (){
-          //Navigator.pop(context);
-        },
-      ),
-      backgroundColor: Colors.white,
-      body: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          if (state is HomeFetchSuccess) {
-            if(state.errorMsg != null){
-              showToast(state.errorMsg!);
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: CustomDrawer(
+          isGuest: widget.isGuest,
+          userName: (widget.userName != null ) ? widget.userName! : null,
+        ),
+        appBar: CustomAppBar(
+          drawerClicked: () {
+            _scaffoldKey.currentState!.openDrawer();
+          },
+          appBarTitle: '',
+          isHomeAppBar: true,
+          onBackPressed: (){
+            //Navigator.pop(context);
+          },
+          searchClicked: (){
+            Navigator.push(context, _createSearchRoute());
+          },
+        ),
+        backgroundColor: Colors.white,
+        body: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is HomeFetchSuccess) {
+              if(state.errorMsg != null){
+                showToast(state.errorMsg!);
+              }
+              return homeView(state.homeDate, state.isLoading,state.zone);
             }
-            return homeView(state.homeDate, state.isLoading,state.zone);
-          }
-          if (state is HomeFetchFailure) {
-            return buildErrorView(state.message);
-          }
-          if (state is HomeFetchLoading) {
-            return buildLoadingView();
-          }
-          return Container();
-        },
+            if (state is HomeFetchFailure) {
+              return buildErrorView(state.message);
+            }
+            if (state is HomeFetchLoading) {
+              return buildLoadingView();
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }
@@ -185,4 +196,51 @@ class _HomeScreenState extends State<HomeScreen> {
       print(e.toString());
     }
   }
+
+  Future<bool> _onBackPressed() async {
+    return showDialog(
+        context: context,
+        //barrierDismissible: false,
+        builder: (_) {
+          return CustomDialog(
+            title: 'Exit',
+            subtitle: 'Do you want to exit app?',
+            yesTitle: 'Yes',
+            noTitle: 'No',
+            yes: () {
+              return false;
+            },
+            no: () {
+              Navigator.pop(context, false);
+              return false;
+            },
+          );
+        }).then((x) => x ?? false);
+  }
+
+
+  Route _createSearchRoute() {
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => BlocProvider(
+          create: (context) => SearchBLoc(
+            productRepository: productRepository,
+          ),
+          child: SearchPage(
+            onBackPressed: (){},
+          ),
+        ),
+        transitionDuration: const Duration(milliseconds: 400),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = const Offset(0.0, 1.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+          var tween =
+          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        });
+  }
+
 }

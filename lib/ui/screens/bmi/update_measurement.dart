@@ -264,13 +264,19 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
       //_profileBloc.add(UpdateProfile(details: _details));
       //Navigator.pop(context);
       Response? response = await userRepository.updateUserDetails(_details);
+      print('updateMeasurement 1234');
+      print(_details);
+      print(response!.statusCode);
+      print(response.statusMessage);
+      print(response.data);
+
       if(response != null){
         if(response.statusCode == 200){
           // next page
           Fluttertoast.showToast(msg: '${widget.title} updated');
           _profileBloc.add(LoadProfile());
+          Navigator.pop(context);
           /*Future.delayed(const Duration(seconds: 2), (){
-            Navigator.pop(context);
           });*/
         }
         else{

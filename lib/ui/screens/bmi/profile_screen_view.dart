@@ -134,6 +134,11 @@ class ProfileScreenView extends StatelessWidget {
   }
 
   Widget buildImage(){
+    if(userProfile!.image != null){
+      print('buildImage');
+      print(userProfile!.image!);
+    }
+
     return SizedBox(
       width: SizeConfig.blockSizeHorizontal*30,
       height: SizeConfig.blockSizeHorizontal*30,
