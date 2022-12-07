@@ -172,6 +172,7 @@ class UserRepository{
         body['neck'] = 0.0;
       }
 
+      print('fitnessCalculate 32424 ');
       print(body);
 
       Response? response = await apiQuery.postQuery(
