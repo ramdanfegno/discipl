@@ -64,6 +64,7 @@ class _CalculateViewState extends State<CalculateView> {
         _profileDetails['name'] = widget.profile!.user!.firstName;
       }
       if(widget.profile!.dob != null && widget.profile!.dob != ""){
+        print('date is available');
         _currentTab = 2;
         var s  = widget.profile!.dob!.split('-');
         DateTime t = DateTime(int.parse(s[0]),int.parse(s[1]),int.parse(s[2]));
@@ -73,7 +74,8 @@ class _CalculateViewState extends State<CalculateView> {
         }
         _profileDetails['date'] = widget.profile!.dob;
       }
-      if(widget.profile!.gender != null && widget.profile!.gender != ""){
+      if(widget.profile!.gender != null && widget.profile!.gender != "" && widget.profile!.dob != null && widget.profile!.dob != ""){
+        print('gender is available');
         _currentTab = 3;
         _gender = widget.profile!.gender;
         _profileDetails['gender'] = widget.profile!.gender;
@@ -88,6 +90,9 @@ class _CalculateViewState extends State<CalculateView> {
       }
       if(widget.profile!.heightFt != null && widget.profile!.heightFt != ""){
         _profileDetails['height_ft'] = widget.profile!.heightFt;
+      }
+      if(widget.profile!.neck != null && widget.profile!.neck != ""){
+        _profileDetails['neck'] = widget.profile!.neck;
       }
     }
   }
