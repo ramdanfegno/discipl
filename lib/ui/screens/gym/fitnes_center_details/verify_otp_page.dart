@@ -327,7 +327,8 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
         textSize: 15,
         color: isOtpTimedOut
             ? const Color.fromRGBO(155, 155, 155, 1)
-            : Constants.primaryColor,
+            : (currentText != '' && currentText.length == 4) ? Constants.primaryColor
+            : Colors.grey,
         isLoading: isLoading,
         onPressed: () {
           if (!isLoading) {
@@ -401,8 +402,8 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
       if (response.statusCode == 202) {
         // getCartFromApi(cart);
         _timer.cancel();
-        currentText = '';
-        textEditingController.text = '';
+        //currentText = '';
+        //textEditingController.text = '';
         setState(() {
           isLoading = false;
         });

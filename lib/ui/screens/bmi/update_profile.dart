@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
+import 'package:habitoz_fitness_app/ui/screens/bmi/components/update_dob.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:intl/intl.dart';
 
@@ -55,10 +56,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         }
       }
       if(widget.userProfile!.dob != null){
-        DateTime? t = DateTime.tryParse(widget.userProfile!.dob!);
-        if(t != null){
-          _dob = t;
-        }
+        var s  = widget.userProfile!.dob!.split('-');
+        DateTime? t = DateTime(int.parse(s[0]),int.parse(s[1]),int.parse(s[2]));
+        //DateTime? t = DateTime.tryParse(widget.profile!.dob!);
+        _dob = t;
       }
       if(widget.userProfile!.gender != null){
         _gender = widget.userProfile!.gender;
@@ -232,7 +233,18 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
             _phone = v;
           },
           enabled: !isLoading,
-          validator: (val1)=> val1!.isNotEmpty ? null: 'Enter Your Phone Number',
+          validator: (String? v) {
+            if (v!.isEmpty) {
+              return 'Enter phone number';
+            }
+            if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(v)) {
+              return 'Enter 10 digit phone number';
+            }
+            if(v == '0000000000' || v[0] == '0'){
+              return 'Enter a valid phone number';
+            }
+            return null;
+          },
           style: TextStyle(
               color: Colors.grey[800],
               fontSize: 14,
@@ -284,7 +296,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         TextFormField(
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.emailAddress,
-          autofocus: true,
+          autofocus: false,
           initialValue: _email,
           onChanged: (v){
             _email = v;
@@ -293,7 +305,19 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
             _email = v;
           },
           enabled: !isLoading,
-          validator: (val1)=> val1!.isNotEmpty ? null: 'Enter Your Email Id',
+          //validator: (val1)=> val1!.isNotEmpty ? null: 'Enter Your Email Id',
+          validator: (String? v) {
+            if (v!.isEmpty) {
+              return 'Enter Email';
+            }
+            if (!
+            //RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                .hasMatch(v)) {
+              return 'Enter a valid Email';
+            }
+            return null;
+          },
           style: TextStyle(
               color: Colors.grey[800],
               fontSize: 14,
@@ -332,6 +356,15 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     return InkWell(
       onTap: (){
         //change dob
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return UpdateDob(
+            currentDob: _dob,
+            onUpdated: (v){
+                _dob = v;
+                setState(() {});
+                },
+              );
+        }));
       },
       child: Column(
         children: [
@@ -527,10 +560,9 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
       Map<String,dynamic> user = {};
       Map<String,dynamic> details = {};
 
-      user['first_name'] = _name;
-      user['email'] = _email;
-      user['mobile'] = _phone;
-      details['user'] = user;
+      details['first_name'] = _name;
+      details['email'] = _email;
+      details['mobile'] = _phone;
       details['gender'] = _gender;
       details['dob'] = DateFormat('yyyy-MM-dd').format(_dob!);
 
@@ -541,9 +573,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         if(response.statusCode == 200){
           // next page
           Fluttertoast.showToast(msg: 'Profile updated');
+          Navigator.pop(context);
           _profileBloc.add(LoadProfile());
+
           /*Future.delayed(const Duration(seconds: 2), (){
-            Navigator.pop(context);
           });*/
         }
         else{
