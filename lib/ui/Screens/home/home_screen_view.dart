@@ -62,7 +62,7 @@ class HomeScreenView extends StatelessWidget {
                         },
                         child: PercentageTile(
                             value: (homeData!.profilePercentage != null)
-                                ? (homeData!.profilePercentage! * 10).toInt()
+                                ? (homeData!.profilePercentage!).toInt()
                                 : 0),
                       )
                     : Container(),
@@ -175,24 +175,27 @@ class HomeScreenView extends StatelessWidget {
 
   Widget _buildRectangleTiles(
       BuildContext context, HomePageModelContent? content) {
-    return RectangleBannerTile(
-      title: content!.title,
-      content: content.content,
-      fcDetailBloc: fcDetailBloc,
-      seeAllPressed: () {
-        // route to fitness listing page with slug
-        fcListBloc.add(LoadListingPage(
-            forceRefresh: true, slug: 'fc', pageNo: 1, zone: zoneResult));
+    return Padding(
+      padding:  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*4),
+      child: RectangleBannerTile(
+        title: content!.title,
+        content: content.content,
+        fcDetailBloc: fcDetailBloc,
+        seeAllPressed: () {
+          // route to fitness listing page with slug
+          fcListBloc.add(LoadListingPage(
+              forceRefresh: true, slug: 'fc', pageNo: 1, zone: zoneResult));
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => FitnessCenterListView(
-                      title: content.title!.toUpperCase(),
-                      slug: 'fc',
-                      zone: zoneResult,
-                    )));
-      },
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FitnessCenterListView(
+                        title: content.title!.toUpperCase(),
+                        slug: 'fc',
+                        zone: zoneResult,
+                      )));
+        },
+      ),
     );
   }
 

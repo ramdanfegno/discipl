@@ -166,8 +166,10 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
             shrinkWrap: true,
             padding: const EdgeInsets.symmetric(horizontal: 0),
             children: [
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
+
               logo(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 23),
               title(),
               SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
               otpMsg(),
@@ -201,9 +203,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
 
   Widget logo() {
     return Image.asset(
-      "assets/images/jpg/logo.jpg",
-      width: SizeConfig.screenWidth * 0.2,
-      height: SizeConfig.screenWidth * 0.4,
+      "assets/images/png/logo.png",
+      width: SizeConfig.blockSizeHorizontal * 10,
+      height: SizeConfig.blockSizeHorizontal * 15,
     );
   }
 

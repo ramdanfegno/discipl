@@ -26,7 +26,7 @@ class BannerTile extends StatelessWidget {
       padding: EdgeInsets.only(
           left: SizeConfig.blockSizeHorizontal * 4,
           right: SizeConfig.blockSizeHorizontal * 4,
-          bottom: SizeConfig.blockSizeHorizontal * 3),
+          top: SizeConfig.blockSizeHorizontal * 4),
       child: Column(
         children: [
           SizedBox(

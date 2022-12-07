@@ -100,6 +100,13 @@ class RectangleBannerTile extends StatelessWidget {
                                   height: SizeConfig.blockSizeHorizontal * 50,
                                   width: SizeConfig.blockSizeHorizontal * 79,
                                   decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                          image: NetworkImage(
+                                        (content![index].logo != null)
+                                            ? content![index].logo!
+                                            : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
+                                      )),
                                       boxShadow: [
                                         BoxShadow(
                                             color:
@@ -110,19 +117,8 @@ class RectangleBannerTile extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(
                                           SizeConfig.blockSizeHorizontal * 3),
                                       color: Constants.appbarColor),
-                                  child: Stack(children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          SizeConfig.blockSizeHorizontal * 3),
-                                      // Image border
-                                      child: Image.network(
-                                        (content![index].image != null)
-                                            ? content![index].image!
-                                            : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ]))));
+                                 )));
+
                     }),
               ),
             ),

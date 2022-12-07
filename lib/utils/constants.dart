@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Constants {
 
-  static const String baseUrl = 'https://blacksquad.dev.fegno.com/api/v1/';
+  static const String baseUrl = 'https://disciple.uat.fegno.com/api/v1/';
 
   static const String appTitle = 'Black Squad';
   static const String currencySymbol = '\u20B9';

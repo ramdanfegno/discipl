@@ -16,7 +16,7 @@ class CircularSlidingTile extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: SizeConfig.blockSizeHorizontal*3,
+          height: SizeConfig.blockSizeHorizontal * 3,
         ),
         Row(
           children: [
@@ -51,19 +51,21 @@ class CircularSlidingTile extends StatelessWidget {
                         child: Column(
                           children: [
                             Container(
-                                height: SizeConfig.blockSizeHorizontal * 19.5,
-                                width: SizeConfig.blockSizeHorizontal * 19.5,
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Constants.primaryColor),
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.all(3),
-                                child: Image.network(
-                                  (content[index].logo != null)
-                                      ? content[index].logo!
-                                      : '',
-                                  fit: BoxFit.contain,
-                                )),
+                              height: SizeConfig.blockSizeHorizontal * 19.5,
+                              width: SizeConfig.blockSizeHorizontal * 19.5,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(
+                                        (content[index].logo != null)
+                                            ? content[index].logo!
+                                            : '',
+                                      )),
+                                  shape: BoxShape.circle,
+                                  color: Constants.primaryColor),
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(3),
+                            ),
                             SizedBox(
                               height: SizeConfig.blockSizeHorizontal * 2,
                             ),

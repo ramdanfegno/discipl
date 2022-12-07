@@ -157,9 +157,9 @@ class _LoginFormState extends State<LoginForm> {
             children: [
               SizedBox(height: SizeConfig.blockSizeHorizontal * 4),
               title(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 1),
+              SizedBox(height: SizeConfig.blockSizeHorizontal *   10),
               logo(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 3),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 20),
               loginText(),
               SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
               mobileTextField(state),
@@ -191,9 +191,9 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget logo() {
     return Image.asset(
-      "assets/images/jpg/logo.jpg",
-      width: SizeConfig.screenWidth * 0.2,
-      height: SizeConfig.screenWidth * 0.4,
+      "assets/images/png/logo.png",
+      width: SizeConfig.blockSizeHorizontal * 10,
+      height: SizeConfig.blockSizeHorizontal * 15,
     );
   }
 
