@@ -62,7 +62,7 @@ class HomeScreenView extends StatelessWidget {
                         },
                         child: PercentageTile(
                             value: (homeData!.profilePercentage != null)
-                                ? (homeData!.profilePercentage! * 10)!.toInt()
+                                ? (homeData!.profilePercentage! * 10).toInt()
                                 : 0),
                       )
                     : Container(),

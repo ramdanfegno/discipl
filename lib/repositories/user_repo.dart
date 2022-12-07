@@ -130,6 +130,8 @@ class UserRepository{
       if(loginResponse != null){
         String? token = loginResponse.token;
         headers['Authorization'] = 'Token $token';
+        print('========================================');
+        print(headers);
       }
 
       Response? response = await apiQuery.getQuery(
