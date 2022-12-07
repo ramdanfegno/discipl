@@ -213,10 +213,13 @@ class _BodyFatViewState extends State<BodyFatView> {
       width: SizeConfig.blockSizeHorizontal*80,
       height: SizeConfig.blockSizeHorizontal*60,
       child: SfRadialGauge(
+        enableLoadingAnimation: true,
         axes:  <RadialAxis> [
           RadialAxis(
               minimum: 0,
-              maximum: 100,
+              maximum: 101,
+              ticksPosition: ElementsPosition.inside,
+              tickOffset: 10,
               ranges: <GaugeRange>[
                 GaugeRange(
                   startValue: 0,
@@ -250,7 +253,7 @@ class _BodyFatViewState extends State<BodyFatView> {
                     startWidth: 20,
                     endWidth: 20,
                     startValue: 80,
-                    endValue: 100,
+                    endValue: 101,
                     color: Colors.red
                 ),
               ],
@@ -259,9 +262,15 @@ class _BodyFatViewState extends State<BodyFatView> {
                   value: double.parse(widget.result),
                   needleStartWidth: 0,
                   needleEndWidth: 5,
+                  enableAnimation: true,
+                  animationType: AnimationType.ease,
+                  //animationDuration: 1,
                 )],
               startAngle: 180,
               canScaleToFit: true,
+              labelOffset: 20,
+
+              labelsPosition: ElementsPosition.inside,
               endAngle: 0,
               interval: 20)
         ],
