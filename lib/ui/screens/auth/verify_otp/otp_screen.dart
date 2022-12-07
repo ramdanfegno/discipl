@@ -350,7 +350,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
         textSize: 15,
         color: isOtpTimedOut
             ? const Color.fromRGBO(155, 155, 155, 1)
-            : Constants.primaryColor,
+            : (currentText != '' && currentText.length == 4) ? Constants.primaryColor
+            : Colors.grey,
         isLoading: isLoading,
         onPressed: () {
           if (!isLoading) {
@@ -425,8 +426,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
       if (response.statusCode == 202 || response.statusCode == 200) {
         // getCartFromApi(cart);
         _timer.cancel();
-        currentText = '';
-        textEditingController.text = '';
+        //currentText = '';
+        //textEditingController.text = '';
         await widget.userRepository.setLoginResponse(loginResponse);
         _authBloc.add(
             AuthenticationLoggedIn(

@@ -514,7 +514,7 @@ class ProfileScreenView extends StatelessWidget {
                         ? userProfile!.leftForearmsRelaxed! : null,
                     extendedReading: (userProfile!.leftForearmsExtended != null && userProfile!.leftForearmsExtended! > 0)
                         ? userProfile!.leftForearmsExtended  ! : null,
-                    isExtendedAvailable: false,
+                    isExtendedAvailable: true,
                   );
                 }));
               },
@@ -543,10 +543,10 @@ class ProfileScreenView extends StatelessWidget {
               isExtendedAvailable: false
           ),
 
-          MeasurementTile(
+          /*MeasurementTile(
               title: 'Wrist',
               onPressed: (){
-                /*Navigator.push(context, MaterialPageRoute(builder: (context) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return UpdateMeasurement(
                     title: 'Wrist',
                     slug: '',
@@ -555,11 +555,11 @@ class ProfileScreenView extends StatelessWidget {
 
                     isExtendedAvailable: false,
                   );
-                }));*/
+                }));
               },
               relaxedReading: null,
               isExtendedAvailable: false
-          ),
+          ),*/
 
           MeasurementTile(
               title: 'Hip',
@@ -643,7 +643,8 @@ class ProfileScreenView extends StatelessWidget {
               },
               relaxedReading: (userProfile!.rightCalfRelaxed != null && userProfile!.rightCalfRelaxed! > 0)
                   ? userProfile!.rightCalfRelaxed!.toStringAsFixed(2) : null,
-              extendedReading: null,
+              extendedReading: (userProfile!.rightCalfExtended != null && userProfile!.rightCalfExtended! > 0)
+                  ? userProfile!.rightCalfExtended!.toStringAsFixed(2) : null,
               isExtendedAvailable: true
           ),
 

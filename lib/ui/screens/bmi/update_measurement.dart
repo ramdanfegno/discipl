@@ -8,6 +8,7 @@ import 'package:habitoz_fitness_app/ui/screens/bmi/components/fill_dob.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/fill_height.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/fill_name.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/measure_view.dart';
+import 'package:habitoz_fitness_app/ui/screens/bmi/components/measure_view2.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/components/select_gender.dart';
 import 'package:habitoz_fitness_app/ui/widgets/buttons/custom_button.dart';
 
@@ -71,6 +72,12 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
       _relaxedCm = 0;
       _relaxedInch = 0;
     }
+
+    print('relaxedReading');
+    print(widget.relaxedReading);
+    print(_relaxedCm);
+    print(_relaxedInch);
+
     _details[widget.slug] = _relaxedCm;
 
     if(widget.isExtendedAvailable){
@@ -82,6 +89,12 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
         _extendedCm = 0;
         _extendedInch = 0;
       }
+
+      print('extendedReading');
+      print(widget.extendedReading);
+      print(_extendedCm);
+      print(_extendedInch);
+
       _details[widget.slug2!] = _extendedCm;
     }
   }
@@ -166,9 +179,9 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
             _details[widget.slug] = _relaxedCm;
           }
       ) : (_buttonText == 'Update') ?
-      MeasureView(
-          measurementInch: _extendedCm,
-          measurementCM: _extendedInch,
+      MeasureView2(
+          measurementInch: _extendedInch,
+          measurementCM: _extendedCm,
           title: title,
           onFilled: (v1,v2){
             _extendedCm = v1;

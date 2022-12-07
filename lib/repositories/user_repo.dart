@@ -200,12 +200,13 @@ class UserRepository{
 
       Map<String,String> headers = {
         'Authorization' : 'Token $token',
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
       };
 
       print('updateUserDetails 345345');
       print('body');
       print(body);
+      print(Constants.apiUserProfile);
 
       Response? response = await apiQuery.putQuery(Constants.apiUserProfile,headers,body, 'UpdateProfile');
       print('updateUserDetails 546456');
