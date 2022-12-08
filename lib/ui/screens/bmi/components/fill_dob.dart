@@ -28,7 +28,8 @@ class _FillDobState extends State<FillDob> {
       _dob = widget.dob!;
     }
     else{
-      _dob = DateTime.now();
+
+      _dob = DateTime(DateTime.now().year-3,12,31);
     }
   }
 
@@ -62,6 +63,7 @@ class _FillDobState extends State<FillDob> {
       child: ScrollDatePicker(
         selectedDate: _dob,
         locale: const Locale('en'),
+        maximumDate:  DateTime(DateTime.now().year-3,12,31),
         onDateTimeChanged: (DateTime value) {
           setState(() {
             _dob = value;

@@ -218,7 +218,7 @@ class _BodyFatViewState extends State<BodyFatView> {
         }
         else if(val > 40 && val < 60){
           s = 'Over Weight';
-          color = Colors.yellow;
+          color = Colors.yellow[700]!;
         }
         else if(val > 60 && val < 80){
           s = 'Obese';
