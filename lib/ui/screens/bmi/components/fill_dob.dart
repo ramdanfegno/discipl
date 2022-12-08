@@ -28,7 +28,7 @@ class _FillDobState extends State<FillDob> {
       _dob = widget.dob!;
     }
     else{
-      _dob = DateTime.now();
+      _dob = DateTime(DateTime.now().year - 10, 12,31);
     }
   }
 
@@ -68,6 +68,7 @@ class _FillDobState extends State<FillDob> {
           });
           widget.onFilled(_dob);
         },
+        maximumDate: DateTime(DateTime.now().year - 10, 12,31),
         scrollViewOptions: const DatePickerScrollViewOptions(
             year: ScrollViewDetailOptions(
               selectedTextStyle: TextStyle(

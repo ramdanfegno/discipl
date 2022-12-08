@@ -91,7 +91,7 @@ class _FillWeightState extends State<FillWeight> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: SizeConfig.blockSizeHorizontal*15,
+            width: SizeConfig.blockSizeHorizontal*17,
             height: SizeConfig.blockSizeHorizontal*80,
             child: WheelChooser.integer(
               onValueChanged: (v){
