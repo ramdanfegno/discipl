@@ -53,6 +53,9 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
     _weight = 60.0;
     _profileDetails = {};
     _profileDetails['gender'] = _gender;
+    _profileDetails['weight'] = _weight;
+    _profileDetails['height_cm'] = _height;
+
     _authBloc = BlocProvider.of<AuthenticationBloc>(context);
   }
 

@@ -115,6 +115,10 @@ class AuthenticationBloc
     UserProfile? userProfile = await _userRepository.getProfileDetailsLocal();
 
     Response? response = await _userRepository.logOut(userProfile!.id.toString());
+    print(response!.statusCode);
+    print(response.statusMessage);
+    print(response.data);
+
     _userRepository.clear();
     _userRepository.setIsLogged(false);
     _userRepository.setGuestFlag(false);

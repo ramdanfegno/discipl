@@ -64,18 +64,24 @@ class ProfileScreenView extends StatelessWidget {
         SizedBox(height: SizeConfig.blockSizeHorizontal*5),
 
         Padding(
-          padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*35),
+          padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                (userProfile!.user!.firstName != null)
-                    ? userProfile!.user!.firstName! : '',
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 22,
-                    fontFamily: Constants.fontMedium
+              SizedBox(
+                width: SizeConfig.blockSizeHorizontal*60,
+                child: Text(
+                  (userProfile!.user!.firstName != null)
+                      ? userProfile!.user!.firstName! : '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 22,
+                      fontFamily: Constants.fontMedium
+                  ),
                 ),
               ),
 

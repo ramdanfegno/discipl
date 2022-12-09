@@ -87,7 +87,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
   updatePin(String otpCode) {
     currentText = otpCode;
     textEditingController.text = otpCode;
-    verifyOtp(currentText, widget.otpResponseModel);
+    if(mounted){
+      verifyOtp(currentText, widget.otpResponseModel);
+    }
   }
 
   @override

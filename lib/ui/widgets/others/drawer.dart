@@ -193,11 +193,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   context, HabitozRoutes.app, (route) => false);
             }
           },
-          child: Text(
-            (_userName != null) ?_userName! : 'LOGIN / SIGNUP',
-            style: TextStyle(
-                fontFamily: Constants.fontMedium,
-                fontSize: SizeConfig.blockSizeHorizontal * 5.5),
+          child: SizedBox(
+            width: SizeConfig.blockSizeHorizontal * 50,
+            child: Text(
+              (_userName != null) ?_userName! : 'LOGIN / SIGNUP',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontFamily: Constants.fontMedium,
+                  fontSize: SizeConfig.blockSizeHorizontal * 5.5),
+            ),
           ),
         ),
       ],
