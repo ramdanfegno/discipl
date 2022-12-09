@@ -18,16 +18,17 @@ import '../../widgets/others/app_bar.dart';
 
 class UpdateProfileView extends StatefulWidget {
   final UserProfile? userProfile;
-  const UpdateProfileView({Key? key,required this.userProfile}) : super(key: key);
+
+  const UpdateProfileView({Key? key, required this.userProfile})
+      : super(key: key);
 
   @override
   _UpdateProfileViewState createState() => _UpdateProfileViewState();
 }
 
 class _UpdateProfileViewState extends State<UpdateProfileView> {
-
   late bool isLoading;
-  late String? _name,_email,_phone,_gender;
+  late String? _name, _email, _phone, _gender;
   late DateTime? _dob;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserRepository userRepository = UserRepository();
@@ -45,25 +46,26 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     _gender = 'M';
     _dob = null;
 
-    if(widget.userProfile != null){
-      if(widget.userProfile!.user != null){
-        if(widget.userProfile!.user!.firstName != null){
+    if (widget.userProfile != null) {
+      if (widget.userProfile!.user != null) {
+        if (widget.userProfile!.user!.firstName != null) {
           _name = widget.userProfile!.user!.firstName;
         }
-        if(widget.userProfile!.user!.email != null){
+        if (widget.userProfile!.user!.email != null) {
           _email = widget.userProfile!.user!.email;
         }
-        if(widget.userProfile!.user!.mobile != null){
+        if (widget.userProfile!.user!.mobile != null) {
           _phone = widget.userProfile!.user!.mobile;
         }
       }
-      if(widget.userProfile!.dob != null){
-        var s  = widget.userProfile!.dob!.split('-');
-        DateTime? t = DateTime(int.parse(s[0]),int.parse(s[1]),int.parse(s[2]));
+      if (widget.userProfile!.dob != null) {
+        var s = widget.userProfile!.dob!.split('-');
+        DateTime? t =
+            DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
         //DateTime? t = DateTime.tryParse(widget.profile!.dob!);
         _dob = t;
       }
-      if(widget.userProfile!.gender != null){
+      if (widget.userProfile!.gender != null) {
         _gender = widget.userProfile!.gender;
       }
     }
@@ -74,22 +76,21 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     SizeConfig().init(context);
     return SafeArea(
       child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.white,
-          appBar: CustomAppBar(
-            isHomeAppBar: false,
-            appBarTitle: 'Update Profile',
-            onBackPressed: (){
-              Navigator.pop(context, true);
-            },
-          ),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        appBar: CustomAppBar(
+          isHomeAppBar: false,
+          appBarTitle: 'Update Profile',
+          onBackPressed: () {
+            Navigator.pop(context, true);
+          },
+        ),
         body: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           color: Colors.white,
           child: Stack(
             children: <Widget>[
-
               //verification form
               Positioned(
                   top: SizeConfig.blockSizeVertical * 3,
@@ -108,7 +109,6 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                   bottom: SizeConfig.blockSizeHorizontal * 7,
                   left: SizeConfig.blockSizeHorizontal * 7,
                   child: cancelButton()),
-
             ],
           ),
         ),
@@ -129,15 +129,15 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             children: [
               name(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal*10),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
               phone(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal*10),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
               email(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal*10),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
               dob(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal*10),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
               gender(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal*30),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 30),
             ],
           ),
         ),
@@ -153,25 +153,25 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         const Text(
           'Name',
           style: TextStyle(
-            color: Colors.black,
-            fontFamily: Constants.fontMedium,
-            fontSize: 13
-          ),
+              color: Colors.black,
+              fontFamily: Constants.fontMedium,
+              fontSize: 13),
         ),
-
         TextFormField(
+          maxLength: 12,
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.text,
           autofocus: false,
           initialValue: _name,
-          onChanged: (v){
+          onChanged: (v) {
             _name = v;
           },
-          onSaved: (v){
+          onSaved: (v) {
             _name = v;
           },
           enabled: !isLoading,
-          validator: (val1)=> val1!.isNotEmpty ? null: 'Enter Your Name',
+          validator: (val1) => val1!.isNotEmpty ? null : 'Enter Your Name',
           style: TextStyle(
               color: Colors.grey[800],
               fontSize: 14,
@@ -188,7 +188,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                 fontSize: 14,
                 fontFamily: Constants.fontRegular),
             contentPadding:
-            EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 0),
+                EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 0),
             errorStyle: const TextStyle(color: Colors.red),
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey[400]!, width: 1)),
@@ -215,10 +215,8 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
           style: TextStyle(
               color: Colors.black,
               fontFamily: Constants.fontMedium,
-              fontSize: 13
-          ),
+              fontSize: 13),
         ),
-
         TextFormField(
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.number,
@@ -228,10 +226,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
             LengthLimitingTextInputFormatter(10),
             FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
           ],
-          onChanged: (v){
+          onChanged: (v) {
             _phone = v;
           },
-          onSaved: (v){
+          onSaved: (v) {
             _phone = v;
           },
           enabled: !isLoading,
@@ -242,7 +240,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
             if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(v)) {
               return 'Enter 10 digit phone number';
             }
-            if(v == '0000000000' || v[0] == '0'){
+            if (v == '0000000000' || v[0] == '0') {
               return 'Enter a valid phone number';
             }
             return null;
@@ -263,7 +261,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                 fontSize: 14,
                 fontFamily: Constants.fontRegular),
             contentPadding:
-            EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 0),
+                EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 0),
             errorStyle: const TextStyle(color: Colors.red),
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey[400]!, width: 1)),
@@ -285,25 +283,22 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         const Text(
           'Email',
           style: TextStyle(
               color: Colors.black,
               fontFamily: Constants.fontMedium,
-              fontSize: 13
-          ),
+              fontSize: 13),
         ),
-
         TextFormField(
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
           initialValue: _email,
-          onChanged: (v){
+          onChanged: (v) {
             _email = v;
           },
-          onSaved: (v){
+          onSaved: (v) {
             _email = v;
           },
           enabled: !isLoading,
@@ -313,9 +308,9 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
               return 'Enter Email';
             }
             if (!
-            //RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-            RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                .hasMatch(v)) {
+                //RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(v)) {
               return 'Enter a valid Email';
             }
             return null;
@@ -323,8 +318,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
           style: TextStyle(
               color: Colors.grey[800],
               fontSize: 14,
-              fontFamily: Constants.fontRegular
-          ),
+              fontFamily: Constants.fontRegular),
           decoration: InputDecoration(
             prefixText: ' ',
             prefixStyle: TextStyle(
@@ -337,7 +331,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                 fontSize: 14,
                 fontFamily: Constants.fontRegular),
             contentPadding:
-            EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 0),
+                EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 0),
             errorStyle: const TextStyle(color: Colors.red),
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey[400]!, width: 1)),
@@ -354,18 +348,18 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     );
   }
 
-  Widget dob(){
+  Widget dob() {
     return InkWell(
-      onTap: (){
+      onTap: () {
         //change dob
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return UpdateDob(
             currentDob: _dob,
-            onUpdated: (v){
-                _dob = v;
-                setState(() {});
-                },
-              );
+            onUpdated: (v) {
+              _dob = v;
+              setState(() {});
+            },
+          );
         }));
       },
       child: Column(
@@ -378,34 +372,30 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   const Text(
                     'Date of Birth',
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: Constants.fontMedium,
-                        fontSize: 13
-                    ),
+                        fontSize: 13),
                   ),
-
                   const SizedBox(
                     height: 15,
                   ),
-
                   Text(
-                    (_dob != null) ? DateFormat('MMM dd yyyy').format(_dob!) : '',
+                    (_dob != null)
+                        ? DateFormat('MMM dd yyyy').format(_dob!)
+                        : '',
                     style: TextStyle(
                         color: Colors.grey[800],
                         fontSize: 14,
-                        fontFamily: Constants.fontRegular
-                    ),
+                        fontFamily: Constants.fontRegular),
                   ),
-
                 ],
               ),
-
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.grey[600],
@@ -427,66 +417,55 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     );
   }
 
-  Widget gender(){
+  Widget gender() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         const Text(
           'Gender',
           style: TextStyle(
               color: Colors.black,
               fontFamily: Constants.fontMedium,
-              fontSize: 13
-          ),
+              fontSize: 13),
         ),
-
         const SizedBox(
           height: 15,
         ),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GenderTile(
                 title: 'Male',
-                onPressed: (){
+                onPressed: () {
                   setState(() {
                     _gender = 'M';
                   });
                 },
-                isSelected: (_gender == 'M')
-            ),
-
+                isSelected: (_gender == 'M')),
             const SizedBox(
               width: 40,
             ),
-
             GenderTile(
                 title: 'Female',
-                onPressed: (){
+                onPressed: () {
                   setState(() {
                     _gender = 'F';
                   });
                 },
-                isSelected: (_gender == 'F')
-            ),
-
+                isSelected: (_gender == 'F')),
             const SizedBox(
               width: 40,
             ),
-
             GenderTile(
                 title: 'Other',
-                onPressed: (){
+                onPressed: () {
                   setState(() {
                     _gender = 'O';
                   });
                 },
-                isSelected: (_gender == 'O')
-            ),
+                isSelected: (_gender == 'O')),
           ],
         ),
         const SizedBox(
@@ -507,12 +486,12 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
       color: Constants.primaryColor,
       fontFamily: Constants.fontMedium,
       onPressed: () {
-         if (!(isLoading)) {
+        if (!(isLoading)) {
           _onFormSubmitted();
         }
       },
       height: SizeConfig.blockSizeHorizontal * 13,
-      width: SizeConfig.blockSizeHorizontal* 40,
+      width: SizeConfig.blockSizeHorizontal * 40,
       textSize: 15,
       isLoading: isLoading,
     );
@@ -528,24 +507,22 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         Navigator.pop(context);
       },
       height: SizeConfig.blockSizeHorizontal * 13,
-      width: SizeConfig.blockSizeHorizontal* 40,
+      width: SizeConfig.blockSizeHorizontal * 40,
     );
   }
 
-  _onFormSubmitted() async{
-    try{
-      if ( _formKey.currentState!.validate()) {
+  _onFormSubmitted() async {
+    try {
+      if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
 
-        if(_gender != '' && _dob != null){
+        if (_gender != '' && _dob != null) {
           updateDetails();
-        }
-        else{
+        } else {
           Fluttertoast.showToast(msg: 'Please fill all details');
         }
       }
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
       setState(() {
         isLoading = false;
@@ -553,14 +530,13 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     }
   }
 
-  updateDetails() async{
-    try{
-
+  updateDetails() async {
+    try {
       //_profileBloc.add(UpdateProfile(details: _details));
       //Navigator.pop(context);
 
-      Map<String,dynamic> user = {};
-      Map<String,dynamic> details = {};
+      Map<String, dynamic> user = {};
+      Map<String, dynamic> details = {};
 
       details['first_name'] = _name;
       details['email'] = _email;
@@ -571,8 +547,8 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
       print(details);
 
       Response? response = await userRepository.updateUserDetails(details);
-      if(response != null){
-        if(response.statusCode == 200){
+      if (response != null) {
+        if (response.statusCode == 200) {
           // next page
           Fluttertoast.showToast(msg: 'Profile updated');
           Navigator.pop(context);
@@ -580,18 +556,16 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
 
           /*Future.delayed(const Duration(seconds: 2), (){
           });*/
-        }
-        else{
+        } else {
           Fluttertoast.showToast(msg: 'Error updating details');
         }
-      }
-      else{
+      } else {
         Fluttertoast.showToast(msg: 'Error updating details');
       }
       setState(() {
         isLoading = false;
       });
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       Fluttertoast.showToast(msg: 'Error ${e.toString()}');
       setState(() {
@@ -599,23 +573,25 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
       });
     }
   }
-
-
 }
-
 
 class GenderTile extends StatelessWidget {
   final String title;
   final bool isSelected;
   final Function() onPressed;
 
-  const GenderTile({Key? key,required this.title,required this.onPressed,required this.isSelected}) : super(key: key);
+  const GenderTile(
+      {Key? key,
+      required this.title,
+      required this.onPressed,
+      required this.isSelected})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return InkWell(
-      onTap: (){
+      onTap: () {
         onPressed();
       },
       child: Padding(
@@ -635,10 +611,8 @@ class GenderTile extends StatelessWidget {
               style: TextStyle(
                   color: Colors.grey[800],
                   fontSize: 12,
-                  fontFamily: Constants.fontRegular
-              ),
+                  fontFamily: Constants.fontRegular),
             ),
-
           ],
         ),
       ),
