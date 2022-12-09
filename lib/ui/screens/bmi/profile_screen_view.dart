@@ -304,289 +304,368 @@ class ProfileScreenView extends StatelessWidget {
   }
 
   Widget buildMeasurements(BuildContext context) {
-    return Container(
-      width: SizeConfig.blockSizeHorizontal * 95,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                offset: const Offset(2, 2),
-                blurRadius: 10)
-          ]),
-      padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-          const Text(
-            'MEASUREMENTS',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: Constants.fontMedium),
-          ),
-          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-          buildMeasurementHeading(),
-          SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-          const Divider(color: Color.fromRGBO(136, 136, 136, 1)),
-          MeasurementTile(
-              title: 'Height',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Height',
-                    slug: 'height_cm',
-                    relaxedReading: (userProfile!.heightCm != null &&
-                            userProfile!.heightCm! > 0)
-                        ? userProfile!.heightCm!
-                        : null,
-                    isExtendedAvailable: false,
-                  );
-                }));
-              },
-              relaxedReading:
-                  (userProfile!.heightCm != null && userProfile!.heightCm! > 0)
+    return Column(
+      children: [
+        Container(
+          width: SizeConfig.blockSizeHorizontal * 95,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    offset: const Offset(2, 2),
+                    blurRadius: 10)
+              ]),
+          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
+              const Text(
+                'MEASUREMENTS',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontFamily: Constants.fontMedium),
+              ),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
+              buildMeasurementHeading(),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
+              const Divider(color: Color.fromRGBO(136, 136, 136, 1)),
+              MeasurementTile(
+                  title: 'Height',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Height',
+                        slug: 'height_cm',
+                        relaxedReading: (userProfile!.heightCm != null &&
+                                userProfile!.heightCm! > 0)
+                            ? userProfile!.heightCm!
+                            : null,
+                        isExtendedAvailable: false,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.heightCm != null &&
+                          userProfile!.heightCm! > 0)
                       ? userProfile!.heightCm!.toStringAsFixed(2)
                       : null,
-              isExtendedAvailable: false),
-          MeasurementTile(
-              title: 'Weight',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Weight',
-                    slug: 'weight',
-                    relaxedReading: (userProfile!.weight != null &&
-                            userProfile!.weight! > 0)
-                        ? userProfile!.weight!
-                        : null,
-                    isExtendedAvailable: false,
-                    isWeight: true
-                  );
-                }));
-              },
-              relaxedReading:
-                  (userProfile!.weight != null && userProfile!.weight! > 0)
-                      ? userProfile!.weight!.toStringAsFixed(2)
-                      : null,
-              isExtendedAvailable: false),
-          MeasurementTile(
-              title: 'Neck',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Neck Size',
-                    slug: 'neck',
-                    relaxedReading:
-                        (userProfile!.neck != null && userProfile!.neck! > 0)
+                  isExtendedAvailable: false),
+              MeasurementTile(
+                  title: 'Weight',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                          title: 'Weight',
+                          slug: 'weight',
+                          relaxedReading: (userProfile!.weight != null &&
+                                  userProfile!.weight! > 0)
+                              ? userProfile!.weight!
+                              : null,
+                          isExtendedAvailable: false,
+                          isWeight: true);
+                    }));
+                  },
+                  relaxedReading:
+                      (userProfile!.weight != null && userProfile!.weight! > 0)
+                          ? userProfile!.weight!.toStringAsFixed(2)
+                          : null,
+                  isExtendedAvailable: false),
+              MeasurementTile(
+                  title: 'Neck',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Neck Size',
+                        slug: 'neck',
+                        relaxedReading: (userProfile!.neck != null &&
+                                userProfile!.neck! > 0)
                             ? userProfile!.neck!
                             : null,
-                    isExtendedAvailable: false,
-                  );
-                }));
-              },
-              relaxedReading:
-                  (userProfile!.neck != null && userProfile!.neck! > 0)
-                      ? userProfile!.neck!.toStringAsFixed(2)
+                        isExtendedAvailable: false,
+                      );
+                    }));
+                  },
+                  relaxedReading:
+                      (userProfile!.neck != null && userProfile!.neck! > 0)
+                          ? userProfile!.neck!.toStringAsFixed(2)
+                          : null,
+                  isExtendedAvailable: false),
+              MeasurementTile(
+                  title: 'Shoulders',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Shoulders',
+                        slug: 'shoulders',
+                        relaxedReading: (userProfile!.shoulders != null &&
+                                userProfile!.shoulders! > 0)
+                            ? userProfile!.shoulders!
+                            : null,
+                        isExtendedAvailable: false,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.shoulders != null &&
+                          userProfile!.shoulders! > 0)
+                      ? userProfile!.shoulders!.toStringAsFixed(2)
                       : null,
-              isExtendedAvailable: false),
-          MeasurementTile(
-              title: 'Chest',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Chest Size',
-                    slug: 'chest_normal',
-                    slug2: 'chest_extended',
-                    relaxedReading: (userProfile!.chestNormal != null &&
-                            userProfile!.chestNormal! > 0)
-                        ? userProfile!.chestNormal!
-                        : null,
-                    extendedReading: (userProfile!.chestExtended != null &&
-                            userProfile!.chestExtended! > 0)
-                        ? userProfile!.chestExtended!
-                        : null,
-                    isExtendedAvailable: true,
-                  );
-                }));
-              },
-              relaxedReading: (userProfile!.chestNormal != null &&
-                      userProfile!.chestNormal! > 0)
-                  ? userProfile!.chestNormal!.toStringAsFixed(2)
-                  : null,
-              extendedReading: (userProfile!.chestExtended != null &&
-                      userProfile!.chestExtended! > 0)
-                  ? userProfile!.chestExtended!.toStringAsFixed(2)
-                  : null,
-              isExtendedAvailable: true),
-          MeasurementTile(
-              title: 'Shoulders',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Shoulders',
-                    slug: 'shoulders',
-                    relaxedReading: (userProfile!.shoulders != null &&
-                            userProfile!.shoulders! > 0)
-                        ? userProfile!.shoulders!
-                        : null,
-                    isExtendedAvailable: false,
-                  );
-                }));
-              },
-              relaxedReading: (userProfile!.shoulders != null &&
-                      userProfile!.shoulders! > 0)
-                  ? userProfile!.shoulders!.toStringAsFixed(2)
-                  : null,
-              isExtendedAvailable: false),
-          MeasurementTile(
-              title: 'Upper Arm Right',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Upper Arm Right',
-                    slug: 'right_upperarms_relaxed',
-                    slug2: 'right_upperarms_extended',
-                    relaxedReading:
-                        (userProfile!.rightUpperArmsRelaxed != null &&
-                                userProfile!.rightUpperArmsRelaxed! > 0)
-                            ? userProfile!.rightUpperArmsRelaxed!
-                            : null,
-                    extendedReading:
-                        (userProfile!.rightUpperArmsExtended != null &&
-                                userProfile!.rightUpperArmsExtended! > 0)
-                            ? userProfile!.rightUpperArmsExtended!
-                            : null,
-                    isExtendedAvailable: true,
-                  );
-                }));
-              },
-              relaxedReading: (userProfile!.rightUpperArmsRelaxed != null &&
-                      userProfile!.rightUpperArmsRelaxed! > 0)
-                  ? userProfile!.rightUpperArmsRelaxed!.toStringAsFixed(2)
-                  : null,
-              extendedReading: (userProfile!.rightUpperArmsExtended != null &&
-                      userProfile!.rightUpperArmsExtended! > 0)
-                  ? userProfile!.rightUpperArmsExtended!.toStringAsFixed(2)
-                  : null,
-              isExtendedAvailable: true),
-          MeasurementTile(
-              title: 'Upper Arm Left',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Upper Arm Left',
-                    slug: 'left_upperarms_relaxed',
-                    slug2: 'left_upperarms_extended',
-                    relaxedReading:
-                        (userProfile!.leftUpperArmsRelaxed != null &&
-                                userProfile!.leftUpperArmsRelaxed! > 0)
-                            ? userProfile!.leftUpperArmsRelaxed!
-                            : null,
-                    extendedReading:
-                        (userProfile!.leftUpperArmsExtended != null &&
-                                userProfile!.leftUpperArmsExtended! > 0)
-                            ? userProfile!.leftUpperArmsExtended!
-                            : null,
-                    isExtendedAvailable: true,
-                  );
-                }));
-              },
-              relaxedReading: (userProfile!.leftUpperArmsRelaxed != null &&
-                      userProfile!.leftUpperArmsRelaxed! > 0)
-                  ? userProfile!.leftUpperArmsRelaxed!.toStringAsFixed(2)
-                  : null,
-              extendedReading: (userProfile!.leftUpperArmsExtended != null &&
-                      userProfile!.leftUpperArmsExtended! > 0)
-                  ? userProfile!.leftUpperArmsExtended!.toStringAsFixed(2)
-                  : null,
-              isExtendedAvailable: true),
-          MeasurementTile(
-              title: 'Forearm Right',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Forearm Right',
-                    slug: 'right_forearms_relaxed',
-                    slug2: 'right_forearms_extended',
-                    relaxedReading:
-                        (userProfile!.rightForearmsRelaxed != null &&
-                                userProfile!.rightForearmsRelaxed! > 0)
-                            ? userProfile!.rightForearmsRelaxed!
-                            : null,
-                    extendedReading:
-                        (userProfile!.rightForearmsExtended != null &&
-                                userProfile!.rightForearmsExtended! > 0)
-                            ? userProfile!.rightForearmsExtended!
-                            : null,
-                    isExtendedAvailable: true,
-                  );
-                }));
-              },
-              relaxedReading: (userProfile!.rightForearmsRelaxed != null &&
-                      userProfile!.rightForearmsRelaxed! > 0)
-                  ? userProfile!.rightForearmsRelaxed!.toStringAsFixed(2)
-                  : null,
-              extendedReading: (userProfile!.rightForearmsExtended != null &&
-                      userProfile!.rightForearmsExtended! > 0)
-                  ? userProfile!.rightForearmsExtended!.toStringAsFixed(2)
-                  : null,
-              isExtendedAvailable: true),
-          MeasurementTile(
-              title: 'Forearm Left',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Forearm Left',
-                    slug: 'left_forearms_relaxed',
-                    slug2: 'left_forearms_extended',
-                    relaxedReading: (userProfile!.leftForearmsRelaxed != null &&
-                            userProfile!.leftForearmsRelaxed! > 0)
-                        ? userProfile!.leftForearmsRelaxed!
-                        : null,
-                    extendedReading:
-                        (userProfile!.leftForearmsExtended != null &&
-                                userProfile!.leftForearmsExtended! > 0)
-                            ? userProfile!.leftForearmsExtended!
-                            : null,
-                    isExtendedAvailable: true,
-                  );
-                }));
-              },
-              relaxedReading: (userProfile!.leftForearmsRelaxed != null &&
-                      userProfile!.leftForearmsRelaxed! > 0)
-                  ? userProfile!.leftForearmsRelaxed!.toStringAsFixed(2)
-                  : null,
-              extendedReading: (userProfile!.leftForearmsExtended != null &&
-                      userProfile!.leftForearmsExtended! > 0)
-                  ? userProfile!.leftForearmsExtended!.toStringAsFixed(2)
-                  : null,
-              isExtendedAvailable: true),
-          MeasurementTile(
-              title: 'Waist',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Waist',
-                    slug: 'waist',
-                    relaxedReading:
-                        (userProfile!.waist != null && userProfile!.waist! > 0)
+                  isExtendedAvailable: false),
+              MeasurementTile(
+                  title: 'Waist',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Waist',
+                        slug: 'waist',
+                        relaxedReading: (userProfile!.waist != null &&
+                                userProfile!.waist! > 0)
                             ? userProfile!.waist!
                             : null,
-                    isExtendedAvailable: false,
-                  );
-                }));
-              },
-              relaxedReading:
-                  (userProfile!.waist != null && userProfile!.waist! > 0)
-                      ? userProfile!.waist!.toStringAsFixed(2)
-                      : null,
-              isExtendedAvailable: false),
+                        isExtendedAvailable: false,
+                      );
+                    }));
+                  },
+                  relaxedReading:
+                      (userProfile!.waist != null && userProfile!.waist! > 0)
+                          ? userProfile!.waist!.toStringAsFixed(2)
+                          : null,
+                  isExtendedAvailable: false),
 
-          /*MeasurementTile(
+              /*MeasurementTile(
+                  title: 'Wrist',
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Wrist',
+                        slug: '',
+                        relaxedReading: (userProfile!.chestNormal != null && userProfile!.chestNormal! > 0)
+                            ? userProfile!.chestNormal! : null,
+
+                        isExtendedAvailable: false,
+                      );
+                    }));
+                  },
+                  relaxedReading: null,
+                  isExtendedAvailable: false
+              ),*/
+
+              MeasurementTile(
+                  title: 'Hip',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Hip',
+                        slug: 'hip',
+                        relaxedReading:
+                            (userProfile!.hip != null && userProfile!.hip! > 0)
+                                ? userProfile!.hip!
+                                : null,
+                        isExtendedAvailable: false,
+                      );
+                    }));
+                  },
+                  relaxedReading:
+                      (userProfile!.hip != null && userProfile!.hip! > 0)
+                          ? userProfile!.hip!.toStringAsFixed(2)
+                          : null,
+                  isExtendedAvailable: false),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
+            ],
+          ),
+        ),
+        Container(
+          width: SizeConfig.blockSizeHorizontal * 95,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    offset: const Offset(2, 2),
+                    blurRadius: 10)
+              ]),
+          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
+              buildMeasurementHeading(),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
+              const Divider(color: Color.fromRGBO(136, 136, 136, 1)),
+              MeasurementTile(
+                  title: 'Chest',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Chest Size',
+                        slug: 'chest_normal',
+                        slug2: 'chest_extended',
+                        relaxedReading: (userProfile!.chestNormal != null &&
+                                userProfile!.chestNormal! > 0)
+                            ? userProfile!.chestNormal!
+                            : null,
+                        extendedReading: (userProfile!.chestExtended != null &&
+                                userProfile!.chestExtended! > 0)
+                            ? userProfile!.chestExtended!
+                            : null,
+                        isExtendedAvailable: true,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.chestNormal != null &&
+                          userProfile!.chestNormal! > 0)
+                      ? userProfile!.chestNormal!.toStringAsFixed(2)
+                      : null,
+                  extendedReading: (userProfile!.chestExtended != null &&
+                          userProfile!.chestExtended! > 0)
+                      ? userProfile!.chestExtended!.toStringAsFixed(2)
+                      : null,
+                  isExtendedAvailable: true),
+              MeasurementTile(
+                  title: 'Upper Arm Right',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Upper Arm Right',
+                        slug: 'right_upperarms_relaxed',
+                        slug2: 'right_upperarms_extended',
+                        relaxedReading:
+                            (userProfile!.rightUpperArmsRelaxed != null &&
+                                    userProfile!.rightUpperArmsRelaxed! > 0)
+                                ? userProfile!.rightUpperArmsRelaxed!
+                                : null,
+                        extendedReading:
+                            (userProfile!.rightUpperArmsExtended != null &&
+                                    userProfile!.rightUpperArmsExtended! > 0)
+                                ? userProfile!.rightUpperArmsExtended!
+                                : null,
+                        isExtendedAvailable: true,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.rightUpperArmsRelaxed != null &&
+                          userProfile!.rightUpperArmsRelaxed! > 0)
+                      ? userProfile!.rightUpperArmsRelaxed!.toStringAsFixed(2)
+                      : null,
+                  extendedReading: (userProfile!.rightUpperArmsExtended !=
+                              null &&
+                          userProfile!.rightUpperArmsExtended! > 0)
+                      ? userProfile!.rightUpperArmsExtended!.toStringAsFixed(2)
+                      : null,
+                  isExtendedAvailable: true),
+              MeasurementTile(
+                  title: 'Upper Arm Left',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Upper Arm Left',
+                        slug: 'left_upperarms_relaxed',
+                        slug2: 'left_upperarms_extended',
+                        relaxedReading:
+                            (userProfile!.leftUpperArmsRelaxed != null &&
+                                    userProfile!.leftUpperArmsRelaxed! > 0)
+                                ? userProfile!.leftUpperArmsRelaxed!
+                                : null,
+                        extendedReading:
+                            (userProfile!.leftUpperArmsExtended != null &&
+                                    userProfile!.leftUpperArmsExtended! > 0)
+                                ? userProfile!.leftUpperArmsExtended!
+                                : null,
+                        isExtendedAvailable: true,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.leftUpperArmsRelaxed != null &&
+                          userProfile!.leftUpperArmsRelaxed! > 0)
+                      ? userProfile!.leftUpperArmsRelaxed!.toStringAsFixed(2)
+                      : null,
+                  extendedReading: (userProfile!.leftUpperArmsExtended !=
+                              null &&
+                          userProfile!.leftUpperArmsExtended! > 0)
+                      ? userProfile!.leftUpperArmsExtended!.toStringAsFixed(2)
+                      : null,
+                  isExtendedAvailable: true),
+              MeasurementTile(
+                  title: 'Forearm Right',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Forearm Right',
+                        slug: 'right_forearms_relaxed',
+                        slug2: 'right_forearms_extended',
+                        relaxedReading:
+                            (userProfile!.rightForearmsRelaxed != null &&
+                                    userProfile!.rightForearmsRelaxed! > 0)
+                                ? userProfile!.rightForearmsRelaxed!
+                                : null,
+                        extendedReading:
+                            (userProfile!.rightForearmsExtended != null &&
+                                    userProfile!.rightForearmsExtended! > 0)
+                                ? userProfile!.rightForearmsExtended!
+                                : null,
+                        isExtendedAvailable: true,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.rightForearmsRelaxed != null &&
+                          userProfile!.rightForearmsRelaxed! > 0)
+                      ? userProfile!.rightForearmsRelaxed!.toStringAsFixed(2)
+                      : null,
+                  extendedReading: (userProfile!.rightForearmsExtended !=
+                              null &&
+                          userProfile!.rightForearmsExtended! > 0)
+                      ? userProfile!.rightForearmsExtended!.toStringAsFixed(2)
+                      : null,
+                  isExtendedAvailable: true),
+              MeasurementTile(
+                  title: 'Forearm Left',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Forearm Left',
+                        slug: 'left_forearms_relaxed',
+                        slug2: 'left_forearms_extended',
+                        relaxedReading:
+                            (userProfile!.leftForearmsRelaxed != null &&
+                                    userProfile!.leftForearmsRelaxed! > 0)
+                                ? userProfile!.leftForearmsRelaxed!
+                                : null,
+                        extendedReading:
+                            (userProfile!.leftForearmsExtended != null &&
+                                    userProfile!.leftForearmsExtended! > 0)
+                                ? userProfile!.leftForearmsExtended!
+                                : null,
+                        isExtendedAvailable: true,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.leftForearmsRelaxed != null &&
+                          userProfile!.leftForearmsRelaxed! > 0)
+                      ? userProfile!.leftForearmsRelaxed!.toStringAsFixed(2)
+                      : null,
+                  extendedReading: (userProfile!.leftForearmsExtended != null &&
+                          userProfile!.leftForearmsExtended! > 0)
+                      ? userProfile!.leftForearmsExtended!.toStringAsFixed(2)
+                      : null,
+                  isExtendedAvailable: true),
+
+              /*MeasurementTile(
               title: 'Wrist',
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -604,145 +683,138 @@ class ProfileScreenView extends StatelessWidget {
               isExtendedAvailable: false
           ),*/
 
-          MeasurementTile(
-              title: 'Hip',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Hip',
-                    slug: 'hip',
-                    relaxedReading:
-                        (userProfile!.hip != null && userProfile!.hip! > 0)
-                            ? userProfile!.hip!
-                            : null,
-                    isExtendedAvailable: false,
-                  );
-                }));
-              },
-              relaxedReading:
-                  (userProfile!.hip != null && userProfile!.hip! > 0)
-                      ? userProfile!.hip!.toStringAsFixed(2)
+              MeasurementTile(
+                  title: 'Thigh Right',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Thigh Right',
+                        slug: 'right_thigh_relaxed',
+                        slug2: 'right_thigh_extended',
+                        relaxedReading:
+                            (userProfile!.rightThighRelaxed != null &&
+                                    userProfile!.rightThighRelaxed! > 0)
+                                ? userProfile!.rightThighRelaxed!
+                                : null,
+                        extendedReading:
+                            (userProfile!.rightThighExtended != null &&
+                                    userProfile!.rightThighExtended! > 0)
+                                ? userProfile!.rightThighExtended!
+                                : null,
+                        isExtendedAvailable: true,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.rightThighRelaxed != null &&
+                          userProfile!.rightThighRelaxed! > 0)
+                      ? userProfile!.rightThighRelaxed!.toStringAsFixed(2)
                       : null,
-              isExtendedAvailable: false),
-          MeasurementTile(
-              title: 'Thigh Right',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Thigh Right',
-                    slug: 'right_thigh_relaxed',
-                    slug2: 'right_thigh_extended',
-                    relaxedReading: (userProfile!.rightThighRelaxed != null &&
-                            userProfile!.rightThighRelaxed! > 0)
-                        ? userProfile!.rightThighRelaxed!
-                        : null,
-                    extendedReading: (userProfile!.rightThighExtended != null &&
-                            userProfile!.rightThighExtended! > 0)
-                        ? userProfile!.rightThighExtended!
-                        : null,
-                    isExtendedAvailable: true,
-                  );
-                }));
-              },
-              relaxedReading: (userProfile!.rightThighRelaxed != null &&
-                      userProfile!.rightThighRelaxed! > 0)
-                  ? userProfile!.rightThighRelaxed!.toStringAsFixed(2)
-                  : null,
-              extendedReading: (userProfile!.rightThighExtended != null &&
-                      userProfile!.rightThighExtended! > 0)
-                  ? userProfile!.rightThighExtended!.toStringAsFixed(2)
-                  : null,
-              isExtendedAvailable: true),
-          MeasurementTile(
-              title: 'Thigh Left',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Thigh Left',
-                    slug: 'left_thigh_relaxed',
-                    slug2: 'left_thigh_extended',
-                    relaxedReading: (userProfile!.leftThighRelaxed != null &&
-                            userProfile!.leftThighRelaxed! > 0)
-                        ? userProfile!.leftThighRelaxed!
-                        : null,
-                    extendedReading: (userProfile!.leftThighExtended != null &&
-                            userProfile!.leftThighExtended! > 0)
-                        ? userProfile!.leftThighExtended!
-                        : null,
-                    isExtendedAvailable: true,
-                  );
-                }));
-              },
-              relaxedReading: (userProfile!.leftThighRelaxed != null &&
-                      userProfile!.leftThighRelaxed! > 0)
-                  ? userProfile!.leftThighRelaxed!.toStringAsFixed(2)
-                  : null,
-              extendedReading: (userProfile!.leftThighExtended != null &&
-                      userProfile!.leftThighExtended! > 0)
-                  ? userProfile!.leftThighExtended!.toStringAsFixed(2)
-                  : null,
-              isExtendedAvailable: true),
-          MeasurementTile(
-              title: 'Calf Right',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Calf Right',
-                    slug: 'right_calf_relaxed',
-                    slug2: 'right_calf_extended',
-                    relaxedReading: (userProfile!.rightCalfRelaxed != null &&
-                            userProfile!.rightCalfRelaxed! > 0)
-                        ? userProfile!.rightCalfRelaxed!
-                        : null,
-                    extendedReading: (userProfile!.rightCalfExtended != null &&
-                            userProfile!.rightCalfExtended! > 0)
-                        ? userProfile!.rightCalfExtended!
-                        : null,
-                    isExtendedAvailable: true,
-                  );
-                }));
-              },
-              relaxedReading: (userProfile!.rightCalfRelaxed != null &&
-                      userProfile!.rightCalfRelaxed! > 0)
-                  ? userProfile!.rightCalfRelaxed!.toStringAsFixed(2)
-                  : null,
-              extendedReading: (userProfile!.rightCalfExtended != null &&
-                      userProfile!.rightCalfExtended! > 0)
-                  ? userProfile!.rightCalfExtended!.toStringAsFixed(2)
-                  : null,
-              isExtendedAvailable: true),
-          MeasurementTile(
-              title: 'Calf Left',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return UpdateMeasurement(
-                    title: 'Calf Left',
-                    slug: 'left_calf_relaxed',
-                    slug2: 'left_calf_extended',
-                    relaxedReading: (userProfile!.leftCalfRelaxed != null &&
-                            userProfile!.leftCalfRelaxed! > 0)
-                        ? userProfile!.leftCalfRelaxed!
-                        : null,
-                    extendedReading: (userProfile!.leftCalfExtended != null &&
-                            userProfile!.leftCalfExtended! > 0)
-                        ? userProfile!.leftCalfExtended!
-                        : null,
-                    isExtendedAvailable: true,
-                  );
-                }));
-              },
-              relaxedReading: (userProfile!.leftCalfRelaxed != null &&
-                      userProfile!.leftCalfRelaxed! > 0)
-                  ? userProfile!.leftCalfRelaxed!.toStringAsFixed(2)
-                  : null,
-              extendedReading: (userProfile!.leftCalfExtended != null &&
-                      userProfile!.leftCalfExtended! > 0)
-                  ? userProfile!.leftCalfExtended!.toStringAsFixed(2)
-                  : null,
-              isExtendedAvailable: true),
-          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-        ],
-      ),
+                  extendedReading: (userProfile!.rightThighExtended != null &&
+                          userProfile!.rightThighExtended! > 0)
+                      ? userProfile!.rightThighExtended!.toStringAsFixed(2)
+                      : null,
+                  isExtendedAvailable: true),
+              MeasurementTile(
+                  title: 'Thigh Left',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Thigh Left',
+                        slug: 'left_thigh_relaxed',
+                        slug2: 'left_thigh_extended',
+                        relaxedReading:
+                            (userProfile!.leftThighRelaxed != null &&
+                                    userProfile!.leftThighRelaxed! > 0)
+                                ? userProfile!.leftThighRelaxed!
+                                : null,
+                        extendedReading:
+                            (userProfile!.leftThighExtended != null &&
+                                    userProfile!.leftThighExtended! > 0)
+                                ? userProfile!.leftThighExtended!
+                                : null,
+                        isExtendedAvailable: true,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.leftThighRelaxed != null &&
+                          userProfile!.leftThighRelaxed! > 0)
+                      ? userProfile!.leftThighRelaxed!.toStringAsFixed(2)
+                      : null,
+                  extendedReading: (userProfile!.leftThighExtended != null &&
+                          userProfile!.leftThighExtended! > 0)
+                      ? userProfile!.leftThighExtended!.toStringAsFixed(2)
+                      : null,
+                  isExtendedAvailable: true),
+              MeasurementTile(
+                  title: 'Calf Right',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Calf Right',
+                        slug: 'right_calf_relaxed',
+                        slug2: 'right_calf_extended',
+                        relaxedReading:
+                            (userProfile!.rightCalfRelaxed != null &&
+                                    userProfile!.rightCalfRelaxed! > 0)
+                                ? userProfile!.rightCalfRelaxed!
+                                : null,
+                        extendedReading:
+                            (userProfile!.rightCalfExtended != null &&
+                                    userProfile!.rightCalfExtended! > 0)
+                                ? userProfile!.rightCalfExtended!
+                                : null,
+                        isExtendedAvailable: true,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.rightCalfRelaxed != null &&
+                          userProfile!.rightCalfRelaxed! > 0)
+                      ? userProfile!.rightCalfRelaxed!.toStringAsFixed(2)
+                      : null,
+                  extendedReading: (userProfile!.rightCalfExtended != null &&
+                          userProfile!.rightCalfExtended! > 0)
+                      ? userProfile!.rightCalfExtended!.toStringAsFixed(2)
+                      : null,
+                  isExtendedAvailable: true),
+              MeasurementTile(
+                  title: 'Calf Left',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UpdateMeasurement(
+                        title: 'Calf Left',
+                        slug: 'left_calf_relaxed',
+                        slug2: 'left_calf_extended',
+                        relaxedReading: (userProfile!.leftCalfRelaxed != null &&
+                                userProfile!.leftCalfRelaxed! > 0)
+                            ? userProfile!.leftCalfRelaxed!
+                            : null,
+                        extendedReading:
+                            (userProfile!.leftCalfExtended != null &&
+                                    userProfile!.leftCalfExtended! > 0)
+                                ? userProfile!.leftCalfExtended!
+                                : null,
+                        isExtendedAvailable: true,
+                      );
+                    }));
+                  },
+                  relaxedReading: (userProfile!.leftCalfRelaxed != null &&
+                          userProfile!.leftCalfRelaxed! > 0)
+                      ? userProfile!.leftCalfRelaxed!.toStringAsFixed(2)
+                      : null,
+                  extendedReading: (userProfile!.leftCalfExtended != null &&
+                          userProfile!.leftCalfExtended! > 0)
+                      ? userProfile!.leftCalfExtended!.toStringAsFixed(2)
+                      : null,
+                  isExtendedAvailable: true),
+              SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
+            ],
+          ),
+        )
+      ],
     );
   }
 
