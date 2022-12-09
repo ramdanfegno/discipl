@@ -336,7 +336,6 @@ class _CalculateViewState extends State<CalculateView> {
   }
 
   _submit() async{
-    try{
       setState(() {
         isLoading = true;
       });
@@ -351,13 +350,14 @@ class _CalculateViewState extends State<CalculateView> {
 
         if(response.statusCode == 200){
           //store profile details
-          try{
             Response? response2 = await userRepository.getUserProfile(true);
             if(response2 != null && response2.statusCode == 200){
               UserProfile userProfile = UserProfile.fromJson(response2.data);
               await userRepository.storeProfileDetails(userProfile);
             }
-          }
+            try{
+
+            }
           catch(e){
             setState(() {
               isLoading = false;
@@ -378,7 +378,9 @@ class _CalculateViewState extends State<CalculateView> {
       setState(() {
         isLoading = false;
       });
-    }catch(e){
+      try{
+
+      }catch(e){
       print(e.toString());
       setState(() {
         isLoading = false;

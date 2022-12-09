@@ -364,6 +364,7 @@ class ProfileScreenView extends StatelessWidget {
                         ? userProfile!.weight!
                         : null,
                     isExtendedAvailable: false,
+                    isWeight: true
                   );
                 }));
               },

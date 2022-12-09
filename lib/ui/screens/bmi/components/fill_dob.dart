@@ -6,30 +6,27 @@ import 'package:scroll_date_picker/scroll_date_picker.dart';
 import '../../../../utils/constants.dart';
 
 class FillDob extends StatefulWidget {
-
   final DateTime? dob;
   final Function(DateTime) onFilled;
 
-  const FillDob({Key? key,required this.dob,required this.onFilled}) : super(key: key);
+  const FillDob({Key? key, required this.dob, required this.onFilled})
+      : super(key: key);
 
   @override
   State<FillDob> createState() => _FillDobState();
 }
 
 class _FillDobState extends State<FillDob> {
-
   late DateTime _dob;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(widget.dob != null){
+    if (widget.dob != null) {
       _dob = widget.dob!;
-    }
-    else{
-
-      _dob = DateTime(DateTime.now().year-3,12,31);
+    } else {
+      _dob = DateTime(DateTime.now().year - 10, 12, 31);
     }
   }
 
@@ -57,13 +54,13 @@ class _FillDobState extends State<FillDob> {
     );
   }
 
-  Widget chooseDate(){
+  Widget chooseDate() {
     return SizedBox(
-      height: SizeConfig.blockSizeHorizontal*90,
+      height: SizeConfig.blockSizeHorizontal * 90,
       child: ScrollDatePicker(
         selectedDate: _dob,
         locale: const Locale('en'),
-        maximumDate:  DateTime(DateTime.now().year-3,12,31),
+        maximumDate: DateTime(DateTime.now().year - 10, 12, 31),
         onDateTimeChanged: (DateTime value) {
           setState(() {
             _dob = value;
@@ -75,46 +72,33 @@ class _FillDobState extends State<FillDob> {
               selectedTextStyle: TextStyle(
                   color: Constants.fontColor1,
                   fontSize: 25,
-                  fontFamily: Constants.fontSemiBold
-              ),
-              textStyle: TextStyle(
-                  fontSize: 15,
-                  fontFamily: Constants.fontRegular
-              ),
+                  fontFamily: Constants.fontSemiBold),
+              textStyle:
+                  TextStyle(fontSize: 15, fontFamily: Constants.fontRegular),
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(vertical: 15,horizontal: 10),
+              margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             ),
             month: ScrollViewDetailOptions(
               selectedTextStyle: TextStyle(
                   color: Constants.fontColor1,
                   fontSize: 25,
-                  fontFamily: Constants.fontSemiBold
-              ),
-              textStyle: TextStyle(
-                  fontSize: 15,
-                  fontFamily: Constants.fontRegular
-              ),
-              margin: EdgeInsets.symmetric(vertical: 15,horizontal: 0),
+                  fontFamily: Constants.fontSemiBold),
+              textStyle:
+                  TextStyle(fontSize: 15, fontFamily: Constants.fontRegular),
+              margin: EdgeInsets.symmetric(vertical: 15, horizontal: 0),
               alignment: Alignment.centerLeft,
             ),
             day: ScrollViewDetailOptions(
               selectedTextStyle: TextStyle(
                   color: Constants.fontColor1,
                   fontSize: 25,
-                  fontFamily: Constants.fontSemiBold
-              ),
-              textStyle: TextStyle(
-                  fontSize: 15,
-                  fontFamily: Constants.fontRegular
-              ),
-              margin: EdgeInsets.symmetric(vertical: 15,horizontal: 15),
+                  fontFamily: Constants.fontSemiBold),
+              textStyle:
+                  TextStyle(fontSize: 15, fontFamily: Constants.fontRegular),
+              margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               alignment: Alignment.centerLeft,
-            )
-        ),
-        options: DatePickerOptions(
-          itemExtent: 50,
-          diameterRatio: 50
-        ),
+            )),
+        options: DatePickerOptions(itemExtent: 50, diameterRatio: 50),
       ),
     );
   }

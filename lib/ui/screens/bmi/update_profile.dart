@@ -46,9 +46,9 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     _gender = 'M';
     _dob = null;
 
-    if (widget.userProfile != null) {
-      if (widget.userProfile!.user != null) {
-        if (widget.userProfile!.user!.firstName != null) {
+    if(widget.userProfile != null){
+      if(widget.userProfile!.user != null){
+        if(widget.userProfile!.user!.firstName != null){
           _name = widget.userProfile!.user!.firstName;
         }
         if (widget.userProfile!.user!.email != null) {

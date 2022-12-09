@@ -18,6 +18,7 @@ import '../../../utils/size_config.dart';
 import '../../widgets/buttons/auth_button.dart';
 import '../../widgets/dialog/custom_dialog.dart';
 import '../../widgets/others/app_bar.dart';
+import 'components/fill_wieght.dart';
 import 'profile_screen.dart';
 
 class UpdateMeasurement extends StatefulWidget {
@@ -25,10 +26,11 @@ class UpdateMeasurement extends StatefulWidget {
   final String? slug2;
   final double? relaxedReading,extendedReading;
   final bool isExtendedAvailable;
+  final bool? isWeight;
 
   const UpdateMeasurement({Key? key,
     required this.title, this.extendedReading,required this.slug,this.slug2,
-    required this.isExtendedAvailable, required this.relaxedReading
+    required this.isExtendedAvailable, required this.relaxedReading,this.isWeight
   }) : super(key: key);
 
   @override
@@ -45,12 +47,14 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
   late Map<String,dynamic> _details;
   late ProfileBloc _profileBloc;
   late String title;
+  late bool isWeight;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     isLoading = false;
+    isWeight = false;
     _details = {};
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
     title = '';
@@ -97,6 +101,18 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
 
       _details[widget.slug2!] = _extendedCm;
     }
+
+    if(widget.isWeight != null){
+      isWeight = widget.isWeight!;
+    }
+
+    if(isWeight){
+      if(widget.relaxedReading != null && widget.relaxedReading! > 0 ){
+        _relaxedCm = widget.relaxedReading;
+        //_relaxedInch = _relaxedCm! / 2.54;
+      }
+    }
+
   }
 
   @override
@@ -167,7 +183,16 @@ class _UpdateMeasurementState extends State<UpdateMeasurement> {
   }
 
   Widget selectTab(){
-    if(widget.isExtendedAvailable){
+    if(isWeight){
+      return FillWeight(
+          weight: _relaxedCm,
+          onFilled: (v){
+            _relaxedCm = v;
+            _details[widget.slug] = _relaxedCm;
+          }
+      );
+    }
+    else if(widget.isExtendedAvailable){
       return (_buttonText == 'Next') ?
       MeasureView(
           measurementInch: _relaxedInch,
