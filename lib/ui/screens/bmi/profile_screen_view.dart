@@ -483,6 +483,9 @@ class ProfileScreenView extends StatelessWidget {
             ],
           ),
         ),
+        
+        SizedBox(height: SizeConfig.blockSizeHorizontal*8,),
+        
         Container(
           width: SizeConfig.blockSizeHorizontal * 95,
           decoration: BoxDecoration(
