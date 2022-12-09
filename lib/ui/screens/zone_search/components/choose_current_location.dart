@@ -42,11 +42,10 @@ class _ChooseCurrentLocationState extends State<ChooseCurrentLocation> {
       onTap: (){
         if(!isLoading!){
           if(_currentLat != null && _currentLong != null){
-            Map<String,dynamic> data = {
+            Map<String,String> data = {
               'latitude' : _currentLat.toString(),
               'longitude' : _currentLong.toString(),
-              'location_name' : _currentPlace!,
-              //'zone' : null
+              'location_name' : _currentPlace!
             };
             //setLocationApi(data);
             widget.onLocationFetched(data);
