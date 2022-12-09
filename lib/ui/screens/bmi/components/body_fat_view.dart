@@ -199,10 +199,47 @@ class _BodyFatViewState extends State<BodyFatView> {
   }
 
   Widget bodyFatReading() {
+
+    String s = '';
+    double val = 0;
+    Color color = Colors.grey;
+
+
+    try{
+      val = double.parse(widget.result);
+      if(val > 0){
+        if(val < 20){
+          s = 'UnderWeight';
+          color = Colors.blue;
+        }
+        else if(val > 20 && val < 40){
+          s = 'Normal';
+          color = Colors.green;
+        }
+        else if(val > 40 && val < 60){
+          s = 'Over Weight';
+          color = Colors.yellow[700]!;
+        }
+        else if(val > 60 && val < 80){
+          s = 'Obese';
+          color = Colors.orange;
+        }
+        else if(val > 80){
+          s = 'Extremely Obese';
+          color = Colors.red;
+
+        }
+      }
+    }
+    catch(e){
+      print('bmiStatus');
+      print(e.toString());
+    }
+
     return Text(
       '${widget.result} %',
-      style: const TextStyle(
-          color: Colors.green,
+      style: TextStyle(
+          color: color,
           fontSize: 20,
           fontFamily: Constants.fontSemiBold),
     );

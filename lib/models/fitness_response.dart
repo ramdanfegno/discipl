@@ -25,9 +25,9 @@ class FitnessResponse {
 
   factory FitnessResponse.fromJson(Map<String, dynamic> json) => FitnessResponse(
     age: json["age"] == null ? null : json["age"],
-    bmi: json["BMI"] == null ? null : json["BMI"],
-    bmr: json["BMR"] == null ? null : json["BMR"],
-    bfp: json["BFP"] == null ? null : json["BFP"],
+    bmi: json["BMI"] == null ? null : json["BMI"].toDouble(),
+    bmr: json["BMR"] == null ? null : json["BMR"].toDouble(),
+    bfp: json["BFP"] == null ? null : json["BFP"].toDouble(),
     message: json["message"] == null ? null : json["message"],
   );
 
