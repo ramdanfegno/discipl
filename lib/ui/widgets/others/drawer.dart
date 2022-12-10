@@ -25,7 +25,7 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
   late ProfileBloc _profileBloc;
-  String? _profileImage ,_userName;
+  String? _profileImage, _userName;
   final UserRepository userRepository = UserRepository();
 
   @override
@@ -36,13 +36,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
     getProfileImage();
   }
 
-  getProfileImage() async{
+  getProfileImage() async {
     UserProfile? userProfile = await userRepository.getProfileDetailsLocal();
-    if(userProfile != null){
-      if(userProfile.image != null){
+    if (userProfile != null) {
+      if (userProfile.image != null) {
         _profileImage = userProfile.image;
       }
-      if(userProfile.user != null && userProfile.user!.firstName != null){
+      if (userProfile.user != null && userProfile.user!.firstName != null) {
         _userName = userProfile.user!.firstName;
       }
       setState(() {});
@@ -51,7 +51,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-
     return Drawer(
       child: SafeArea(
         child: Stack(
@@ -65,15 +64,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 12,
                 ),
-                (!widget.isGuest) ?
-                InkWell(
-                    onTap: (){
-                      _profileBloc.add(LoadProfile());
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return const ProfileScreen();
-                      }));
-                    },
-                    child: drawerTile(HabitozIcons.user, 'Profile')!) : Container(),
+                (!widget.isGuest)
+                    ? InkWell(
+                        onTap: () {
+                          _profileBloc.add(LoadProfile());
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const ProfileScreen();
+                          }));
+                        },
+                        child: drawerTile(HabitozIcons.user, 'Profile')!)
+                    : Container(),
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 8,
                 ),
@@ -86,12 +87,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 8,
                 ),
-                (!widget.isGuest) ?
-                InkWell(
-                    onTap: (){
-                      buildLogout(context);
-                      },
-                    child: drawerTile(HabitozIcons.shutdown, 'Logout')!)
+                (!widget.isGuest)
+                    ? InkWell(
+                        onTap: () {
+                          buildLogout(context);
+                        },
+                        child: drawerTile(
+                            Icons.power_settings_new_outlined, 'Logout')!)
                     : Container(),
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 20,
@@ -172,21 +174,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
           decoration: BoxDecoration(
               color: Constants.appbarColor,
               shape: BoxShape.circle,
-            image: (_profileImage != null) ? DecorationImage(
-                image: NetworkImage(_profileImage!),
-              fit: BoxFit.fill
-            )
-                : const DecorationImage(
-              image: AssetImage('assets/images/png/user_image.png')
-            )
-          ),
+              image: (_profileImage != null)
+                  ? DecorationImage(
+                      image: NetworkImage(_profileImage!), fit: BoxFit.fill)
+                  : const DecorationImage(
+                      image: AssetImage('assets/images/png/user_image.png'))),
         ),
         SizedBox(
           width: SizeConfig.blockSizeHorizontal * 3,
         ),
         InkWell(
-          onTap: (){
-            if(widget.isGuest){
+          onTap: () {
+            if (widget.isGuest) {
               BlocProvider.of<AuthenticationBloc>(context)
                   .add(AuthenticationRetry(msg: 'Log in'));
               Navigator.pushNamedAndRemoveUntil(
@@ -228,7 +227,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   buildLogout(BuildContext context) {
-
     print('buildLogout');
     showDialog(
         context: context,
@@ -253,5 +251,4 @@ class _CustomDrawerState extends State<CustomDrawer> {
           );
         });
   }
-
 }

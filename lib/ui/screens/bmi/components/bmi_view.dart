@@ -9,17 +9,22 @@ import '../result_display.dart';
 class BMIView extends StatefulWidget {
   final bool isFromHome;
   final String result;
-  final Map<String,dynamic> data;
-  const BMIView({Key? key,required this.isFromHome,required this.data,required this.result}) : super(key: key);
+  final Map<String, dynamic> data;
+
+  const BMIView(
+      {Key? key,
+      required this.isFromHome,
+      required this.data,
+      required this.result})
+      : super(key: key);
 
   @override
   _BMIViewState createState() => _BMIViewState();
 }
 
 class _BMIViewState extends State<BMIView> {
-
   late bool isExpanded;
-  late String? _height,_weight;
+  late String? _height, _weight;
 
   @override
   void initState() {
@@ -28,12 +33,12 @@ class _BMIViewState extends State<BMIView> {
     isExpanded = false;
     _height = '';
     _weight = '';
-    if(widget.data.isNotEmpty){
+    if (widget.data.isNotEmpty) {
       print(widget.data);
-      if(widget.data['height_cm'] != null){
+      if (widget.data['height_cm'] != null) {
         _height = widget.data['height_cm'].toStringAsFixed(0);
       }
-      if(widget.data['weight'] != null){
+      if (widget.data['weight'] != null) {
         _weight = widget.data['weight'].toStringAsFixed(1);
       }
     }
@@ -64,8 +69,8 @@ class _BMIViewState extends State<BMIView> {
   }
 
   Widget titleLine1() {
-    return  Text(
-        (widget.isFromHome) ? 'Your Result!' : 'BMI RESULT',
+    return Text(
+      (widget.isFromHome) ? 'Your Result!' : 'BMI RESULT',
       style: const TextStyle(
           color: Color.fromRGBO(40, 40, 40, 1),
           fontSize: 22,
@@ -73,21 +78,19 @@ class _BMIViewState extends State<BMIView> {
     );
   }
 
-  Widget bmiView(){
+  Widget bmiView() {
     return Container(
-      width: SizeConfig.blockSizeHorizontal*90,
+      width: SizeConfig.blockSizeHorizontal * 90,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
                 color: Colors.black.withOpacity(0.1),
-                offset: const Offset(2,2),
+                offset: const Offset(2, 2),
                 blurRadius: 10,
-              spreadRadius: 5
-            )
-          ]
-      ),
+                spreadRadius: 5)
+          ]),
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -120,39 +123,31 @@ class _BMIViewState extends State<BMIView> {
   }
 
   Widget bmiReading() {
-
     String s = '';
     double val = 0;
     Color color = Colors.grey;
 
-
-    try{
+    try {
       val = double.parse(widget.result);
-      if(val > 0){
-        if(val < 20){
+      if (val > 0) {
+        if (val < 20) {
           s = 'UnderWeight';
           color = Colors.blue;
-        }
-        else if(val > 20 && val < 40){
+        } else if (val > 20 && val < 40) {
           s = 'Normal';
           color = Colors.green;
-        }
-        else if(val > 40 && val < 60){
+        } else if (val > 40 && val < 60) {
           s = 'Over Weight';
           color = Colors.yellow[700]!;
-        }
-        else if(val > 60 && val < 80){
+        } else if (val > 60 && val < 80) {
           s = 'Obese';
           color = Colors.orange;
-        }
-        else if(val > 80){
+        } else if (val > 80) {
           s = 'Extremely Obese';
           color = Colors.red;
-
         }
       }
-    }
-    catch(e){
+    } catch (e) {
       print('bmiStatus');
       print(e.toString());
     }
@@ -160,19 +155,17 @@ class _BMIViewState extends State<BMIView> {
     return Text(
       '${widget.result} Kg/m2',
       style: TextStyle(
-          color: color,
-          fontSize: 20,
-          fontFamily: Constants.fontSemiBold),
+          color: color, fontSize: 20, fontFamily: Constants.fontSemiBold),
     );
   }
 
   Widget bmiMeter() {
     return SizedBox(
-      width: SizeConfig.blockSizeHorizontal*80,
-      height: SizeConfig.blockSizeHorizontal*60,
+      width: SizeConfig.blockSizeHorizontal * 80,
+      height: SizeConfig.blockSizeHorizontal * 60,
       child: SfRadialGauge(
         enableLoadingAnimation: true,
-        axes:  <RadialAxis> [
+        axes: <RadialAxis>[
           RadialAxis(
               minimum: 0,
               maximum: 101,
@@ -182,7 +175,7 @@ class _BMIViewState extends State<BMIView> {
                 GaugeRange(
                   startValue: 0,
                   endValue: 20,
-                  color:Colors.blue,
+                  color: Colors.blue,
                   startWidth: 20,
                   endWidth: 20,
                 ),
@@ -212,8 +205,7 @@ class _BMIViewState extends State<BMIView> {
                     endWidth: 20,
                     startValue: 80,
                     endValue: 101,
-                    color: Colors.red
-                ),
+                    color: Colors.red),
               ],
               pointers: <GaugePointer>[
                 NeedlePointer(
@@ -223,16 +215,15 @@ class _BMIViewState extends State<BMIView> {
                   enableAnimation: true,
                   animationType: AnimationType.ease,
                   //animationDuration: 1,
-                )],
+                )
+              ],
               startAngle: 180,
               canScaleToFit: true,
               labelOffset: 20,
-
               labelsPosition: ElementsPosition.inside,
               endAngle: 0,
               interval: 20)
         ],
-
       ),
     );
   }
@@ -242,33 +233,27 @@ class _BMIViewState extends State<BMIView> {
     double val = 0;
     Color color = Colors.grey;
 
-    try{
+    try {
       val = double.parse(widget.result);
-      if(val > 0){
-        if(val < 20){
+      if (val > 0) {
+        if (val < 20) {
           s = 'UnderWeight';
           color = Colors.blue;
-        }
-        else if(val > 20 && val < 40){
+        } else if (val > 20 && val < 40) {
           s = 'Normal';
           color = Colors.green;
-        }
-        else if(val > 40 && val < 60){
+        } else if (val > 40 && val < 60) {
           s = 'Over Weight';
           color = Colors.yellow[700]!;
-        }
-        else if(val > 60 && val < 80){
+        } else if (val > 60 && val < 80) {
           s = 'Obese';
           color = Colors.orange;
-        }
-        else if(val > 80){
+        } else if (val > 80) {
           s = 'Extremely Obese';
           color = Colors.red;
-
         }
       }
-    }
-    catch(e){
+    } catch (e) {
       print('bmiStatus');
       print(e.toString());
     }
@@ -276,15 +261,13 @@ class _BMIViewState extends State<BMIView> {
     return Text(
       s,
       style: TextStyle(
-          color: color,
-          fontSize: 12,
-          fontFamily: Constants.fontRegular),
+          color: color, fontSize: 12, fontFamily: Constants.fontRegular),
     );
   }
 
-  Widget expandButton(){
+  Widget expandButton() {
     return InkWell(
-      onTap: (){
+      onTap: () {
         isExpanded = !isExpanded;
         setState(() {});
       },
@@ -299,13 +282,13 @@ class _BMIViewState extends State<BMIView> {
                 fontSize: 12,
                 fontFamily: Constants.fontRegular),
           ),
-
           const SizedBox(
             width: 10,
           ),
-
           Icon(
-            (isExpanded) ? Icons.keyboard_arrow_up_sharp : Icons.keyboard_arrow_down_sharp,
+            (isExpanded)
+                ? Icons.keyboard_arrow_up_sharp
+                : Icons.keyboard_arrow_down_sharp,
             color: Colors.grey,
             size: 17,
           )
@@ -314,12 +297,11 @@ class _BMIViewState extends State<BMIView> {
     );
   }
 
-  Widget expandedView(){
+  Widget expandedView() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
 
         const Text(
@@ -347,9 +329,13 @@ class _BMIViewState extends State<BMIView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             WeightIndicator(color: Colors.blue, title: 'Under weight'),
-            SizedBox(width: 25,),
+            SizedBox(
+              width: 25,
+            ),
             WeightIndicator(color: Colors.green, title: 'Normal'),
-            SizedBox(width: 25,),
+            SizedBox(
+              width: 25,
+            ),
             WeightIndicator(color: Colors.yellow, title: 'Over weight'),
           ],
         ),
@@ -361,12 +347,13 @@ class _BMIViewState extends State<BMIView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             WeightIndicator(color: Colors.orange, title: 'Obese'),
-            SizedBox(width: 25,),
+            SizedBox(
+              width: 25,
+            ),
             WeightIndicator(color: Colors.red, title: 'Extremely Obese'),
           ],
         ),
         //SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
-
       ],
     );
   }
@@ -377,8 +364,7 @@ class _BMIViewState extends State<BMIView> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children:  [
-
+        children: [
           const Text(
             'Your Parameters',
             style: TextStyle(
@@ -386,14 +372,11 @@ class _BMIViewState extends State<BMIView> {
                 fontSize: 14,
                 fontFamily: Constants.fontRegular),
           ),
-
-          SizedBox(height: SizeConfig.blockSizeHorizontal*5),
-
+          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               const Text(
                 'Height',
                 style: TextStyle(
@@ -401,7 +384,6 @@ class _BMIViewState extends State<BMIView> {
                     fontSize: 13,
                     fontFamily: Constants.fontRegular),
               ),
-
               Text(
                 '$_height cm',
                 style: const TextStyle(
@@ -411,14 +393,11 @@ class _BMIViewState extends State<BMIView> {
               ),
             ],
           ),
-
-          SizedBox(height: SizeConfig.blockSizeHorizontal*5),
-
+          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children:  [
-
+            children: [
               const Text(
                 'Weight',
                 style: TextStyle(
@@ -426,7 +405,6 @@ class _BMIViewState extends State<BMIView> {
                     fontSize: 13,
                     fontFamily: Constants.fontRegular),
               ),
-
               Text(
                 '$_weight Kg',
                 style: const TextStyle(
@@ -440,5 +418,4 @@ class _BMIViewState extends State<BMIView> {
       ),
     );
   }
-
 }

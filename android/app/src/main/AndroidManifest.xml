@@ -9,9 +9,13 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
+<<<<<<< HEAD
         android:label="DISCIPL"
+=======
+        android:label="Discipl"
+>>>>>>> d4b1c22c1148ac2a564b1fbc746d457b2f4c3178
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/disciple_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

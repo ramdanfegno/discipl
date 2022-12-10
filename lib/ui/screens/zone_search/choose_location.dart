@@ -394,7 +394,6 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   setLocationApi(Map<String, dynamic> data) async{
     try{
-
       setState(() {
         isLoading = true;
       });
@@ -413,37 +412,29 @@ class _ChooseLocationState extends State<ChooseLocation> {
           // store location local
           LocationResponseModel locationResponseModel = LocationResponseModel.fromJson(response.data);
           if(locationResponseModel.zone != null){
-            print('locationResponseModel.zone not null');
-            print(response.data);
             await userRepository.storeZoneDetails(locationResponseModel.zone!);
             widget.onLocationUpdated(locationResponseModel.zone!);
-          }
-          else{
-            showSnackBar('Unable to set location');
           }
           if (!mounted) return;
           Navigator.pop(context);
         }
         else{
-          showSnackBar('Unable to set location 1: ${response.statusMessage}');
+          showSnackBar('Unable to set location: ${response.statusMessage}');
         }
       }
       else{
-        showSnackBar('Unable to set location 2');
+        showSnackBar('Unable to set location');
       }
       setState(() {
         isLoading = false;
       });
-
-      }
-
-
+    }
     catch(e){
       print(e.toString());
       setState(() {
         isLoading = false;
       });
-      showSnackBar('Unable to set location 3');
+      showSnackBar('Unable to set location');
     }
   }
 

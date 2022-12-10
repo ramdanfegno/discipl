@@ -130,7 +130,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
                                 return zoneListView(state.locationList, state.isLoading);
                               }
                               else{
-                                return buildErrorView('List is empty!');
+                                return buildErrorView(' ');
                               }
                             }
                             if (state is LocationFetchFailure) {
