@@ -191,13 +191,13 @@ class ProductRepository{
 
       Map<String, dynamic> body = {};
 
-      //body = data;
+      body = data;
 
-      body = {
-        "latitude": 76.3623892,
-        "longitude": 10.0066719,
-        "location_name":"Kochi"
-      };
+   /*   body = {
+        "latitude": 10.305015,
+        "longitude": 76.403341,
+        "location_name":"Pariyaram"
+      };*/
 
       print('body');
       print(body);

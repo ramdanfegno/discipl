@@ -71,6 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: CustomDrawer(
           isGuest: widget.isGuest,
           userName: (widget.userName != null ) ? widget.userName! : null,
+          closeDrawer: (){
+            _scaffoldKey.currentState!.closeDrawer();
+            },
         ),
         appBar: CustomAppBar(
           drawerClicked: () {
@@ -108,6 +111,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget homeView(HomePageModel? homePageData,bool? isLoading,ZoneResult? zoneResult){
+
+    bool isProfileCompleted = true;
+    if(widget.isLoggedIn){
+      if(homePageData!.profilePercentage != null){
+        if(homePageData.profilePercentage != 100){
+          isProfileCompleted = false;
+        }
+      }
+    }
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -118,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
             homeData: homePageData,
             fcDetailBloc: _fcDetailBloc,
             fcListBloc: _fcListBloc,
-            isProfileCompleted: (widget.isLoggedIn) ? false : true,
+            isProfileCompleted: isProfileCompleted,
             zoneResult: zoneResult,
             onLocationChanged: (val){
               _zone = val;

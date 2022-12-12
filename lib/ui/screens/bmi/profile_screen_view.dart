@@ -62,22 +62,32 @@ class ProfileScreenView extends StatelessWidget {
         SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
         Padding(
           padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 8),
-          child: SizedBox(
-            width: SizeConfig.blockSizeHorizontal * 50,
+          child: Container(
+            //color: Colors.orange,
+            width: SizeConfig.blockSizeHorizontal * 70,
             child: Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    (userProfile!.user!.firstName != null && userProfile!.user!.firstName != "")
-                        ? userProfile!.user!.firstName!
-                        : 'Add user name',
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontFamily: Constants.fontMedium,
-                        overflow: TextOverflow.visible),
+                  Container(
+                    constraints: BoxConstraints(
+                      minWidth: SizeConfig.blockSizeHorizontal * 30,
+                      maxWidth: SizeConfig.blockSizeHorizontal * 50,
+                    ),
+                    //color: Colors.red,
+                    child: Text(
+                      (userProfile!.user!.firstName != null && userProfile!.user!.firstName != "")
+                          ? userProfile!.user!.firstName!: 'Add user name',
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                          fontFamily: Constants.fontMedium,
+                          overflow: TextOverflow.visible),
+                    ),
                   ),
                   const SizedBox(
                     width: 20,
@@ -92,8 +102,9 @@ class ProfileScreenView extends StatelessWidget {
                         );
                       }));
                     },
-                    child: const Icon(
-                      Icons.edit_outlined,
+                    child: Icon(
+                      (userProfile!.user!.firstName != null && userProfile!.user!.firstName != "")
+                          ? Icons.edit_outlined : Icons.add_circle,
                       color: Colors.red,
                       size: 16,
                     ),

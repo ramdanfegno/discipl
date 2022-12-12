@@ -473,6 +473,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
 
   void resendOtp() async {
     textEditingController.text = '';
+    currentText = '';
     setState(() {
       isOtpTimedOut = false;
       _start = 2 * 60;
@@ -480,7 +481,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> with CodeAutoFill {
     startTimer();
     Response? response = await widget.userRepository.reSendOtp(
         "${widget.otpResponseModel!.id}");
-    textEditingController.text = currentText;
+    //textEditingController.text = currentText;
     print(response!.statusCode);
     print(response.statusMessage);
     print(response.data);

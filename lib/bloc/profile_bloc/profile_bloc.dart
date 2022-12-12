@@ -61,6 +61,7 @@ class ProfileBloc
         if(response.statusCode == 200){
           userProfile2 = UserProfile.fromJson(response.data);
           if(userProfile2 != null){
+            await _userRepository.storeProfileDetails(userProfile2);
             print('userProfile2 not null');
             if(userProfile2.heightCm != null){
               data['height_cm'] = userProfile2.heightCm;
