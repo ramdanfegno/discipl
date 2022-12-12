@@ -8,16 +8,17 @@ import '../result_display.dart';
 
 class BodyFatView extends StatefulWidget {
   final String result;
-  final Map<String,dynamic> data;
-  const BodyFatView({Key? key,required this.result,required this.data}) : super(key: key);
+  final Map<String, dynamic> data;
+
+  const BodyFatView({Key? key, required this.result, required this.data})
+      : super(key: key);
 
   @override
   State<BodyFatView> createState() => _BodyFatViewState();
 }
 
 class _BodyFatViewState extends State<BodyFatView> {
-
-  late String? _height,_weight,_neck,_waist;
+  late String? _height, _weight, _neck, _waist;
 
   @override
   void initState() {
@@ -32,18 +33,18 @@ class _BodyFatViewState extends State<BodyFatView> {
     print('widget.data');
     print(widget.data);
 
-    if(widget.data.isNotEmpty){
+    if (widget.data.isNotEmpty) {
       print(widget.data);
-      if(widget.data['height_cm'] != null){
+      if (widget.data['height_cm'] != null) {
         _height = widget.data['height_cm'].toStringAsFixed(0);
       }
-      if(widget.data['weight'] != null){
+      if (widget.data['weight'] != null) {
         _weight = widget.data['weight'].toStringAsFixed(1);
       }
-      if(widget.data['neck'] != null){
+      if (widget.data['neck'] != null) {
         _neck = widget.data['neck'].toStringAsFixed(0);
       }
-      if(widget.data['waist'] != null){
+      if (widget.data['waist'] != null) {
         _waist = widget.data['waist'].toStringAsFixed(0);
       }
     }
@@ -83,40 +84,44 @@ class _BodyFatViewState extends State<BodyFatView> {
     );
   }
 
-  Widget bodyFatView(BuildContext context){
+  Widget bodyFatView(BuildContext context) {
     return Container(
-      width: SizeConfig.blockSizeHorizontal*90,
+      width: SizeConfig.blockSizeHorizontal * 90,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
                 color: Colors.black.withOpacity(0.1),
-                offset: const Offset(2,2),
+                offset: const Offset(2, 2),
                 blurRadius: 10,
-              spreadRadius: 5
-            )
-          ]
-      ),
+                spreadRadius: 5)
+          ]),
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-
           title(),
-
           SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-
           bodyFatReading(),
-
           SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-
           bodyFatMeter(),
-
           SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            alignment: Alignment.centerLeft,
+            child: const Text(
+              'For your body measurements in order to lose 1% body fat, you must burn at least 7700 calories.',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontFamily: Constants.fontRegular),
+            ),
+          ),
+
+          /*SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
 
           Container(
             width: MediaQuery.of(context).size.width,
@@ -128,23 +133,9 @@ class _BodyFatViewState extends State<BodyFatView> {
                   fontSize: 12,
                   fontFamily: Constants.fontRegular),
             ),
-          ),
+          ),*/
 
-          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-
-          Container(
-            width: MediaQuery.of(context).size.width,
-            alignment: Alignment.centerLeft,
-            child: const Text(
-              'Lorem ipsum: Lorem ipsum sidm lksdvksmdvkms ',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
-                  fontFamily: Constants.fontRegular),
-            ),
-          ),
-
-          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
+          /*SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
 
           Container(
             width: MediaQuery.of(context).size.width,
@@ -156,31 +147,35 @@ class _BodyFatViewState extends State<BodyFatView> {
                   fontSize: 12,
                   fontFamily: Constants.fontRegular),
             ),
-          ),
+          ),*/
 
           SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              WeightIndicator(color: Colors.blue, title: 'Under weight'),
-              SizedBox(width: 25,),
-              WeightIndicator(color: Colors.green, title: 'Fitness'),
-              SizedBox(width: 25,),
-              WeightIndicator(color: Colors.yellow, title: 'Average'),
+            children: [
+              WeightIndicator(color: Colors.yellow[500]!, title: 'Unhealthy'),
+              SizedBox(
+                width: 25,
+              ),
+              WeightIndicator(
+                  color: Colors.lightGreenAccent, title: 'Athletic Body'),
+              SizedBox(
+                width: 25,
+              ),
+              WeightIndicator(color: Colors.green, title: 'Fit'),
             ],
           ),
-
           SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              WeightIndicator(color: Colors.orange, title: 'Obese'),
-              SizedBox(width: 25,),
-              WeightIndicator(color: Colors.red, title: 'Extremely Obese'),
+              WeightIndicator(color: Colors.orange, title: 'Average'),
+              SizedBox(
+                width: 25,
+              ),
+              WeightIndicator(color: Colors.red, title: 'Obese'),
             ],
           ),
         ],
@@ -199,39 +194,31 @@ class _BodyFatViewState extends State<BodyFatView> {
   }
 
   Widget bodyFatReading() {
-
     String s = '';
     double val = 0;
     Color color = Colors.grey;
 
-
-    try{
+    try {
       val = double.parse(widget.result);
-      if(val > 0){
-        if(val < 20){
+      if (val > 0) {
+        if (val < 20) {
           s = 'UnderWeight';
           color = Colors.blue;
-        }
-        else if(val > 20 && val < 40){
+        } else if (val > 20 && val < 40) {
           s = 'Normal';
-          color = Colors.green;
-        }
-        else if(val > 40 && val < 60){
+          color = Colors.green[500]!;
+        } else if (val > 40 && val < 60) {
           s = 'Over Weight';
-          color = Colors.yellow[700]!;
-        }
-        else if(val > 60 && val < 80){
+          color = Colors.green;
+        } else if (val > 60 && val < 80) {
           s = 'Obese';
           color = Colors.orange;
-        }
-        else if(val > 80){
+        } else if (val > 80) {
           s = 'Extremely Obese';
           color = Colors.red;
-
         }
       }
-    }
-    catch(e){
+    } catch (e) {
       print('bmiStatus');
       print(e.toString());
     }
@@ -239,19 +226,17 @@ class _BodyFatViewState extends State<BodyFatView> {
     return Text(
       '${widget.result} %',
       style: TextStyle(
-          color: color,
-          fontSize: 20,
-          fontFamily: Constants.fontSemiBold),
+          color: color, fontSize: 20, fontFamily: Constants.fontSemiBold),
     );
   }
 
   Widget bodyFatMeter() {
     return SizedBox(
-      width: SizeConfig.blockSizeHorizontal*80,
-      height: SizeConfig.blockSizeHorizontal*60,
+      width: SizeConfig.blockSizeHorizontal * 80,
+      height: SizeConfig.blockSizeHorizontal * 60,
       child: SfRadialGauge(
         enableLoadingAnimation: true,
-        axes:  <RadialAxis> [
+        axes: <RadialAxis>[
           RadialAxis(
               minimum: 0,
               maximum: 101,
@@ -261,7 +246,7 @@ class _BodyFatViewState extends State<BodyFatView> {
                 GaugeRange(
                   startValue: 0,
                   endValue: 20,
-                  color:Colors.blue,
+                  color: Colors.blue,
                   startWidth: 20,
                   endWidth: 20,
                 ),
@@ -291,8 +276,7 @@ class _BodyFatViewState extends State<BodyFatView> {
                     endWidth: 20,
                     startValue: 80,
                     endValue: 101,
-                    color: Colors.red
-                ),
+                    color: Colors.red),
               ],
               pointers: <GaugePointer>[
                 NeedlePointer(
@@ -302,11 +286,11 @@ class _BodyFatViewState extends State<BodyFatView> {
                   enableAnimation: true,
                   animationType: AnimationType.ease,
                   //animationDuration: 1,
-                )],
+                )
+              ],
               startAngle: 180,
               canScaleToFit: true,
               labelOffset: 20,
-
               labelsPosition: ElementsPosition.inside,
               endAngle: 0,
               interval: 20)
@@ -321,8 +305,7 @@ class _BodyFatViewState extends State<BodyFatView> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children:  [
-
+        children: [
           const Text(
             'Your Parameters',
             style: TextStyle(
@@ -330,14 +313,11 @@ class _BodyFatViewState extends State<BodyFatView> {
                 fontSize: 14,
                 fontFamily: Constants.fontRegular),
           ),
-
-          SizedBox(height: SizeConfig.blockSizeHorizontal*5),
-
+          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               const Text(
                 'Height',
                 style: TextStyle(
@@ -345,7 +325,6 @@ class _BodyFatViewState extends State<BodyFatView> {
                     fontSize: 13,
                     fontFamily: Constants.fontRegular),
               ),
-
               Text(
                 '$_height cm',
                 style: const TextStyle(
@@ -355,14 +334,11 @@ class _BodyFatViewState extends State<BodyFatView> {
               ),
             ],
           ),
-
-          SizedBox(height: SizeConfig.blockSizeHorizontal*5),
-
+          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               const Text(
                 'Weight',
                 style: TextStyle(
@@ -370,7 +346,6 @@ class _BodyFatViewState extends State<BodyFatView> {
                     fontSize: 13,
                     fontFamily: Constants.fontRegular),
               ),
-
               Text(
                 '$_weight Kg',
                 style: const TextStyle(
@@ -380,14 +355,11 @@ class _BodyFatViewState extends State<BodyFatView> {
               ),
             ],
           ),
-
-          SizedBox(height: SizeConfig.blockSizeHorizontal*5),
-
+          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               const Text(
                 'Neck Size',
                 style: TextStyle(
@@ -395,7 +367,6 @@ class _BodyFatViewState extends State<BodyFatView> {
                     fontSize: 13,
                     fontFamily: Constants.fontRegular),
               ),
-
               Text(
                 '$_neck cm',
                 style: const TextStyle(
@@ -405,14 +376,11 @@ class _BodyFatViewState extends State<BodyFatView> {
               ),
             ],
           ),
-
-          SizedBox(height: SizeConfig.blockSizeHorizontal*5),
-
+          SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children:  [
-
+            children: [
               const Text(
                 'Waist',
                 style: TextStyle(
@@ -420,7 +388,6 @@ class _BodyFatViewState extends State<BodyFatView> {
                     fontSize: 13,
                     fontFamily: Constants.fontRegular),
               ),
-
               Text(
                 '$_waist cm',
                 style: const TextStyle(

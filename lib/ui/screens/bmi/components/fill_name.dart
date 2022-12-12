@@ -85,6 +85,7 @@ class _FillNameState extends State<FillName> {
           widget.onFilled(v);
         });
       },
+      maxLength: 30,
       validator: (val1)=> val1!.isNotEmpty ? null: 'Enter Name',
       style: TextStyle(
           color: Colors.grey[800],

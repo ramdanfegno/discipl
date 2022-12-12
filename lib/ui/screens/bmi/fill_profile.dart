@@ -29,9 +29,8 @@ class FillProfileDetails extends StatefulWidget {
 }
 
 class _FillProfileDetailsState extends State<FillProfileDetails> {
-
   late bool isLoading;
-  String? _name,_gender;
+  String? _name, _gender;
   DateTime? _dob;
   double? _weight;
   int? _height;
@@ -39,8 +38,7 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
   final UserRepository userRepository = UserRepository();
 
   late AuthenticationBloc _authBloc;
-  late Map<String,dynamic> _profileDetails;
-
+  late Map<String, dynamic> _profileDetails;
 
   @override
   void initState() {
@@ -53,6 +51,9 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
     _weight = 60.0;
     _profileDetails = {};
     _profileDetails['gender'] = _gender;
+    _profileDetails['weight'] = _weight;
+    _profileDetails['height_cm'] = _height;
+
     _authBloc = BlocProvider.of<AuthenticationBloc>(context);
   }
 
@@ -65,32 +66,38 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.white,
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.white,
-            child: Stack(
-              children: <Widget>[
-                //verification form
-                Positioned(
-                    top: SizeConfig.blockSizeVertical * 3,
-                    left: SizeConfig.blockSizeHorizontal * 0,
-                    right: SizeConfig.blockSizeHorizontal * 0,
-                    child: fillForm()),
+          body: GestureDetector(
+            onTap: () {
+              unFocus();
+            },
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              child: Stack(
+                children: <Widget>[
+                  //verification form
+                  Positioned(
+                      top: SizeConfig.blockSizeVertical * 3,
+                      left: SizeConfig.blockSizeHorizontal * 0,
+                      right: SizeConfig.blockSizeHorizontal * 0,
+                      child: fillForm()),
 
-                //verify button
-                Positioned(
-                    bottom: SizeConfig.blockSizeHorizontal * 7,
-                    right: SizeConfig.blockSizeHorizontal * 7,
-                    child: nextButton()),
+                  //verify button
+                  Positioned(
+                      bottom: SizeConfig.blockSizeHorizontal * 7,
+                      right: SizeConfig.blockSizeHorizontal * 7,
+                      child: nextButton()),
 
-                //skip button
-                (_currentTab > 2) ? Positioned(
-                    bottom: SizeConfig.blockSizeHorizontal * 7,
-                    left: SizeConfig.blockSizeHorizontal * 7,
-                    child: skipButton()) : Container(),
-
-              ],
+                  //skip button
+                  (_currentTab > 2)
+                      ? Positioned(
+                          bottom: SizeConfig.blockSizeHorizontal * 7,
+                          left: SizeConfig.blockSizeHorizontal * 7,
+                          child: skipButton())
+                      : Container(),
+                ],
+              ),
             ),
           ),
           // This trailing comma makes auto-formatting nicer for build methods.
@@ -112,7 +119,9 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
             buildCurrentTab(),
             SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
             (_currentTab == 0) ? titleLine1() : Container(),
-            (_currentTab == 0) ? SizedBox(height: SizeConfig.blockSizeHorizontal * 5) : Container(),
+            (_currentTab == 0)
+                ? SizedBox(height: SizeConfig.blockSizeHorizontal * 5)
+                : Container(),
             titleLine2(),
             SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
             selectTab(),
@@ -122,10 +131,10 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
     );
   }
 
-  Widget buildCurrentTab(){
+  Widget buildCurrentTab() {
     return SizedBox(
       width: SizeConfig.screenWidth,
-      height: SizeConfig.blockSizeHorizontal*1,
+      height: SizeConfig.blockSizeHorizontal * 1,
       child: ListView.builder(
           itemCount: 5,
           shrinkWrap: true,
@@ -133,62 +142,62 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*2),
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeHorizontal * 2),
               child: Container(
-                width: SizeConfig.blockSizeHorizontal*15,
+                width: SizeConfig.blockSizeHorizontal * 15,
                 height: 1,
-                color: (_currentTab == index) ? Colors.red : const Color.fromRGBO(243, 243, 243, 1),
+                color: (_currentTab == index)
+                    ? Colors.red
+                    : const Color.fromRGBO(243, 243, 243, 1),
               ),
             );
           }),
     );
   }
 
-  Widget selectTab(){
-    switch(_currentTab){
+  Widget selectTab() {
+    switch (_currentTab) {
       case 0:
         return FillName(
             name: _name,
-            onFilled: (v){
+            onFilled: (v) {
               _name = v;
               _profileDetails['name'] = v;
-            }
-        );
+            });
       case 1:
         return FillDob(
             dob: _dob,
-            onFilled: (v){
+            onFilled: (v) {
               _dob = v;
-              _profileDetails['date'] = DateFormat('yyyy-MM-dd').format(v).toString();
-            }
-        );
+              _profileDetails['date'] =
+                  DateFormat('yyyy-MM-dd').format(v).toString();
+            });
       case 2:
         return FillGender(
             gender: _gender,
-            onFilled: (v){
+            onFilled: (v) {
               _gender = v;
               _profileDetails['gender'] = v;
-            }
-        );
+            });
       case 3:
         return FillWeight(
             weight: _weight,
-            onFilled: (v){
+            onFilled: (v) {
               _weight = v;
               _profileDetails['weight'] = v;
-            }
-        );
+            });
       case 4:
         return FillHeight(
             heightCM: _height,
-            onFilled: (v){
+            onFilled: (v) {
               _height = v;
-              if(_height != null){
+              if (_height != null) {
                 _profileDetails['height_cm'] = v;
-                _profileDetails['height_ft'] = (v*0.0328084).toStringAsFixed(2);
+                _profileDetails['height_ft'] =
+                    (v * 0.0328084).toStringAsFixed(2);
               }
-            }
-        );
+            });
     }
     return Container();
   }
@@ -223,53 +232,44 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
       color: Constants.primaryColor,
       fontFamily: Constants.fontMedium,
       onPressed: () {
-        if(_currentTab == 0){
-          if(_name == null || _name == ""){
+        if (_currentTab == 0) {
+          if (_name == null || _name == "") {
             Fluttertoast.showToast(msg: 'Please fill your name');
-          }
-          else{
+          } else {
             _currentTab++;
             setState(() {});
           }
-        }
-        else if(_currentTab == 1){
-          if(_dob == null){
+        } else if (_currentTab == 1) {
+          if (_dob == null) {
             Fluttertoast.showToast(msg: 'Please fill your date of birth');
-          }
-          else{
+          } else {
             _currentTab++;
             setState(() {});
           }
-        }
-        else if(_currentTab == 2){
-          if(_gender == null || _gender == ""){
+        } else if (_currentTab == 2) {
+          if (_gender == null || _gender == "") {
             Fluttertoast.showToast(msg: 'Please select your gender');
-          }
-          else{
+          } else {
             _currentTab++;
             setState(() {});
           }
-        }
-        else if(_currentTab == 3){
-          if(_weight == null || _weight! < 10){
+        } else if (_currentTab == 3) {
+          if (_weight == null || _weight! < 10) {
             Fluttertoast.showToast(msg: 'Please select a valid weight');
-          }
-          else{
+          } else {
             _currentTab++;
             setState(() {});
           }
-        }
-        else if(_currentTab == 4){
-          if(_height == null || _height! < 10){
+        } else if (_currentTab == 4) {
+          if (_height == null || _height! < 10) {
             Fluttertoast.showToast(msg: 'Please select a valid height');
-          }
-          else{
+          } else {
             _submit();
           }
         }
       },
       height: SizeConfig.blockSizeHorizontal * 13,
-      width: SizeConfig.blockSizeHorizontal* 40,
+      width: SizeConfig.blockSizeHorizontal * 40,
       textSize: 15,
       isLoading: isLoading,
     );
@@ -285,18 +285,17 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
         _skip();
       },
       height: SizeConfig.blockSizeHorizontal * 13,
-      width: SizeConfig.blockSizeHorizontal* 40,
+      width: SizeConfig.blockSizeHorizontal * 40,
     );
   }
 
   void _skip() {
-    try{
+    try {
       //check if any details are provided
       _authBloc.add(AuthenticationSkipProfile(data: _profileDetails));
       Navigator.pushNamedAndRemoveUntil(
           context, HabitozRoutes.app, (route) => false);
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
       setState(() {
         isLoading = false;
@@ -304,13 +303,13 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
     }
   }
 
-  _submit() async{
-    try{
+  _submit() async {
+    try {
       _profileDetails['neck'] = 0;
       _authBloc.add(AuthenticationProfileFilled(data: _profileDetails));
       Navigator.pushNamedAndRemoveUntil(
           context, HabitozRoutes.app, (route) => false);
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       Fluttertoast.showToast(msg: 'Error ${e.toString()}');
     }
@@ -338,4 +337,10 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
         }).then((x) => x ?? false);
   }
 
+  unFocus() {
+    var currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
 }

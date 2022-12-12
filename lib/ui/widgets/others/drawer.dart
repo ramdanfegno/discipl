@@ -28,6 +28,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
   String? _profileImage, _userName;
   final UserRepository userRepository = UserRepository();
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,6 +39,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   getProfileImage() async {
+    print('getProfileImage');
     UserProfile? userProfile = await userRepository.getProfileDetailsLocal();
     if (userProfile != null) {
       if (userProfile.image != null) {
@@ -45,6 +48,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
       if (userProfile.user != null && userProfile.user!.firstName != null) {
         _userName = userProfile.user!.firstName;
       }
+
+      print(_profileImage);
+      print(_userName);
+
       setState(() {});
     }
   }
@@ -67,6 +74,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 (!widget.isGuest)
                     ? InkWell(
                         onTap: () {
+                          _closeDrawer();
+
                           _profileBloc.add(LoadProfile());
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
@@ -192,11 +201,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   context, HabitozRoutes.app, (route) => false);
             }
           },
-          child: Text(
-            (_userName != null) ? _userName! : 'LOGIN / SIGNUP',
-            style: TextStyle(
-                fontFamily: Constants.fontMedium,
-                fontSize: SizeConfig.blockSizeHorizontal * 5.5),
+          child: SizedBox(
+            width: SizeConfig.blockSizeHorizontal * 50,
+            child: Text(
+              (_userName != null) ? _userName! : 'LOGIN / SIGNUP',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontFamily: Constants.fontMedium,
+                  fontSize: SizeConfig.blockSizeHorizontal * 5.5),
+            ),
           ),
         ),
       ],
@@ -245,5 +259,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           );
         });
+  }
+
+  void _closeDrawer() {
+    Navigator.of(context).pop();
   }
 }

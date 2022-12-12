@@ -61,7 +61,7 @@ class ProfileScreenView extends StatelessWidget {
         buildImage(),
         SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
         Padding(
-          padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 8),
+          padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
           child: GestureDetector(
             onTap: () {
               //update profile
@@ -71,43 +71,48 @@ class ProfileScreenView extends StatelessWidget {
                 );
               }));
             },
-            child: SizedBox(
-              width: SizeConfig.blockSizeHorizontal * 50,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      (userProfile!.user!.firstName != null)
-                          ? userProfile!.user!.firstName!
-                          : 'Add user name',
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                          fontFamily: Constants.fontMedium,
-                          overflow: TextOverflow.visible),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        //update profile
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return UpdateProfileView(
-                            userProfile: userProfile,
-                          );
-                        }));
-                      },
-                      child: const Icon(
-                        Icons.edit_outlined,
-                        color: Colors.red,
-                        size: 16,
+            child: Padding(
+              padding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*5),
+              child: Container(
+                constraints: BoxConstraints(
+                    minWidth: SizeConfig.blockSizeHorizontal * 30,
+                    maxWidth: MediaQuery.of(context).size.width),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        (userProfile!.user!.firstName != null)
+                            ? userProfile!.user!.firstName!
+                            : 'Add user name',
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 21,
+                            fontFamily: Constants.fontMedium,
+                            overflow: TextOverflow.visible),
                       ),
-                    )
-                  ],
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          //update profile
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return UpdateProfileView(
+                              userProfile: userProfile,
+                            );
+                          }));
+                        },
+                        child: const Icon(
+                          Icons.edit_outlined,
+                          color: Colors.red,
+                          size: 16,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -483,9 +488,9 @@ class ProfileScreenView extends StatelessWidget {
             ],
           ),
         ),
-        
-        SizedBox(height: SizeConfig.blockSizeHorizontal*8,),
-        
+        SizedBox(
+          height: SizeConfig.blockSizeHorizontal * 8,
+        ),
         Container(
           width: SizeConfig.blockSizeHorizontal * 95,
           decoration: BoxDecoration(

@@ -74,6 +74,7 @@ class ProfileBloc
             if(userProfile2.waist != null){
               data['waist'] = userProfile2.waist;
             }
+            await _userRepository.storeProfileDetails(userProfile2);
           }
           yield ProfileFetchSuccess(userProfile: userProfile2,isLoading: false,data: data);
         }

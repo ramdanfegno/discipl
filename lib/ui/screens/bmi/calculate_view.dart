@@ -336,6 +336,7 @@ class _CalculateViewState extends State<CalculateView> {
   }
 
   _submit() async{
+    try{
       setState(() {
         isLoading = true;
       });
@@ -347,25 +348,28 @@ class _CalculateViewState extends State<CalculateView> {
         print(response.statusCode);
         print(response.statusMessage);
         print(response.data);
-
         if(response.statusCode == 200){
-          //store profile details
-            Response? response2 = await userRepository.getUserProfile(true);
-            if(response2 != null && response2.statusCode == 200){
-              UserProfile userProfile = UserProfile.fromJson(response2.data);
-              await userRepository.storeProfileDetails(userProfile);
-            }
+          if(response.data['errors'] == null){
             try{
-
+              //store profile details
+              Response? response2 = await userRepository.getUserProfile(true);
+              if(response2 != null && response2.statusCode == 200){
+                UserProfile userProfile = UserProfile.fromJson(response2.data);
+                await userRepository.storeProfileDetails(userProfile);
+              }
             }
-          catch(e){
-            setState(() {
-              isLoading = false;
-            });
-            print(e.toString());
+            catch(e){
+              setState(() {
+                isLoading = false;
+              });
+              print(e.toString());
+            }
+            FitnessResponse result = FitnessResponse.fromJson(response.data);
+            routeToResultPage(result);
           }
-          FitnessResponse result = FitnessResponse.fromJson(response.data);
-          routeToResultPage(result);
+          else{
+            Fluttertoast.showToast(msg: 'Error : Unable to calculate fitness details ${response.data['errors'].toString()}');
+          }
         }
         else{
           Fluttertoast.showToast(msg: 'Error : Unable to calculate fitness details');
@@ -378,7 +382,6 @@ class _CalculateViewState extends State<CalculateView> {
       setState(() {
         isLoading = false;
       });
-      try{
 
       }catch(e){
       print(e.toString());

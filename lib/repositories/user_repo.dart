@@ -114,6 +114,9 @@ class UserRepository{
         'logout' : true
       };
 
+      print('logOut');
+      print(data);
+
       Response? response = await apiQuery.putQuery(Constants.apiLoginWithOtp, headers, data,'LogoutApi');
       return response;
     } catch (exception) {

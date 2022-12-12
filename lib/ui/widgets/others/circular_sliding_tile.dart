@@ -25,9 +25,7 @@ class CircularSlidingTile extends StatelessWidget {
             ),
             Text(
               title!,
-              style: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal * 6,
-                  fontFamily: Constants.fontMedium),
+              style: TextStyle(fontSize: 15, fontFamily: Constants.fontBold),
             ),
           ],
         ),
@@ -74,7 +72,8 @@ class CircularSlidingTile extends StatelessWidget {
                                   ? content[index].name!
                                   : 'Amenities',
                               style: const TextStyle(
-                                  fontFamily: Constants.fontRegular),
+                                  fontFamily: Constants.fontRegular,
+                                  fontSize: 13.5),
                             ),
                           ],
                         ),

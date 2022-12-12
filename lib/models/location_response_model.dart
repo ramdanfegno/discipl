@@ -22,9 +22,9 @@ class LocationResponseModel {
   String? message;
 
   factory LocationResponseModel.fromJson(Map<String, dynamic> json) => LocationResponseModel(
-    zone: ZoneResult.fromJson(json["zone"]),
-    locationName: json["location_name"],
-    message: json["message"],
+    zone: json["zone"] == null ? null : ZoneResult.fromJson(json["zone"]),
+    locationName: json["location_name"] == null ? null : json["location_name"],
+    message: json["message"] == null ? null : json["message"],
   );
 
   Map<String, dynamic> toJson() => {

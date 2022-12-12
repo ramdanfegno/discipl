@@ -178,7 +178,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                         }
                         else {
                           print('state.fcList.empty');
-                          return buildErrorView('');
+                          return buildErrorView('List is empty');
                         }
                       }
                       if (state is FCListingFetchFailure) {

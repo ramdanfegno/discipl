@@ -186,13 +186,22 @@ class ProductRepository{
       if(loginResponse != null){
         String? token = loginResponse.token;
         headers['Authorization'] = 'Token $token';
+        headers['Content-Type'] = 'application/json';
       }
 
       Map<String, dynamic> body = {};
 
-      body = data;
+      //body = data;
 
+      body = {
+        "latitude": 76.3623892,
+        "longitude": 10.0066719,
+        "location_name":"Kochi"
+      };
+
+      print('body');
       print(body);
+      print(headers);
 
       Response? response = await apiQuery.postQuery(
           Constants.apiSetLocation,headers, body, 'SetLocation');

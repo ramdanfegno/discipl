@@ -399,7 +399,7 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
       LoginResponse loginResponse = LoginResponse.fromJson(response.data);
       //store login response
 
-      if (response.statusCode == 202) {
+      if (response.statusCode == 200) {
         // getCartFromApi(cart);
         _timer.cancel();
         //currentText = '';
@@ -439,6 +439,7 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
 
   void resendOtp() async {
     textEditingController.text = '';
+    currentText = '';
     setState(() {
       isOtpTimedOut = false;
       _start = 2 * 60;
@@ -446,7 +447,7 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
     startTimer();
     Response? response = await widget.userRepository.reSendOtp(
         "${widget.otpResponseModel!.id}");
-    textEditingController.text = currentText;
+    //textEditingController.text = currentText;
     if (response!.statusCode == 200) {}
   }
 

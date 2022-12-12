@@ -208,7 +208,8 @@ class _HomeScreenState extends State<HomeScreen> {
             yesTitle: 'Yes',
             noTitle: 'No',
             yes: () {
-              return false;
+              Navigator.pop(context,true);
+              return true;
             },
             no: () {
               Navigator.pop(context, false);

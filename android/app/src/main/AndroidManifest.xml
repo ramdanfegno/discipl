@@ -9,7 +9,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
-        android:label="Discipl"
+
+        android:label="DISCIPL"
         android:name="${applicationName}"
         android:icon="@mipmap/disciple_icon">
         <activity

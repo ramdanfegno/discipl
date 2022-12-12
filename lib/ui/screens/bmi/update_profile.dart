@@ -158,7 +158,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
               fontSize: 13),
         ),
         TextFormField(
-          maxLength: 12,
+          maxLength: 20,
           maxLengthEnforcement: MaxLengthEnforcement.enforced,
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.text,
