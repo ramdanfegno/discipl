@@ -103,6 +103,7 @@ class _FillWeightState extends State<FillWeight> {
                 print(_weight);
                 widget.onFilled(_weight!);
               },
+
               maxValue: 250,
               minValue: 20,
               initValue: _kg,

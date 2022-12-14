@@ -214,8 +214,8 @@ class _FillProfileDetailsState extends State<FillProfileDetails> {
         'Know your health quotient',
         style: TextStyle(
             color: Color.fromRGBO(40, 40, 40, 1),
-            fontSize: 21,
-            fontFamily: Constants.fontRegular),
+            fontSize: 24,
+            fontFamily: Constants.fontSemiBold),
       ),
     );
   }

@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:habitoz_fitness_app/bloc/home_screen_bloc/home_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
+import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/profile_screen_view.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/app_bar.dart';
@@ -55,6 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 if(state.errorMsg != null){
                   showToast(state.errorMsg!);
                 }
+                updateHome(context);
                 return profileView(state.userProfile, state.isLoading,state.data);
               }
               if (state is ProfileFetchFailure) {
@@ -72,6 +75,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   showToast(String msg){
     Fluttertoast.showToast(msg: msg);
+  }
+
+  updateHome(BuildContext context) async {
+    ZoneResult? zoneResult = await userRepository.getZoneDetailsLocal();
+    BlocProvider.of<HomeBloc>(context).add(LoadHome(forceRefresh: true, zone: zoneResult));
   }
 
   Widget profileView(UserProfile? userProfile,bool? isLoading,Map<String,dynamic> data){

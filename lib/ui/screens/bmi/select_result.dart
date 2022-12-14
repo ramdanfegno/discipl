@@ -57,7 +57,7 @@ class _SelectResultState extends State<SelectResult> {
                       );
                     }));
                   },
-                  result: '${widget.fitnessResponse.bmi!.toStringAsFixed(2)} Kg/m2'
+                  result: '${widget.fitnessResponse.bmi!.toStringAsFixed(2)} Kg/m\u00B2'
               ),
 
               ResultTile(
