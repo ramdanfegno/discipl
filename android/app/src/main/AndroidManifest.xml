@@ -11,6 +11,7 @@
     <application
 
         android:label="DISCIPL"
+
         android:name="${applicationName}"
         android:icon="@mipmap/disciple_icon">
         <activity

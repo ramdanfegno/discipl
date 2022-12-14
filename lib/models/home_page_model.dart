@@ -132,7 +132,7 @@ class ContentContent {
   String? instagramUrl;
   String? facebookUrl;
   String? youtubeUrl;
-  int? zone;
+  PurpleZone? zone;
   String? title;
   String? image;
   ZoneResult? fitnessCenter;
@@ -160,7 +160,7 @@ class ContentContent {
     instagramUrl: json["instagram_url"] == null ? null : json["instagram_url"],
     facebookUrl: json["facebook_url"] == null ? null : json["facebook_url"],
     youtubeUrl: json["youtube_url"] == null ? null : json["youtube_url"],
-    zone: json["zone"] == null ? null : json["zone"],
+    zone: json["zone"] == null ? null : PurpleZone.fromJson(json["zone"]),
     title: json["title"] == null ? null : json["title"],
     image: json["image"] == null ? null : json["image"],
     fitnessCenter: json["fitness_center"] == null ? null : ZoneResult.fromJson(json["fitness_center"]),
@@ -189,7 +189,7 @@ class ContentContent {
     "instagram_url": instagramUrl == null ? null : instagramUrl,
     "facebook_url": facebookUrl == null ? null : facebookUrl,
     "youtube_url": youtubeUrl == null ? null : youtubeUrl,
-    "zone": zone == null ? null : zone,
+    "zone": zone == null ? null : zone!.toJson(),
     "title": title == null ? null : title,
     "image": image == null ? null : image,
     "fitness_center": fitnessCenter == null ? null : fitnessCenter!.toJson(),
@@ -215,6 +215,31 @@ class ImageModel {
     "image": image,
   };
 }
+
+class PurpleZone {
+  PurpleZone({
+    this.id,
+    this.name,
+    this.location,
+  });
+
+  int? id;
+  String? name;
+  String? location;
+
+  factory PurpleZone.fromJson(Map<String, dynamic> json) => PurpleZone(
+    id: json["id"],
+    name: json["name"],
+    location: json["location"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "location": location,
+  };
+}
+
 
 class WorkingTime {
   WorkingTime({

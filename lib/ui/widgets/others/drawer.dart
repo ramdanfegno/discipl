@@ -15,8 +15,9 @@ import '../dialog/custom_dialog.dart';
 class CustomDrawer extends StatefulWidget {
   final String? userName;
   final bool isGuest;
+  final Function() closeDrawer;
 
-  const CustomDrawer({Key? key, required this.userName, required this.isGuest})
+  const CustomDrawer({Key? key, required this.userName, required this.isGuest,required this.closeDrawer})
       : super(key: key);
 
   @override
@@ -81,6 +82,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               MaterialPageRoute(builder: (context) {
                             return const ProfileScreen();
                           }));
+                          widget.closeDrawer();
                         },
                         child: drawerTile(HabitozIcons.user, 'Profile')!)
                     : Container(),
@@ -185,7 +187,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               shape: BoxShape.circle,
               image: (_profileImage != null)
                   ? DecorationImage(
-                      image: NetworkImage(_profileImage!), fit: BoxFit.fill)
+                      image: NetworkImage(_profileImage!), fit: BoxFit.cover)
                   : const DecorationImage(
                       image: AssetImage('assets/images/png/user_image.png'))),
         ),

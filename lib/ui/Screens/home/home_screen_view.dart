@@ -55,7 +55,7 @@ class HomeScreenView extends StatelessWidget {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 4,
                 ),
-                (!isProfileCompleted && homeData!.profilePercentage != null)
+                (!isProfileCompleted)
                     ? InkWell(
                         onTap: () {
                           onProfileClicked();
@@ -121,6 +121,7 @@ class HomeScreenView extends StatelessWidget {
         const Icon(
           Icons.location_on,
           color: Constants.primaryColor,
+          size: 17,
         ),
         InkWell(
           onTap: () {
@@ -147,11 +148,11 @@ class HomeScreenView extends StatelessWidget {
                           : '',
                   style: const TextStyle(fontFamily: Constants.fontRegular)),
               SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 7,
+                width: SizeConfig.blockSizeHorizontal * 3,
               ),
               Icon(
                 HabitozIcons.downArrow,
-                size: 9,
+                size: 8,
               )
             ],
           ),

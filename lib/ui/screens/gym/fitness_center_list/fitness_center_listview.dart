@@ -26,11 +26,12 @@ class FitnessCenterListView extends StatefulWidget {
   final String? categoryId;
   final ZoneResult? zone;
 
-  const FitnessCenterListView({Key? key,
-    required this.title,
-    required this.slug,
-    this.categoryId,
-    required this.zone})
+  const FitnessCenterListView(
+      {Key? key,
+      required this.title,
+      required this.slug,
+      this.categoryId,
+      required this.zone})
       : super(key: key);
 
   @override
@@ -89,9 +90,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
           pageNo: _pageNo,
           slug: widget.slug,
           categoryId: widget.categoryId,
-
-          zone: widget.zone
-      ));
+          zone: widget.zone));
     }
   }
 
@@ -100,7 +99,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
     return Scaffold(
       appBar: CustomAppBar(
         appBarTitle:
-        (widget.title != null) ? widget.title! : 'Fitness Center List',
+            (widget.title != null) ? widget.title! : 'Fitness Center List',
         isHomeAppBar: false,
         onBackPressed: () {
           Navigator.pop(context);
@@ -119,16 +118,11 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
               controller: _scrollController,
               child: Column(
                 children: [
-
                   SizedBox(
                     height: SizeConfig.blockSizeHorizontal * 7.5,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                   ),
                   searchWidget(),
-
 
                   /*SearchWidget(
                     onChanged: (v){
@@ -175,14 +169,13 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                         if (state.fcList.isNotEmpty) {
                           print('state.fcList.isNotEmpty');
                           return fcListView(state.fcList, state.isLoading);
-                        }
-                        else {
+                        } else {
                           print('state.fcList.empty');
-                          return buildErrorView('List is empty');
+                          return buildErrorView(state.fcList, 'List is empty');
                         }
                       }
                       if (state is FCListingFetchFailure) {
-                        return buildErrorView(state.message);
+                        return buildErrorView(state.fcList!, state.message);
                       }
                       if (state is FCListingFetchLoading) {
                         return buildLoadingView();
@@ -200,7 +193,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
   }
 
   Widget locationWidget(List<FitnessCenterModel> fcList) {
-    String s = '';
+    String s = 'Locatiob';
     if (_zone != null && _zone!.name != null) {
       s = _zone!.name!;
     }
@@ -212,16 +205,14 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-
       child: Padding(
         padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 4),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            SizedBox(width: SizeConfig.blockSizeHorizontal * 4),
             SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 4),
-            SizedBox(
-              width: SizeConfig.blockSizeHorizontal * 45.5,
+              width: SizeConfig.blockSizeHorizontal * 42.5,
               child: Text(
                 'Showing $v results',
                 style: const TextStyle(
@@ -234,9 +225,10 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
               width: SizeConfig.blockSizeHorizontal * 3,
             ),
             SizedBox(
-              width: SizeConfig.blockSizeHorizontal * 42,
+              width: SizeConfig.blockSizeHorizontal * 45,
               child: Center(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     const SizedBox(),
                     const Icon(
@@ -252,8 +244,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    ChooseLocation(
+                                builder: (context) => ChooseLocation(
                                       onLocationUpdated: (zone) {
                                         _pageNo = 1;
                                         _zone = zone;
@@ -276,8 +267,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                                             pageNo: _pageNo,
                                             slug: widget.slug,
                                             categoryId: widget.categoryId,
-                                            zone: _zone
-                                        ));
+                                            zone: _zone));
                                       },
                                     )));
                       },
@@ -295,8 +285,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
             ),
           ],
         ),
-      )
-      ,
+      ),
     );
   }
 
@@ -305,17 +294,13 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
         padding: EdgeInsets.only(
             left: SizeConfig.blockSizeHorizontal * 4,
             right: SizeConfig.blockSizeHorizontal * 4),
-
         child: InkWell(
           onTap: () {
             Navigator.push(context, _createSearchRoute());
           },
           child: Container(
             height: SizeConfig.blockSizeHorizontal * 13,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Colors.black, width: 1),
@@ -370,31 +355,31 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                               topRight: Radius.circular(15),
                               bottomRight: Radius.circular(15)),
                           borderSide:
-                          BorderSide(color: Colors.red[400]!, width: 2)),
+                              BorderSide(color: Colors.red[400]!, width: 2)),
                       errorBorder: OutlineInputBorder(
                           borderRadius: const BorderRadius.only(
                               topRight: Radius.circular(10),
                               bottomRight: Radius.circular(10)),
                           borderSide:
-                          BorderSide(color: Colors.red[400]!, width: 2)),
+                              BorderSide(color: Colors.red[400]!, width: 2)),
                       enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(10),
                               bottomRight: Radius.circular(10)),
                           borderSide:
-                          BorderSide(color: Colors.transparent, width: 1)),
+                              BorderSide(color: Colors.transparent, width: 1)),
                       focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(10),
                               bottomRight: Radius.circular(10)),
                           borderSide:
-                          BorderSide(color: Colors.transparent, width: 1)),
+                              BorderSide(color: Colors.transparent, width: 1)),
                       disabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(10),
                               bottomRight: Radius.circular(10)),
                           borderSide:
-                          BorderSide(color: Colors.transparent, width: 1)),
+                              BorderSide(color: Colors.transparent, width: 1)),
                     ),
                   ),
                 ),
@@ -408,8 +393,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                         HabitozIcons.epSearch,
                         size: 20,
                         color: Colors.grey[700],
-                      )
-                  ),
+                      )),
                 ),
               ],
             ),
@@ -420,7 +404,13 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
   Widget fcListView(List<FitnessCenterModel> fcList, bool isLoading) {
     return Column(
       children: [
-        (fcList.isNotEmpty) ? locationWidget(fcList) : Container(),
+        (fcList.isNotEmpty)
+            ? locationWidget(fcList)
+            : Container(
+                height: 20,
+                width: 500,
+                color: Colors.red,
+              ),
         ListView.builder(
             shrinkWrap: true,
             itemCount: fcList.length,
@@ -436,8 +426,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                FitnessCenterDetailPage(
+                            builder: (context) => FitnessCenterDetailPage(
                                   onBackPressed: () {
                                     print(
                                         'FitnessCenterDetailPage onBackPressed');
@@ -448,52 +437,47 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                                         pageNo: _pageNo,
                                         slug: widget.slug,
                                         categoryId: widget.categoryId,
-                                        zone: _zone
-                                    ));
+                                        zone: _zone));
                                   },
                                 )));
                   });
             }),
         (isLoading)
             ? Container(
-          height: SizeConfig.blockSizeHorizontal * 40,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
-          alignment: Alignment.center,
-          child: ColorLoader5(),
-        )
+                height: SizeConfig.blockSizeHorizontal * 40,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+                child: ColorLoader5(),
+              )
             : Container()
       ],
     );
   }
 
-  Widget buildErrorView(String msg) {
-    return SizedBox(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
-      height: SizeConfig.blockSizeVertical * 60,
-      child: Center(
-        child: Text(
-          msg,
-          style: const TextStyle(
-              color: Constants.fontColor1,
-              fontSize: 22,
-              fontFamily: Constants.fontRegular),
+  Widget buildErrorView(List<FitnessCenterModel> fcList, String msg) {
+    return Column(
+      children: [
+        locationWidget(fcList),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: SizeConfig.blockSizeVertical * 60,
+          child: Center(
+            child: Text(
+              msg,
+              style: const TextStyle(
+                  color: Constants.fontColor1,
+                  fontSize: 22,
+                  fontFamily: Constants.fontRegular),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 
   Widget buildLoadingView() {
     return SizedBox(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       height: SizeConfig.blockSizeVertical * 60,
       child: Center(
         child: ColorLoader5(),
@@ -517,15 +501,12 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
     await Future.delayed(const Duration(seconds: 2), () {});
   }
 
-
   Route _createSearchRoute() {
     return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            BlocProvider(
-              create: (context) =>
-                  SearchBLoc(
-                    productRepository: productRepository,
-                  ),
+        pageBuilder: (context, animation, secondaryAnimation) => BlocProvider(
+              create: (context) => SearchBLoc(
+                productRepository: productRepository,
+              ),
               child: SearchPage(
                 onBackPressed: () {
                   print('SearchPage onBackPressed');
@@ -536,8 +517,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                       pageNo: _pageNo,
                       slug: widget.slug,
                       categoryId: widget.categoryId,
-                      zone: _zone
-                  ));
+                      zone: _zone));
                 },
               ),
             ),
@@ -547,7 +527,7 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
           var end = Offset.zero;
           var curve = Curves.ease;
           var tween =
-          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
           return SlideTransition(
             position: animation.drive(tween),
             child: child,

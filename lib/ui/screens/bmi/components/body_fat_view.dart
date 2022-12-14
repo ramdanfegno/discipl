@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -7,11 +8,15 @@ import '../../../../utils/scroll_setting.dart';
 import '../result_display.dart';
 
 class BodyFatView extends StatefulWidget {
-  final String result;
+  final String result, gender;
   final Map<String, dynamic> data;
 
-  const BodyFatView({Key? key, required this.result, required this.data})
-      : super(key: key);
+  const BodyFatView({
+    Key? key,
+    required this.result,
+    required this.data,
+    required this.gender,
+  }) : super(key: key);
 
   @override
   State<BodyFatView> createState() => _BodyFatViewState();
@@ -30,6 +35,8 @@ class _BodyFatViewState extends State<BodyFatView> {
     _neck = '';
     _waist = '';
 
+    print(widget.gender);
+    print('widget.gender');
     print('widget.data');
     print(widget.data);
 
@@ -155,15 +162,15 @@ class _BodyFatViewState extends State<BodyFatView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               WeightIndicator(color: Colors.yellow[500]!, title: 'Unhealthy'),
-              SizedBox(
+              const SizedBox(
                 width: 25,
               ),
-              WeightIndicator(
+              const WeightIndicator(
                   color: Colors.lightGreenAccent, title: 'Athletic Body'),
-              SizedBox(
+              const SizedBox(
                 width: 25,
               ),
-              WeightIndicator(color: Colors.green, title: 'Fit'),
+              const WeightIndicator(color: Colors.green, title: 'Fit'),
             ],
           ),
           SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
@@ -200,22 +207,43 @@ class _BodyFatViewState extends State<BodyFatView> {
 
     try {
       val = double.parse(widget.result);
-      if (val > 0) {
-        if (val < 20) {
-          s = 'UnderWeight';
-          color = Colors.blue;
-        } else if (val > 20 && val < 40) {
-          s = 'Normal';
-          color = Colors.green[500]!;
-        } else if (val > 40 && val < 60) {
-          s = 'Over Weight';
-          color = Colors.green;
-        } else if (val > 60 && val < 80) {
-          s = 'Obese';
-          color = Colors.orange;
-        } else if (val > 80) {
-          s = 'Extremely Obese';
-          color = Colors.red;
+      if (widget.gender != null && widget.gender == 'F') {
+        if (val > 0) {
+          if (val < 13) {
+            s = 'UnderWeight';
+            color = Colors.blue;
+          } else if (val > 13 && val < 20) {
+            s = 'Normal';
+            color = Colors.green[500]!;
+          } else if (val > 20 && val < 24) {
+            s = 'Over Weight';
+            color = Colors.green;
+          } else if (val > 24 && val < 32) {
+            s = 'Obese';
+            color = Colors.orange;
+          } else if (val > 31) {
+            s = 'Extremely Obese';
+            color = Colors.red;
+          }
+        }
+      } else if (widget.gender != null && widget.gender == 'M') {
+        if (val > 0) {
+          if (val < 5) {
+            s = 'UnderWeight';
+            color = Colors.blue;
+          } else if (val > 5 && val < 13) {
+            s = 'Normal';
+            color = Colors.green[500]!;
+          } else if (val > 13 && val < 17) {
+            s = 'Over Weight';
+            color = Colors.green;
+          } else if (val > 17 && val < 24) {
+            s = 'Obese';
+            color = Colors.orange;
+          } else if (val > 25) {
+            s = 'Extremely Obese';
+            color = Colors.red;
+          }
         }
       }
     } catch (e) {
@@ -239,34 +267,34 @@ class _BodyFatViewState extends State<BodyFatView> {
         axes: <RadialAxis>[
           RadialAxis(
               minimum: 0,
-              maximum: 101,
+              maximum: widget.gender == 'F' ? 35 : 30,
               ticksPosition: ElementsPosition.inside,
               tickOffset: 10,
               ranges: <GaugeRange>[
                 GaugeRange(
                   startValue: 0,
-                  endValue: 20,
-                  color: Colors.blue,
+                  endValue: widget.gender == 'F' ? 13 : 5,
+                  color: Colors.yellowAccent,
                   startWidth: 20,
                   endWidth: 20,
                 ),
                 GaugeRange(
-                  startValue: 20,
-                  endValue: 40,
+                  endValue: widget.gender == 'F' ? 20 : 13,
+                  startValue: widget.gender == 'F' ? 13 : 5,
+                  color: Colors.lightGreenAccent,
+                  startWidth: 20,
+                  endWidth: 20,
+                ),
+                GaugeRange(
+                  startValue: widget.gender == 'F' ? 20 : 13,
+                  endValue: widget.gender == 'F' ? 24 : 17,
                   color: Colors.green,
                   startWidth: 20,
                   endWidth: 20,
                 ),
                 GaugeRange(
-                  startValue: 40,
-                  endValue: 60,
-                  color: Colors.yellow,
-                  startWidth: 20,
-                  endWidth: 20,
-                ),
-                GaugeRange(
-                  startValue: 60,
-                  endValue: 80,
+                  startValue: widget.gender == 'F' ? 24 : 17,
+                  endValue: widget.gender == 'F' ? 31 : 24,
                   color: Colors.orange,
                   startWidth: 20,
                   endWidth: 20,
@@ -274,8 +302,8 @@ class _BodyFatViewState extends State<BodyFatView> {
                 GaugeRange(
                     startWidth: 20,
                     endWidth: 20,
-                    startValue: 80,
-                    endValue: 101,
+                    startValue: widget.gender == 'F' ? 31 : 24,
+                    endValue: widget.gender == 'F' ? 35 : 30,
                     color: Colors.red),
               ],
               pointers: <GaugePointer>[
@@ -293,7 +321,7 @@ class _BodyFatViewState extends State<BodyFatView> {
               labelOffset: 20,
               labelsPosition: ElementsPosition.inside,
               endAngle: 0,
-              interval: 20)
+              interval: 5)
         ],
       ),
     );

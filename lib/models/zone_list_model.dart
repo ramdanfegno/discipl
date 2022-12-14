@@ -40,18 +40,23 @@ class ZoneResult {
   ZoneResult({
     this.id,
     this.name,
+    this.location,
   });
 
   int? id;
   String? name;
+  String? location;
+
 
   factory ZoneResult.fromJson(Map<String, dynamic> json) => ZoneResult(
     id: json["id"] == null ? null : json["id"],
     name: json["name"] == null ? null : json["name"],
+    location: json["location"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
+    "location": location,
   };
 }

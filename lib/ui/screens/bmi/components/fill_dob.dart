@@ -71,12 +71,12 @@ class _FillDobState extends State<FillDob> {
             year: ScrollViewDetailOptions(
               selectedTextStyle: TextStyle(
                   color: Constants.fontColor1,
-                  fontSize: 25,
+                  fontSize: 22,
                   fontFamily: Constants.fontSemiBold),
               textStyle:
-                  TextStyle(fontSize: 15, fontFamily: Constants.fontRegular),
+                  TextStyle(fontSize: 13, fontFamily: Constants.fontRegular),
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              margin: EdgeInsets.symmetric(vertical: 15, horizontal: 7),
             ),
             month: ScrollViewDetailOptions(
               selectedTextStyle: TextStyle(

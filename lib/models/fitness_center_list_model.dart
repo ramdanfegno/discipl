@@ -91,7 +91,7 @@ class FitnessCenterModel {
   String? instagramUrl;
   String? facebookUrl;
   String? youtubeUrl;
-  int? zone;
+  Zone? zone;
 
   factory FitnessCenterModel.fromJson(Map<String, dynamic> json) => FitnessCenterModel(
     id: json["id"] == null ? null : json["id"],
@@ -117,7 +117,7 @@ class FitnessCenterModel {
     instagramUrl: json["instagram_url"] == null ? null : json["instagram_url"],
     facebookUrl: json["facebook_url"] == null ? null : json["facebook_url"],
     youtubeUrl: json["youtube_url"] == null ? null : json["youtube_url"],
-    zone: json["zone"] == null ? null : json["zone"],
+    zone: json["zone"] == null ? null : Zone.fromJson(json["zone"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -144,7 +144,7 @@ class FitnessCenterModel {
     "instagram_url": instagramUrl == null ? null : instagramUrl,
     "facebook_url": facebookUrl == null ? null : facebookUrl,
     "youtube_url": youtubeUrl == null ? null : youtubeUrl,
-    "zone": zone == null ? null : zone,
+    "zone": zone == null ? null : zone!.toJson(),
   };
 }
 
@@ -243,3 +243,27 @@ class Plan {
     "fitness_center": fitnessCenter,
   };
 }
+class Zone {
+  Zone({
+    this.id,
+    this.name,
+    this.location,
+  });
+
+  int? id;
+  String? name;
+  String? location;
+
+  factory Zone.fromJson(Map<String, dynamic> json) => Zone(
+    id: json["id"],
+    name: json["name"],
+    location: json["location"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "location": location,
+  };
+}
+

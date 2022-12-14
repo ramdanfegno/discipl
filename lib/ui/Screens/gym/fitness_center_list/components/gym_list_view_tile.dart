@@ -47,12 +47,10 @@ class GymListViewTile extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius:
                       BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2),
-                  child: Image.network(
-                    fcData!.images!.isNotEmpty
-                        ? fcData!.images![0].image!
-                        : 'https://blacksquad.dev.fegno.com/src/contents/Rectangle_358_1.jpg',
+                  child:fcData!.logo!.isNotEmpty? Image.network(
+                    fcData!.logo!,
                     fit: BoxFit.fill,
-                  ),
+                  ):Image.asset('assets/images/jpg/placeholdersmall.jpg'),
                 ),
               ),
               SizedBox(
@@ -142,8 +140,8 @@ class GymListViewTile extends StatelessWidget {
                       /// need to verify data here
 
                       Text(
-                        (fcData!.institution!.zone != null)
-                            ? fcData!.institution!.zone!.name!
+                        (fcData!.zone != null)
+                            ? fcData!.zone!.name!
                             : 'Location',
                         style: TextStyle(
                             color: Constants.appbarColor,

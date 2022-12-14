@@ -17,19 +17,24 @@ import 'calculate_view.dart';
 class ResultView extends StatefulWidget {
   final String? resultType;
   final bool isFromProfile;
-  final Map<String,dynamic> data;
+  final Map<String, dynamic> data;
   final FitnessResponse? fitnessResponse;
   final UserProfile? userProfile;
-  const ResultView({
-    Key? key,
-    this.resultType,this.userProfile,this.fitnessResponse,required this.isFromProfile,required this.data}) : super(key: key);
+
+  const ResultView(
+      {Key? key,
+      this.resultType,
+      this.userProfile,
+      this.fitnessResponse,
+      required this.isFromProfile,
+      required this.data})
+      : super(key: key);
 
   @override
   _ResultViewState createState() => _ResultViewState();
 }
 
 class _ResultViewState extends State<ResultView> {
-
   late AuthenticationBloc _authBloc;
 
   @override
@@ -62,7 +67,6 @@ class _ResultViewState extends State<ResultView> {
                     bottom: SizeConfig.blockSizeHorizontal * 7,
                     right: SizeConfig.blockSizeHorizontal * 7,
                     child: homeButton()),
-
               ],
             ),
           ),
@@ -72,9 +76,9 @@ class _ResultViewState extends State<ResultView> {
     );
   }
 
-  Widget selectScreen(){
-    if(widget.resultType != null){
-      switch(widget.resultType){
+  Widget selectScreen() {
+    if (widget.resultType != null) {
+      switch (widget.resultType) {
         case 'BMI':
           return SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -82,10 +86,13 @@ class _ResultViewState extends State<ResultView> {
             child: BMIView(
               isFromHome: false,
               data: widget.data,
-              result: (widget.userProfile != null && widget.userProfile!.bodyMassIndex != null)
-                  ? widget.userProfile!.bodyMassIndex!.toStringAsFixed(2) :
-              (widget.fitnessResponse != null && widget.fitnessResponse!.bmi != null)
-                  ? widget.fitnessResponse!.bmi!.toStringAsFixed(2) : '0',
+              result: (widget.userProfile != null &&
+                      widget.userProfile!.bodyMassIndex != null)
+                  ? widget.userProfile!.bodyMassIndex!.toStringAsFixed(2)
+                  : (widget.fitnessResponse != null &&
+                          widget.fitnessResponse!.bmi != null)
+                      ? widget.fitnessResponse!.bmi!.toStringAsFixed(2)
+                      : '0',
             ),
           );
         case 'BMR':
@@ -94,10 +101,13 @@ class _ResultViewState extends State<ResultView> {
             width: MediaQuery.of(context).size.width,
             child: BMRView(
               data: widget.data,
-              result: (widget.userProfile != null && widget.userProfile!.basalMetabolismRate != null)
-                  ? widget.userProfile!.basalMetabolismRate!.toStringAsFixed(2) :
-              (widget.fitnessResponse != null && widget.fitnessResponse!.bmr != null)
-                  ? widget.fitnessResponse!.bmr!.toStringAsFixed(2) : '0',
+              result: (widget.userProfile != null &&
+                      widget.userProfile!.basalMetabolismRate != null)
+                  ? widget.userProfile!.basalMetabolismRate!.toStringAsFixed(2)
+                  : (widget.fitnessResponse != null &&
+                          widget.fitnessResponse!.bmr != null)
+                      ? widget.fitnessResponse!.bmr!.toStringAsFixed(2)
+                      : '0',
             ),
           );
         case 'Body Fat':
@@ -105,11 +115,21 @@ class _ResultViewState extends State<ResultView> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: BodyFatView(
+              gender: (widget.userProfile != null &&
+                      widget.userProfile!.gender != null)
+                  ? widget.userProfile!.gender!
+                  : (widget.fitnessResponse != null &&
+                          widget.fitnessResponse!.gender != null
+                      ? widget.fitnessResponse!.gender!
+                      : ''),
               data: widget.data,
-              result: (widget.userProfile != null && widget.userProfile!.bodyFatPercentage != null)
-                  ? widget.userProfile!.bodyFatPercentage!.toStringAsFixed(2) :
-              (widget.fitnessResponse != null && widget.fitnessResponse!.bfp != null)
-                  ? widget.fitnessResponse!.bfp!.toStringAsFixed(2) : '0',
+              result: (widget.userProfile != null &&
+                      widget.userProfile!.bodyFatPercentage != null)
+                  ? widget.userProfile!.bodyFatPercentage!.toStringAsFixed(2)
+                  : (widget.fitnessResponse != null &&
+                          widget.fitnessResponse!.bfp != null)
+                      ? widget.fitnessResponse!.bfp!.toStringAsFixed(2)
+                      : '0',
             ),
           );
       }
@@ -120,10 +140,13 @@ class _ResultViewState extends State<ResultView> {
       child: BMIView(
         isFromHome: true,
         data: widget.data,
-        result: (widget.userProfile != null && widget.userProfile!.bodyMassIndex != null)
-            ? widget.userProfile!.bodyMassIndex!.toStringAsFixed(2) :
-        (widget.fitnessResponse != null && widget.fitnessResponse!.bmi != null)
-            ? widget.fitnessResponse!.bmi!.toStringAsFixed(2) : '0',
+        result: (widget.userProfile != null &&
+                widget.userProfile!.bodyMassIndex != null)
+            ? widget.userProfile!.bodyMassIndex!.toStringAsFixed(2)
+            : (widget.fitnessResponse != null &&
+                    widget.fitnessResponse!.bmi != null)
+                ? widget.fitnessResponse!.bmi!.toStringAsFixed(2)
+                : '0',
       ),
     );
   }
@@ -135,12 +158,11 @@ class _ResultViewState extends State<ResultView> {
       borderColor: Constants.primaryColor,
       titleColor: Colors.white,
       onPressed: () {
-        if(!widget.isFromProfile){
+        if (!widget.isFromProfile) {
           _authBloc.add(AuthenticationMoveToHomeScreen());
           Navigator.pushNamedAndRemoveUntil(
               context, HabitozRoutes.app, (route) => false);
-        }
-        else{
+        } else {
           //route to calculate bmi
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return CalculateView(
@@ -149,19 +171,16 @@ class _ResultViewState extends State<ResultView> {
             );
           }));
         }
-
       },
       height: SizeConfig.blockSizeHorizontal * 13,
-      width: SizeConfig.blockSizeHorizontal* 40,
+      width: SizeConfig.blockSizeHorizontal * 40,
     );
   }
 
   Future<bool> _onBackPressed() async {
-
-    if(widget.isFromProfile){
+    if (widget.isFromProfile) {
       return true;
-    }
-    else{
+    } else {
       return showDialog(
           context: context,
           //barrierDismissible: false,
@@ -183,15 +202,14 @@ class _ResultViewState extends State<ResultView> {
           }).then((x) => x ?? false);
     }
   }
-
 }
 
 class WeightIndicator extends StatelessWidget {
-
   final Color color;
   final String title;
 
-  const WeightIndicator({Key? key,required this.color,required this.title}) : super(key: key);
+  const WeightIndicator({Key? key, required this.color, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -208,8 +226,9 @@ class WeightIndicator extends StatelessWidget {
             shape: BoxShape.circle,
           ),
         ),
-        const SizedBox(width: 5,),
-
+        const SizedBox(
+          width: 5,
+        ),
         Text(
           title,
           style: const TextStyle(
@@ -220,8 +239,4 @@ class WeightIndicator extends StatelessWidget {
       ],
     );
   }
-
-
-
 }
-

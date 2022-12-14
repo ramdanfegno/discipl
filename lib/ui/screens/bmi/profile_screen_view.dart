@@ -72,7 +72,8 @@ class ProfileScreenView extends StatelessWidget {
               }));
             },
             child: Padding(
-              padding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*5),
+              padding:
+                  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 5),
               child: Container(
                 constraints: BoxConstraints(
                     minWidth: SizeConfig.blockSizeHorizontal * 30,
@@ -336,7 +337,7 @@ class ProfileScreenView extends StatelessWidget {
                     fontFamily: Constants.fontMedium),
               ),
               SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-              buildMeasurementHeading(),
+              buildMeasurementHeading(false),
               SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
               const Divider(color: Color.fromRGBO(136, 136, 136, 1)),
               MeasurementTile(
@@ -508,7 +509,7 @@ class ProfileScreenView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
-              buildMeasurementHeading(),
+              buildMeasurementHeading(true),
               SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
               const Divider(color: Color.fromRGBO(136, 136, 136, 1)),
               MeasurementTile(
@@ -826,7 +827,7 @@ class ProfileScreenView extends StatelessWidget {
     );
   }
 
-  Widget buildMeasurementHeading() {
+  Widget buildMeasurementHeading(bool isExtendedNeeded) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -847,9 +848,9 @@ class ProfileScreenView extends StatelessWidget {
           width: SizeConfig.blockSizeHorizontal * 27,
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-          child: const Text(
-            'Relaxed',
-            style: TextStyle(
+          child: Text(
+            (isExtendedNeeded) ? 'Relaxed' : '',
+            style: const TextStyle(
                 color: Colors.black,
                 fontSize: 14,
                 fontFamily: Constants.fontMedium),
@@ -859,9 +860,9 @@ class ProfileScreenView extends StatelessWidget {
           width: SizeConfig.blockSizeHorizontal * 27,
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-          child: const Text(
-            'Extended',
-            style: TextStyle(
+          child:  Text(
+            (isExtendedNeeded) ? 'Extended' : '',
+            style: const TextStyle(
                 color: Colors.black,
                 fontSize: 14,
                 fontFamily: Constants.fontMedium),

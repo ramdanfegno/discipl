@@ -134,8 +134,8 @@ class SquareBannerTile extends StatelessWidget {
                             width: SizeConfig.blockSizeHorizontal * 4,
                           ),
                           Text(
-                              (content![index].name != null)
-                                  ? content![index].name!
+                              (content![index].fitnessCenter!.name != null)
+                                  ? content![index].fitnessCenter!.name!
                                   : '',
                               style: TextStyle(
                                   overflow: TextOverflow.fade,
