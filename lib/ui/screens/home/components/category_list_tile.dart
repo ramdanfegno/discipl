@@ -74,8 +74,8 @@ class CategoryListTile extends StatelessWidget {
                                       slug: 'fc')));
                     },
                     child: Container(
-                        height: SizeConfig.blockSizeHorizontal*19.5,
-                        width: SizeConfig.blockSizeHorizontal * 19.5,
+                        height: SizeConfig.blockSizeHorizontal*18.5,
+                        width: SizeConfig.blockSizeHorizontal * 18.5,
                         decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Constants.primaryColor),

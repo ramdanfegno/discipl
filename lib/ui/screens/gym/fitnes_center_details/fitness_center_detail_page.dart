@@ -125,8 +125,8 @@ class _FitnessCenterDetailPageState
               (details.description != null) ? details.description! : '',
           gymName: (details.name != null) ? details.name! : '',
           place:
-              (details.institution != null && details.institution!.zone != null)
-                  ? details.institution!.zone!.name!
+              (details.zone!.name != null && details.zone != null)
+                  ? details.zone!.name!
                   : 'Location',
           distance: '5',
         ),

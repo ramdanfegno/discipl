@@ -65,7 +65,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         },
                         child: const Icon(
                           HabitozIcons.codiconMenu,
-                          size: 22,
+                          size: 25,
                         ),
                       );
                     }),
@@ -81,14 +81,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           fontFamily: Constants.fontMedium),
                     ),
                   )
-                : Container(
-                    height: SizeConfig.blockSizeHorizontal * 16,
-                    width: SizeConfig.blockSizeHorizontal * 27,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                       image: DecorationImage(image: AssetImage('assets/images/png/logo.png'), fit: BoxFit.fitWidth)
+                : Padding(
+                  padding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*5),
+                  child: Container(
+                      height: SizeConfig.blockSizeHorizontal * 16,
+                      width: SizeConfig.blockSizeHorizontal * 27,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                         image: DecorationImage(image: AssetImage('assets/images/png/logo.png'), fit: BoxFit.fitWidth)
+                      ),
                     ),
-                  ),
+                ),
             (isHomeAppBar)
                 ? Padding(
                     padding: EdgeInsets.only(
@@ -102,13 +105,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           },
                           child: const Icon(
                             HabitozIcons.epSearch,
-                            size: 22,
+                            size: 21,
                           ),
                         ),
                         SizedBox(
                           width: SizeConfig.blockSizeHorizontal * 5,
                         ),
-                        const Icon(HabitozIcons.notification2),
+                        const Icon(HabitozIcons.notification2,size: 21,),
                         SizedBox(
                           width: SizeConfig.blockSizeHorizontal * 1,
                         ),

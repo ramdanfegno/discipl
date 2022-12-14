@@ -12,12 +12,11 @@ class BannerTile extends StatelessWidget {
   final List<ContentContent>? content;
   final FCDetailBloc fcDetailBloc;
 
-  const BannerTile(
-      {Key? key,
-      required this.hasTitle,
-      this.title,
-      required this.content,
-      required this.fcDetailBloc})
+  const BannerTile({Key? key,
+    required this.hasTitle,
+    this.title,
+    required this.content,
+    required this.fcDetailBloc})
       : super(key: key);
 
   @override
@@ -25,38 +24,18 @@ class BannerTile extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
           left: SizeConfig.blockSizeHorizontal * 4,
-          right: SizeConfig.blockSizeHorizontal * 4,
-          top: SizeConfig.blockSizeHorizontal * 4),
+          right: SizeConfig.blockSizeHorizontal * 4),
       child: Column(
         children: [
           SizedBox(
             height: SizeConfig.blockSizeHorizontal * 2,
           ),
-          (hasTitle)
-              ? Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: SizeConfig.blockSizeHorizontal * 0),
-                      child: SizedBox(
-                        width: SizeConfig.blockSizeHorizontal * 75,
-                        child: Text(
-                          title!,
-                          style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 6,
-                              fontFamily: Constants.fontMedium),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : Container(),
           SizedBox(
-            height: SizeConfig.blockSizeHorizontal * 2,
-          ),
-          SizedBox(
-            height: SizeConfig.blockSizeHorizontal * 63,
-            width: MediaQuery.of(context).size.width,
+            height: SizeConfig.blockSizeHorizontal * 61,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: 1,
@@ -73,7 +52,8 @@ class BannerTile extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => FitnessCenterDetailPage(
+                              builder: (context) =>
+                                  FitnessCenterDetailPage(
                                     onBackPressed: () {},
                                   )));
                     },
@@ -86,12 +66,14 @@ class BannerTile extends StatelessWidget {
                                   right: SizeConfig.blockSizeHorizontal * 13),
                               child: SizedBox(
                                 width: SizeConfig.blockSizeHorizontal * 76,
-                                child: Text(
-                                  (title != null) ? title! : '',
+                                child: title != null
+                                    ? Text(
+                                  title!,
                                   style: const TextStyle(
                                       fontSize: 18,
                                       fontFamily: Constants.fontMedium),
-                                ),
+                                )
+                                    : Container(),
                               ),
                             ),
                           ],
@@ -103,6 +85,10 @@ class BannerTile extends StatelessWidget {
                             height: SizeConfig.blockSizeHorizontal * 50,
                             width: SizeConfig.blockSizeHorizontal * 91,
                             decoration: BoxDecoration(
+                                image: DecorationImage(image: NetworkImage(
+                                  (content![index].image != null) ?
+                                  content![index].image! : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
+                                ),fit: BoxFit.fitWidth),
                                 color: Constants.secondaryColor,
                                 borderRadius: BorderRadius.circular(
                                     SizeConfig.blockSizeHorizontal * 3)),
@@ -110,20 +96,14 @@ class BannerTile extends StatelessWidget {
                               borderRadius: BorderRadius.circular(
                                   SizeConfig.blockSizeHorizontal * 3),
                               // Image border
-                              child: Image.network(
-                                (content![index].image != null)
-                                    ? content![index].image!
-                                    : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-                                fit: BoxFit.fill,
-                              ),
-                            )),
+                              ),),
                       ],
                     ),
                   );
                 }),
           ),
           SizedBox(
-            height: SizeConfig.blockSizeHorizontal * 3,
+            height: SizeConfig.blockSizeHorizontal * 0,
           ),
         ],
       ),

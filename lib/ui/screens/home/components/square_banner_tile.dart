@@ -30,9 +30,9 @@ class SquareBannerTile extends StatelessWidget {
                     EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 4),
                 child: SizedBox(
                   width: SizeConfig.blockSizeHorizontal * 75,
-                  child: const Text(
-                    'Featured Transformation',
-                    style: TextStyle(
+                  child:  Text(
+                    title,
+                    style: const TextStyle(
                         fontSize: 18,
                         fontFamily: Constants.fontMedium),
                   ),
@@ -42,10 +42,10 @@ class SquareBannerTile extends StatelessWidget {
           ),
           Positioned(
               right: SizeConfig.blockSizeHorizontal * 6,
-              top: SizeConfig.blockSizeHorizontal * 1,
+              top: SizeConfig.blockSizeHorizontal * 0,
               child: InkWell(
                 onTap: () {
-                  seeAllPressed!();
+                  seeAllPressed();
                 },
                 child: const Text(
                   'See all',

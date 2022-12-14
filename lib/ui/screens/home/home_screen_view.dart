@@ -116,7 +116,7 @@ class HomeScreenView extends StatelessWidget {
           style: TextStyle(fontFamily: Constants.fontRegular),
         ),
         SizedBox(
-          width: SizeConfig.blockSizeHorizontal * 12,
+          width: SizeConfig.blockSizeHorizontal * 15,
         ),
         const Icon(
           Icons.location_on,
@@ -138,19 +138,26 @@ class HomeScreenView extends StatelessWidget {
           child: Row(
             children: [
               SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 3,
+                width: SizeConfig.blockSizeHorizontal * 0,
               ),
-              Text(
-                  (zoneResult != null && zoneResult!.name != null)
-                      ? zoneResult!.name!
-                      : (homeData!.zone != null && homeData!.zone!.name != null)
-                          ? homeData!.zone!.name!
-                          : '',
-                  style: const TextStyle(fontFamily: Constants.fontRegular)),
               SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 3,
+                width: SizeConfig.blockSizeHorizontal * 25,
+                child: Center(
+                  child: Text(
+                      (zoneResult != null && zoneResult!.name != null)
+                          ? zoneResult!.name!
+                          : (homeData!.zone != null &&
+                                  homeData!.zone!.name != null)
+                              ? homeData!.zone!.name!
+                              : '',
+                      style:
+                          const TextStyle(fontFamily: Constants.fontRegular)),
+                ),
               ),
-              Icon(
+              SizedBox(
+                width: SizeConfig.blockSizeHorizontal * 0,
+              ),
+              const Icon(
                 HabitozIcons.downArrow,
                 size: 8,
               )
@@ -177,7 +184,7 @@ class HomeScreenView extends StatelessWidget {
   Widget _buildRectangleTiles(
       BuildContext context, HomePageModelContent? content) {
     return Padding(
-      padding:  EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*4),
+      padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 4),
       child: RectangleBannerTile(
         title: content!.title,
         content: content.content,
@@ -204,7 +211,7 @@ class HomeScreenView extends StatelessWidget {
       BuildContext context, HomePageModelContent? content) {
     return BannerTile(
       hasTitle: false,
-      title: content!.title,
+      title: content!.title != "Type_SP1" ? content.title : null,
       content: content.content,
       fcDetailBloc: fcDetailBloc,
     );
