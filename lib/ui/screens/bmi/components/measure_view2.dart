@@ -224,7 +224,7 @@ class _MeasureView2State extends State<MeasureView2> {
             height: SizeConfig.blockSizeHorizontal*60,
             child: WheelChooser.integer(
               onValueChanged: (v){
-                _measurementInch = v.toDouble();
+                _measurementInch = v;
                 _measurementCM = _measurementInch! * 2.54;
                 setState(() {});
                 widget.onFilled(_measurementCM!,_measurementInch!);
