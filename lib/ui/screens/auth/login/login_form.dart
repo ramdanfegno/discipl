@@ -241,66 +241,85 @@ class _LoginFormState extends State<LoginForm> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                  color: (state.isFailure) ? Colors.red : Constants.fontColor1,
-                  width: 1)),
-          child: TextFormField(
-            textInputAction: TextInputAction.done,
-            keyboardType: TextInputType.phone,
-            autofocus: true,
-            focusNode: _focusNode,
-            controller: _phoneController,
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(10),
-              FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
-            ],
-            enabled: (state.isSubmitting) ? false : true,
-            validator: (String? v) {
-              if (v!.isEmpty) {
-                return 'Enter phone number';
-              }
-              if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(v)) {
-                return 'Enter 10 digit phone number';
-              }
-              if(v == '0000000000' || v[0] == '0'){
-                return 'Enter a valid phone number';
-              }
-              return null;
-            },
-            cursorColor: Constants.primaryColor,
-            cursorHeight: 20,
-            style: TextStyle(
-                color: Colors.grey[800],
-                fontSize: 14,
-                fontFamily: Constants.fontRegular),
-            decoration: InputDecoration(
-              prefixText: ' ',
-              prefixStyle: TextStyle(
-                  color: Colors.grey[500],
-                  fontSize: 14,
-                  fontFamily: Constants.fontRegular),
-              hintText: 'Please enter your mobile number',
-              hintStyle: TextStyle(
-                  color: Colors.grey[500],
-                  fontSize: 14,
-                  fontFamily: Constants.fontRegular),
-              contentPadding:
-                  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 4),
+        TextFormField(
+          textInputAction: TextInputAction.done,
+          keyboardType: TextInputType.phone,
+          autofocus: true,
+          focusNode: _focusNode,
+          controller: _phoneController,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(10),
+            FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
+          ],
+          enabled: (state.isSubmitting) ? false : true,
+          validator: (String? v) {
+            if (v!.isEmpty) {
+              return 'Enter phone number';
+            }
+            if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(v)) {
+              return 'Enter 10 digit phone number';
+            }
+            if(v == '0000000000' || v[0] == '0'){
+              return 'Enter a valid phone number';
+            }
+            return null;
+          },
+          cursorColor: Constants.primaryColor,
+          cursorHeight: 20,
+          style: TextStyle(
+              color: Colors.grey[800],
+              fontSize: 14,
+              fontFamily: Constants.fontRegular),
+          decoration: InputDecoration(
+              hintText: 'Phone',
+              hintStyle: const TextStyle(
+                color: Constants.appbarColor,
+                fontSize: 16,
+                fontFamily: Constants.fontRegular,
+              ),
+              contentPadding: EdgeInsets.only(
+                  top: SizeConfig.blockSizeHorizontal*4,
+                  bottom: SizeConfig.blockSizeHorizontal*4,
+                  left: SizeConfig.blockSizeVertical * 2),
               errorStyle: const TextStyle(color: Colors.red),
-              enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(color: Colors.transparent, width: 1)),
-              focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(color: Colors.transparent, width: 1)),
-            ),
-            onFieldSubmitted: (val) {
-              //_onFormSubmitted();
-            },
-          ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                    Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
+                borderSide: BorderSide(
+                    color: Colors.red[400]!,
+                    width: SizeConfig.blockSizeHorizontal * 0.33),
+              ),
+              errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
+                  borderSide: BorderSide(
+                      color: Colors.red[400]!,
+                      width: SizeConfig.blockSizeHorizontal * 0.33)),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                    Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
+                borderSide: BorderSide(
+                    color: Colors.grey[700]!,
+                    width: 1
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                    Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
+                borderSide: BorderSide(
+                    color: Colors.grey[800]!,
+                    width: 1
+                ),
+              ),
+              disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(SizeConfig.blockSizeHorizontal * 3)),
+                  borderSide: BorderSide(
+                      color: Colors.black,
+                      width: SizeConfig.blockSizeHorizontal * 0.33))),
+          onFieldSubmitted: (val) {
+            //_onFormSubmitted();
+          },
         ),
         (state.isFailure)
             ? Padding(

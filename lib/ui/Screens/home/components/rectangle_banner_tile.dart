@@ -43,8 +43,8 @@ class RectangleBannerTile extends StatelessWidget {
               ],
             ),
             Positioned(
-                right: SizeConfig.blockSizeHorizontal * 4,
-                top: SizeConfig.blockSizeHorizontal * 1,
+                right: SizeConfig.blockSizeHorizontal * 6,
+                top: SizeConfig.blockSizeHorizontal * 0,
                 child: InkWell(
                   onTap: () {
                     seeAllPressed!();
@@ -60,7 +60,7 @@ class RectangleBannerTile extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: SizeConfig.blockSizeHorizontal * 3,
+          height: SizeConfig.blockSizeHorizontal * 4,
         ),
         Row(
           children: [
@@ -115,7 +115,7 @@ class RectangleBannerTile extends StatelessWidget {
                                           boxShadow: [
                                             BoxShadow(
                                                 color: Colors.black
-                                                    .withOpacity(0.08),
+                                                    .withOpacity(0.00),
                                                 offset: const Offset(0, 8),
                                                 blurRadius: 36)
                                           ],
@@ -193,7 +193,7 @@ class RectangleBannerTile extends StatelessWidget {
                                                 children: [
                                                   SizedBox(
                                                     width: SizeConfig
-                                                        .blockSizeHorizontal *
+                                                            .blockSizeHorizontal *
                                                         1,
                                                   ),
                                                   SizedBox(
@@ -219,7 +219,7 @@ class RectangleBannerTile extends StatelessWidget {
                                                             children: [
                                                               SizedBox(
                                                                 width: SizeConfig
-                                                                    .blockSizeHorizontal *
+                                                                        .blockSizeHorizontal *
                                                                     1,
                                                               ),
                                                               Text(
@@ -236,7 +236,7 @@ class RectangleBannerTile extends StatelessWidget {
                                                               ),
                                                               SizedBox(
                                                                 width: SizeConfig
-                                                                    .blockSizeHorizontal *
+                                                                        .blockSizeHorizontal *
                                                                     1,
                                                               ),
                                                               Container(

@@ -458,6 +458,9 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
     return Column(
       children: [
         locationWidget(fcList),
+
+
+
         SizedBox(
           width: MediaQuery.of(context).size.width,
           height: SizeConfig.blockSizeVertical * 60,

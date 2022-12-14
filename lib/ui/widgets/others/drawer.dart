@@ -17,7 +17,11 @@ class CustomDrawer extends StatefulWidget {
   final bool isGuest;
   final Function() closeDrawer;
 
-  const CustomDrawer({Key? key, required this.userName, required this.isGuest,required this.closeDrawer})
+  const CustomDrawer(
+      {Key? key,
+      required this.userName,
+      required this.isGuest,
+      required this.closeDrawer})
       : super(key: key);
 
   @override
@@ -28,8 +32,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   late ProfileBloc _profileBloc;
   String? _profileImage, _userName;
   final UserRepository userRepository = UserRepository();
-
-
 
   @override
   void initState() {
@@ -114,9 +116,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
             Positioned(
               bottom: SizeConfig.blockSizeHorizontal * 20,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: SizeConfig.blockSizeHorizontal * 26,
+                    width: SizeConfig.blockSizeHorizontal * 24,
                   ),
                   Column(
                     children: [

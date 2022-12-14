@@ -55,7 +55,7 @@ class BannerTile extends StatelessWidget {
             height: SizeConfig.blockSizeHorizontal * 2,
           ),
           SizedBox(
-            height: SizeConfig.blockSizeHorizontal * 50,
+            height: SizeConfig.blockSizeHorizontal * 63,
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -77,24 +77,48 @@ class BannerTile extends StatelessWidget {
                                     onBackPressed: () {},
                                   )));
                     },
-                    child: Container(
-                        height: SizeConfig.blockSizeHorizontal * 50,
-                        width: SizeConfig.blockSizeHorizontal * 91,
-                        decoration: BoxDecoration(
-                            color: Constants.secondaryColor,
-                            borderRadius: BorderRadius.circular(
-                                SizeConfig.blockSizeHorizontal * 3)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              SizeConfig.blockSizeHorizontal * 3),
-                          // Image border
-                          child: Image.network(
-                            (content![index].image != null)
-                                ? content![index].image!
-                                : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-                            fit: BoxFit.fill,
-                          ),
-                        )),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  right: SizeConfig.blockSizeHorizontal * 13),
+                              child: SizedBox(
+                                width: SizeConfig.blockSizeHorizontal * 76,
+                                child: Text(
+                                  (title != null) ? title! : '',
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: Constants.fontMedium),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: SizeConfig.blockSizeHorizontal * 4,
+                        ),
+                        Container(
+                            height: SizeConfig.blockSizeHorizontal * 50,
+                            width: SizeConfig.blockSizeHorizontal * 91,
+                            decoration: BoxDecoration(
+                                color: Constants.secondaryColor,
+                                borderRadius: BorderRadius.circular(
+                                    SizeConfig.blockSizeHorizontal * 3)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  SizeConfig.blockSizeHorizontal * 3),
+                              // Image border
+                              child: Image.network(
+                                (content![index].image != null)
+                                    ? content![index].image!
+                                    : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
+                                fit: BoxFit.fill,
+                              ),
+                            )),
+                      ],
+                    ),
                   );
                 }),
           ),

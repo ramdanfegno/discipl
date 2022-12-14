@@ -213,7 +213,7 @@ class HomeScreenView extends StatelessWidget {
   Widget _buildSquareTiles(
       BuildContext context, HomePageModelContent? content) {
     return Padding(
-      padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 4),
+      padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 3),
       child: SquareBannerTile(
         title: content!.title!,
         content: content.content,

@@ -82,8 +82,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   )
                 : Container(
-                    height: SizeConfig.blockSizeHorizontal * 10,
-                    width: SizeConfig.blockSizeHorizontal * 22,
+                    height: SizeConfig.blockSizeHorizontal * 16,
+                    width: SizeConfig.blockSizeHorizontal * 27,
                     decoration: const BoxDecoration(
                       color: Colors.white,
                        image: DecorationImage(image: AssetImage('assets/images/png/logo.png'), fit: BoxFit.fitWidth)
@@ -127,5 +127,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   // TODO: implement preferredSize
   Size get preferredSize =>
-      Size.fromHeight(SizeConfig.blockSizeHorizontal * 20);
+      Size.fromHeight(SizeConfig.blockSizeHorizontal * 18);
 }
