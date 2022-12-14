@@ -55,7 +55,7 @@ class HomeScreenView extends StatelessWidget {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 4,
                 ),
-                (!isProfileCompleted)
+                (!isProfileCompleted && homeData!.profilePercentage != null)
                     ? InkWell(
                         onTap: () {
                           onProfileClicked();

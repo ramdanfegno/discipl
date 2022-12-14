@@ -439,7 +439,6 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
 
   void resendOtp() async {
     textEditingController.text = '';
-    currentText = '';
     setState(() {
       isOtpTimedOut = false;
       _start = 2 * 60;
@@ -447,7 +446,7 @@ class _VerifyEnquiryOtpPageState extends State<VerifyEnquiryOtpPage> with CodeAu
     startTimer();
     Response? response = await widget.userRepository.reSendOtp(
         "${widget.otpResponseModel!.id}");
-    //textEditingController.text = currentText;
+    textEditingController.text = currentText;
     if (response!.statusCode == 200) {}
   }
 
