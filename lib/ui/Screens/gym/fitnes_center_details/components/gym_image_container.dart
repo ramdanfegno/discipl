@@ -30,7 +30,19 @@ class GymImageContainer extends StatelessWidget {
                       Radius.circular(SizeConfig.blockSizeHorizontal * 4),
                   bottomRight:
                       Radius.circular(SizeConfig.blockSizeHorizontal * 4))),
-          child: imageCarouselWidget(imageCarousel),
+          child: imageCarousel.isNotEmpty? imageCarouselWidget(imageCarousel): Container(
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                image: AssetImage('assets/images/png/square_holder.png'),
+                fit: BoxFit.fitWidth
+              ),
+              borderRadius: BorderRadius.only(
+                  bottomLeft:
+                  Radius.circular(SizeConfig.blockSizeHorizontal * 4),
+                  bottomRight:
+                  Radius.circular(SizeConfig.blockSizeHorizontal * 4))
+            ),
+          ),
         ),
         Positioned(
           top: SizeConfig.blockSizeHorizontal * 6,

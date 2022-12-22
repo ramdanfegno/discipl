@@ -14,6 +14,7 @@ import '../../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import '../../../../bloc/home_screen_bloc/home_bloc.dart';
 import '../../../../bloc/search_center_bloc/search_center_bloc.dart';
 import '../../../../models/fitness_center_list_model.dart';
+import '../../../../utils/disciple_icons_icons.dart';
 import '../../../../utils/habitoz_icons.dart';
 import '../../../widgets/others/color_loader.dart';
 import '../../zone_search/choose_location.dart';
@@ -171,7 +172,8 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                           return fcListView(state.fcList, state.isLoading);
                         } else {
                           print('state.fcList.empty');
-                          return buildErrorView(state.fcList, 'List is empty');
+                          return buildErrorView(
+                              state.fcList, 'No Results Found!');
                         }
                       }
                       if (state is FCListingFetchFailure) {
@@ -232,8 +234,9 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
                   children: [
                     const SizedBox(),
                     const Icon(
-                      Icons.location_on,
+                      DiscipleIcons.location_red_small_size,
                       color: Constants.primaryColor,
+                      size: 15,
                     ),
                     Text(' $s'),
                     SizedBox(
@@ -458,18 +461,44 @@ class _FitnessCenterListViewState extends State<FitnessCenterListView> {
     return Column(
       children: [
         locationWidget(fcList),
-
-
-
         SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: SizeConfig.blockSizeVertical * 60,
-          child: Center(
+          height: SizeConfig.blockSizeHorizontal * 30,
+        ),
+        SizedBox(
+          height: SizeConfig.blockSizeHorizontal * 50,
+          width: SizeConfig.blockSizeHorizontal * 60,
+          child: Image.asset(
+            'assets/images/png/no_result.png',
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+        SizedBox(
+          height: SizeConfig.blockSizeHorizontal*8,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 23),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: SizeConfig.blockSizeVertical * 5,
             child: Text(
               msg,
               style: const TextStyle(
                   color: Constants.fontColor1,
                   fontSize: 22,
+                  fontFamily: Constants.fontRegular),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 10),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: SizeConfig.blockSizeVertical * 4,
+            child: Text(
+              'There are no fitness centers in this location.',
+              style: const TextStyle(
+                  color: Constants.appbarColor,
+                  fontSize: 14,
                   fontFamily: Constants.fontRegular),
             ),
           ),

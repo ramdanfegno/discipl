@@ -53,6 +53,9 @@ class _CalculateViewState extends State<CalculateView> {
     _weight = 60.0;
     _profileDetails = {};
     _profileDetails['gender'] = _gender;
+    _profileDetails['weight'] = _weight;
+    _profileDetails['height_cm'] = _height;
+
     checkProfile();
   }
 
@@ -258,10 +261,11 @@ class _CalculateViewState extends State<CalculateView> {
         style: TextStyle(
             color: Color.fromRGBO(40, 40, 40, 1),
             fontSize: 21,
-            fontFamily: Constants.fontRegular),
+            fontFamily: Constants.fontSemiBold),
       ),
     );
   }
+
 
   Widget nextButton() {
     return AuthButton(

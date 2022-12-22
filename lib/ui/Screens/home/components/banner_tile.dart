@@ -48,7 +48,7 @@ class BannerTile extends StatelessWidget {
                       //route to fitness detail page
                       fcDetailBloc.add(LoadDetailPage(
                           forceRefresh: true,
-                          id: content![index].id.toString()));
+                          id: content![index].fitnessCenter!.id.toString()));
                       Navigator.push(
                           context,
                           MaterialPageRoute(

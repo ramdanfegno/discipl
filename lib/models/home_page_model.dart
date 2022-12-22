@@ -132,7 +132,7 @@ class ContentContent {
   String? instagramUrl;
   String? facebookUrl;
   String? youtubeUrl;
-  PurpleZone? zone;
+  ZoneResult? zone;
   String? title;
   String? image;
   ZoneResult? fitnessCenter;
@@ -160,7 +160,7 @@ class ContentContent {
     instagramUrl: json["instagram_url"] == null ? null : json["instagram_url"],
     facebookUrl: json["facebook_url"] == null ? null : json["facebook_url"],
     youtubeUrl: json["youtube_url"] == null ? null : json["youtube_url"],
-    zone: json["zone"] == null ? null : PurpleZone.fromJson(json["zone"]),
+    zone: json["zone"] == null ? null : ZoneResult.fromJson(json["zone"]),
     title: json["title"] == null ? null : json["title"],
     image: json["image"] == null ? null : json["image"],
     fitnessCenter: json["fitness_center"] == null ? null : ZoneResult.fromJson(json["fitness_center"]),

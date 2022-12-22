@@ -21,20 +21,15 @@ import '../../../widgets/others/color_loader.dart';
 class FitnessCenterDetailPage extends StatefulWidget {
   final Function() onBackPressed;
 
-  const FitnessCenterDetailPage({
-    Key? key,
-    required this.onBackPressed
-  }) : super(key: key);
+  const FitnessCenterDetailPage({Key? key, required this.onBackPressed})
+      : super(key: key);
 
   @override
   State<FitnessCenterDetailPage> createState() =>
       _FitnessCenterDetailPageState();
 }
 
-class _FitnessCenterDetailPageState
-    extends State<FitnessCenterDetailPage> {
-
-
+class _FitnessCenterDetailPageState extends State<FitnessCenterDetailPage> {
   Future<bool> _onBackPressed() async {
     widget.onBackPressed();
     return true;
@@ -53,17 +48,15 @@ class _FitnessCenterDetailPageState
             child: SingleChildScrollView(
               child: Column(
                 children: [
-
                   BlocBuilder<FCDetailBloc, FCDetailState>(
                     builder: (context, state) {
                       if (state is FCDetailFetchSuccess) {
-                        if(state.errorMsg != null){
+                        if (state.errorMsg != null) {
                           showToast(state.errorMsg!);
                         }
-                        if(state.details != null){
+                        if (state.details != null) {
                           return fcDetailView(state.details!, state.isLoading);
-                        }
-                        else{
+                        } else {
                           return buildErrorView('List is empty!');
                         }
                       }
@@ -76,7 +69,6 @@ class _FitnessCenterDetailPageState
                       return Container();
                     },
                   ),
-
                 ],
               ),
             ),
@@ -124,10 +116,9 @@ class _FitnessCenterDetailPageState
           description:
               (details.description != null) ? details.description! : '',
           gymName: (details.name != null) ? details.name! : '',
-          place:
-              (details.zone!.name != null && details.zone != null)
-                  ? details.zone!.name!
-                  : 'Location',
+          place: (details.zone != null && details.zone!.name != null)
+              ? details.zone!.name!
+              : 'Location',
           distance: '5',
         ),
 
@@ -146,7 +137,9 @@ class _FitnessCenterDetailPageState
             : Container(),
 
         /*=======Gym amenities Tile========*/
-
+        SizedBox(
+          height: SizeConfig.blockSizeHorizontal*3,
+        ),
         CircularSlidingTile(
           content: amenities,
           title: 'Amenities',
@@ -155,7 +148,7 @@ class _FitnessCenterDetailPageState
         /*=======Gym services Tile========*/
 
         BulletinTileWidget(
-          bulletinHeading: 'Other Services',
+          bulletinHeading: 'Services',
           category: details.category,
         ),
 

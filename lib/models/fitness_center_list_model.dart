@@ -91,7 +91,7 @@ class FitnessCenterModel {
   String? instagramUrl;
   String? facebookUrl;
   String? youtubeUrl;
-  Zone? zone;
+  ZoneResult? zone;
 
   factory FitnessCenterModel.fromJson(Map<String, dynamic> json) => FitnessCenterModel(
     id: json["id"] == null ? null : json["id"],
@@ -117,7 +117,7 @@ class FitnessCenterModel {
     instagramUrl: json["instagram_url"] == null ? null : json["instagram_url"],
     facebookUrl: json["facebook_url"] == null ? null : json["facebook_url"],
     youtubeUrl: json["youtube_url"] == null ? null : json["youtube_url"],
-    zone: json["zone"] == null ? null : Zone.fromJson(json["zone"]),
+    zone: json["zone"] == null ? null :  ZoneResult.fromJson(json["zone"]),
   );
 
   Map<String, dynamic> toJson() => {

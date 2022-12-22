@@ -4,6 +4,8 @@ import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
+import '../../../../../utils/disciple_icons_icons.dart';
+
 class GymListViewTile extends StatelessWidget {
   final FitnessCenterModel? fcData;
   final Function() onListTilePressed;
@@ -47,7 +49,7 @@ class GymListViewTile extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius:
                       BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2),
-                  child:fcData!.logo!.isNotEmpty? Image.network(
+                  child:(fcData!.logo != null)? Image.network(
                     fcData!.logo!,
                     fit: BoxFit.fill,
                   ):Image.asset('assets/images/jpg/placeholdersmall.jpg'),
@@ -129,9 +131,9 @@ class GymListViewTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Icon(
-                        Icons.location_on,
+                        DiscipleIcons.location_red_small_size,
                         color: Constants.primaryColor,
-                        size: SizeConfig.blockSizeHorizontal * 3.8,
+                        size: 15,
                       ),
                       SizedBox(
                         width: SizeConfig.blockSizeHorizontal * 1,

@@ -19,7 +19,8 @@ class SearchPageBody extends StatefulWidget {
   final Function() onBackPressed;
 
   // ignore: use_key_in_widget_constructors
-  const SearchPageBody({required this.productRepository,required this.onBackPressed});
+  const SearchPageBody(
+      {required this.productRepository, required this.onBackPressed});
 
   @override
   _SearchPageBodyState createState() => _SearchPageBodyState();
@@ -64,8 +65,7 @@ class _SearchPageBodyState extends State<SearchPageBody> {
                 child: BlocBuilder<SearchBLoc, SearchState>(
                     builder: (context, state) {
                   if (state is SearchDisplay) {
-                    return displaySearchResult(
-                        state.fcList);
+                    return displaySearchResult(state.fcList);
                   }
                   if (state is SearchLoading) {
                     return SizedBox(
@@ -137,9 +137,7 @@ class _SearchPageBodyState extends State<SearchPageBody> {
                         color: Colors.grey[800],
                         fontSize: 14,
                         fontFamily: Constants.fontMedium),
-                    onFieldSubmitted: (val) {
-
-                    },
+                    onFieldSubmitted: (val) {},
                     onChanged: (v) {
                       EasyDebounce.debounce(
                           'Search-Debounce', const Duration(milliseconds: 500),
@@ -244,12 +242,16 @@ class _SearchPageBodyState extends State<SearchPageBody> {
                   child: SearchTile(
                     title: searchList[index]!.name!,
                     onPressed: () {
-                      BlocProvider.of<FCDetailBloc>(context)
-                          .add(LoadDetailPage(forceRefresh: true, id: searchList[index]!.id.toString()));
+                      print(searchList[index]!.id);
+                      BlocProvider.of<FCDetailBloc>(context).add(LoadDetailPage(
+                          forceRefresh: true,
+                          id: searchList[index]!.id.toString()));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => FitnessCenterDetailPage(onBackPressed: (){},)));
+                              builder: (context) => FitnessCenterDetailPage(
+                                    onBackPressed: () {},
+                                  )));
                     },
                   ));
             })

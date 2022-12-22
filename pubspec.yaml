@@ -68,6 +68,7 @@ dependencies:
   syncfusion_flutter_gauges: ^20.3.57
   percent_indicator: ^4.0.0
   location: ^4.4.0
+  webview_flutter: ^4.0.0
 
 
 dev_dependencies:
@@ -117,6 +118,9 @@ flutter:
     - family: HabitozIcons
       fonts:
         - asset: assets/icons/HabitozIcons.ttf
+    - family: DiscipleIcons
+      fonts:
+        - asset: assets/icons/DiscipleIcons.ttf
     - family: Inter-Regular
       fonts:
         - asset: assets/fonts/Inter-Regular.ttf

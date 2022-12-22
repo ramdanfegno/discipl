@@ -7,6 +7,7 @@ import 'package:habitoz_fitness_app/ui/screens/feed/feed_pageview.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/components/category_list_tile.dart';
 
 import 'package:habitoz_fitness_app/ui/screens/zone_search/choose_location.dart';
+import 'package:habitoz_fitness_app/utils/disciple_icons_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 import '../../../utils/constants.dart';
@@ -55,7 +56,7 @@ class HomeScreenView extends StatelessWidget {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 4,
                 ),
-                (!isProfileCompleted)
+                (!isProfileCompleted && homeData!.profilePercentage != null)
                     ? InkWell(
                         onTap: () {
                           onProfileClicked();
@@ -119,7 +120,7 @@ class HomeScreenView extends StatelessWidget {
           width: SizeConfig.blockSizeHorizontal * 15,
         ),
         const Icon(
-          Icons.location_on,
+          DiscipleIcons.location_red_small_size,
           color: Constants.primaryColor,
           size: 17,
         ),
@@ -222,6 +223,7 @@ class HomeScreenView extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 3),
       child: SquareBannerTile(
+        fcDetailBloc: fcDetailBloc,
         title: content!.title!,
         content: content.content,
         seeAllPressed: () {

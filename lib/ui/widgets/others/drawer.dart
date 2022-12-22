@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
+import 'package:habitoz_fitness_app/utils/disciple_icons_icons.dart';
 import 'package:habitoz_fitness_app/utils/habitoz_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/profile_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../../utils/routes.dart';
@@ -32,6 +34,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   late ProfileBloc _profileBloc;
   String? _profileImage, _userName;
   final UserRepository userRepository = UserRepository();
+
 
   @override
   void initState() {
@@ -106,7 +109,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           buildLogout(context);
                         },
                         child: drawerTile(
-                            Icons.power_settings_new_outlined, 'Logout')!)
+                            DiscipleIcons.logout, 'Logout')!)
                     : Container(),
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 20,
@@ -159,7 +162,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             width: SizeConfig.blockSizeHorizontal * 6,
                           ),
                           Icon(
-                            HabitozIcons.linkedin,
+                            DiscipleIcons.linkedin,
                             size: SizeConfig.blockSizeHorizontal * 5.5,
                             color: Constants.primaryColor,
                           ),
@@ -228,7 +231,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         SizedBox(
           width: SizeConfig.blockSizeHorizontal * 7,
         ),
-        Icon(tileIcon),
+        Icon(tileIcon,size: 20,),
         SizedBox(
           width: SizeConfig.blockSizeHorizontal * 4,
         ),

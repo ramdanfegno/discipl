@@ -3,16 +3,21 @@ import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
+import '../../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
+import '../../gym/fitnes_center_details/fitness_center_detail_page.dart';
+
 class SquareBannerTile extends StatelessWidget {
   final String title;
   final List<ContentContent>? content;
   final Function() seeAllPressed;
+  final FCDetailBloc fcDetailBloc;
 
   const SquareBannerTile(
       {Key? key,
       required this.title,
       required this.content,
-      required this.seeAllPressed})
+      required this.seeAllPressed,
+      required this.fcDetailBloc})
       : super(key: key);
 
   @override
@@ -30,11 +35,10 @@ class SquareBannerTile extends StatelessWidget {
                     EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 4),
                 child: SizedBox(
                   width: SizeConfig.blockSizeHorizontal * 75,
-                  child:  Text(
+                  child: Text(
                     title,
                     style: const TextStyle(
-                        fontSize: 18,
-                        fontFamily: Constants.fontMedium),
+                        fontSize: 18, fontFamily: Constants.fontMedium),
                   ),
                 ),
               ),
@@ -73,79 +77,93 @@ class SquareBannerTile extends StatelessWidget {
               itemCount: content!.length,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                      right: SizeConfig.blockSizeHorizontal * 4,
-                      top: SizeConfig.blockSizeHorizontal * 2,
-                      bottom: SizeConfig.blockSizeHorizontal * 2),
-                  child: Container(
-                    height: SizeConfig.blockSizeHorizontal * 50,
-                    width: SizeConfig.blockSizeHorizontal * 75,
-                    decoration: BoxDecoration(
-                        color: Constants.fontColor1,
-                        borderRadius: BorderRadius.circular(
-                            SizeConfig.blockSizeHorizontal * 3)),
-                    child: Column(children: [
-                      Container(
-                        height: SizeConfig.blockSizeHorizontal * 50,
-                        width: SizeConfig.blockSizeHorizontal * 75,
-                        decoration: BoxDecoration(
-                            color: Constants.appbarColor,
-                            borderRadius: BorderRadius.circular(
-                                SizeConfig.blockSizeHorizontal * 3)),
-                        child: ClipRRect(
+                return InkWell(
+                  onTap: () {
+                    //route to fitness detail page
+                    fcDetailBloc.add(LoadDetailPage(
+                        forceRefresh: true,
+                        id: content![index].fitnessCenter!.id.toString()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FitnessCenterDetailPage(
+                                  onBackPressed: () {},
+                                )));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        right: SizeConfig.blockSizeHorizontal * 4,
+                        top: SizeConfig.blockSizeHorizontal * 2,
+                        bottom: SizeConfig.blockSizeHorizontal * 2),
+                    child: Container(
+                      height: SizeConfig.blockSizeHorizontal * 50,
+                      width: SizeConfig.blockSizeHorizontal * 75,
+                      decoration: BoxDecoration(
+                          color: Constants.fontColor1,
                           borderRadius: BorderRadius.circular(
-                              SizeConfig.blockSizeHorizontal *
-                                  3), // Image border
-                          child: Image.network(
-                            (content![index].image != null)
-                                ? content![index].image!
-                                : '',
-                            fit: BoxFit.fill,
+                              SizeConfig.blockSizeHorizontal * 3)),
+                      child: Column(children: [
+                        Container(
+                          height: SizeConfig.blockSizeHorizontal * 50,
+                          width: SizeConfig.blockSizeHorizontal * 75,
+                          decoration: BoxDecoration(
+                              color: Constants.appbarColor,
+                              borderRadius: BorderRadius.circular(
+                                  SizeConfig.blockSizeHorizontal * 3)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.blockSizeHorizontal *
+                                    3), // Image border
+                            child: Image.network(
+                              (content![index].image != null)
+                                  ? content![index].image!
+                                  : '',
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: SizeConfig.blockSizeHorizontal * 2.5,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: SizeConfig.blockSizeHorizontal * 4,
-                          ),
-                          Text(
-                            (content![index].title != null)
-                                ? content![index].title!
-                                : '',
-                            style: const TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                                color: Colors.white,
-                                fontFamily: Constants.fontRegular,
-                                fontSize: 18),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: SizeConfig.blockSizeHorizontal * 2,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: SizeConfig.blockSizeHorizontal * 4,
-                          ),
-                          Text(
-                              (content![index].fitnessCenter!.name != null)
-                                  ? content![index].fitnessCenter!.name!
+                        SizedBox(
+                          height: SizeConfig.blockSizeHorizontal * 2.5,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: SizeConfig.blockSizeHorizontal * 4,
+                            ),
+                            Text(
+                              (content![index].title != null)
+                                  ? content![index].title!
                                   : '',
-                              style: TextStyle(
-                                  overflow: TextOverflow.fade,
+                              style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis,
                                   color: Colors.white,
                                   fontFamily: Constants.fontRegular,
-                                  fontSize:
-                                      SizeConfig.blockSizeHorizontal * 4)),
-                        ],
-                      )
-                    ]),
+                                  fontSize: 18),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: SizeConfig.blockSizeHorizontal * 2,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: SizeConfig.blockSizeHorizontal * 4,
+                            ),
+                            Text(
+                                (content![index].fitnessCenter!.name != null)
+                                    ? content![index].fitnessCenter!.name!
+                                    : '',
+                                style: TextStyle(
+                                    overflow: TextOverflow.fade,
+                                    color: Colors.white,
+                                    fontFamily: Constants.fontRegular,
+                                    fontSize:
+                                        SizeConfig.blockSizeHorizontal * 4)),
+                          ],
+                        )
+                      ]),
+                    ),
                   ),
                 );
               }),

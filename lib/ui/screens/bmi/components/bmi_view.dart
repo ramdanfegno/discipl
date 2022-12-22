@@ -153,9 +153,9 @@ class _BMIViewState extends State<BMIView> {
     }
 
     return Text(
-      '${widget.result} Kg/m2',
+      '${widget.result} Kg/m\u00B2',
       style: TextStyle(
-          color: color, fontSize: 20, fontFamily: Constants.fontSemiBold),
+          color: color, fontSize: 28, fontFamily: Constants.fontSemiBold),
     );
   }
 
@@ -261,7 +261,7 @@ class _BMIViewState extends State<BMIView> {
     return Text(
       s,
       style: TextStyle(
-          color: color, fontSize: 12, fontFamily: Constants.fontRegular),
+          color: color, fontSize: 16, fontFamily: Constants.fontRegular),
     );
   }
 

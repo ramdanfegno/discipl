@@ -150,17 +150,22 @@ class _ChooseCurrentLocationState extends State<ChooseCurrentLocation> {
   }
 
   getLocation() async{
-    setState(() {
-      isLoading = true;
-    });
+    if(mounted){
+      setState(() {
+        isLoading = true;
+      });
+    }
+
     l.PermissionStatus permissionGranted;
     permissionGranted = await location.hasPermission();
     if (permissionGranted == l.PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
       if (permissionGranted != l.PermissionStatus.granted) {
-        setState(() {
-          isLoading = false;
-        });
+        if(mounted){
+          setState(() {
+            isLoading = false;
+          });
+        }
         //_locationBloc.add(LoadLocationPage(forceRefresh: false, pageNo: _pageNo,isLoading: true));
         return;
       }

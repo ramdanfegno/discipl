@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
+import 'package:habitoz_fitness_app/utils/disciple_icons_icons.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 import '../../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
@@ -107,11 +108,12 @@ class RectangleBannerTile extends StatelessWidget {
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                               fit: BoxFit.fill,
-                                              image: NetworkImage(
-                                                (content![index].logo != null)
-                                                    ? content![index].logo!
-                                                    : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-                                              )),
+                                              image:
+                                                  (content![index].logo != null)
+                                                      ? NetworkImage(
+                                                          content![index].logo!)
+                                                      : const AssetImage('assets/images/png/rectangle_holder.png')
+                                                          as ImageProvider),
                                           boxShadow: [
                                             BoxShadow(
                                                 color: Colors.black
@@ -124,6 +126,23 @@ class RectangleBannerTile extends StatelessWidget {
                                                   3),
                                           color: Constants.appbarColor),
                                     ),
+                                    Positioned(
+                                        bottom: SizeConfig.blockSizeHorizontal *
+                                            3.1,
+                                        child: Container(
+                                          height:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  50,
+                                          width:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  79,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Colors.black.withOpacity(0.4),
+                                            borderRadius:
+                                                BorderRadius.circular(9),
+                                          ),
+                                        )),
                                     Positioned(
                                       bottom:
                                           SizeConfig.blockSizeHorizontal * 6,
@@ -158,7 +177,8 @@ class RectangleBannerTile extends StatelessWidget {
                                           Row(
                                             children: [
                                               const Icon(
-                                                Icons.location_on,
+                                                DiscipleIcons.location_red_small_size,
+                                                size: 14,
                                                 color: Colors.white,
                                               ),
                                               SizedBox(
@@ -230,7 +250,7 @@ class RectangleBannerTile extends StatelessWidget {
                                                                             index]
                                                                         .name!
                                                                     : '',
-                                                                style: TextStyle(
+                                                                style: const TextStyle(
                                                                     color: Colors
                                                                         .white),
                                                               ),

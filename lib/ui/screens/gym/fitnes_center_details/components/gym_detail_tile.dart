@@ -5,6 +5,8 @@ import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
+import '../../../../../utils/disciple_icons_icons.dart';
+
 class GymDetailContainer extends StatelessWidget {
   final String gymName, place, distance, description;
   final List<Amenities> category;
@@ -52,8 +54,12 @@ class GymDetailContainer extends StatelessWidget {
                 width: SizeConfig.blockSizeHorizontal * 2.5,
               ),
               const Icon(
-                Icons.location_pin,
+                DiscipleIcons.location_red_small_size,
+                size: 16,
                 color: Constants.primaryColor,
+              ),
+              SizedBox(
+                width: SizeConfig.blockSizeHorizontal*1,
               ),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 26,

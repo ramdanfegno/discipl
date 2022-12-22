@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habitoz_fitness_app/bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/fc_list_bloc/fc_list_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/home_screen_bloc/home_bloc.dart';
+import 'package:habitoz_fitness_app/bloc/internet_bloc/internet_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/location_bloc/location_bloc.dart';
 import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import 'package:habitoz_fitness_app/repositories/product_repo.dart';
@@ -11,7 +12,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/home_screen.dart';
 import 'package:habitoz_fitness_app/ui/widgets/others/loading_screen.dart';
+import 'package:habitoz_fitness_app/utils/connect_check.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
+import 'package:habitoz_fitness_app/utils/size_config.dart';
+import 'package:provider/provider.dart';
 import 'bloc/authentication_bloc/authentication_bloc.dart';
 import 'repositories/user_repo.dart';
 import 'ui/screens/auth/login/login_screen.dart';
@@ -20,8 +24,6 @@ import 'ui/screens/bmi/result_display.dart';
 import 'ui/splash_screen.dart';
 
 void main() async {
-
-
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -30,32 +32,37 @@ void main() async {
   final ProductRepository productRepository = ProductRepository();
 
   runApp(
-     MultiBlocProvider(
+    MultiBlocProvider(
       providers: [
-         BlocProvider(
-            create: (context) =>
-            AuthenticationBloc(userRepository: userRepository)
-              ..add(AuthenticationStarted())),
-
+        BlocProvider<InternetBloc>(create: (context) => InternetBloc()),
         BlocProvider(
             create: (context) =>
-            ProfileBloc(userRepository: userRepository),lazy: true,),
-
+                AuthenticationBloc(userRepository: userRepository)
+                  ..add(AuthenticationStarted())),
+        BlocProvider(
+          create: (context) => ProfileBloc(userRepository: userRepository),
+          lazy: true,
+        ),
+        BlocProvider(
+          create: (context) => HomeBloc(
+              productRepository: productRepository,
+              userRepository: userRepository),
+          lazy: true,
+        ),
         BlocProvider(
           create: (context) =>
-              HomeBloc(productRepository: productRepository,userRepository: userRepository),lazy: true,),
-
+              FCDetailBloc(productRepository: productRepository),
+          lazy: true,
+        ),
+        BlocProvider(
+          create: (context) => FCListBloc(productRepository: productRepository),
+          lazy: true,
+        ),
         BlocProvider(
           create: (context) =>
-              FCDetailBloc(productRepository: productRepository),lazy: true,),
-
-        BlocProvider(
-          create: (context) =>
-              FCListBloc(productRepository: productRepository),lazy: true,),
-
-        BlocProvider(
-          create: (context) =>
-              LocationBloc(productRepository: productRepository),lazy: true,),
+              LocationBloc(productRepository: productRepository),
+          lazy: true,
+        ),
       ],
       child: App(
         userRepository: userRepository,
@@ -67,8 +74,9 @@ void main() async {
 class App extends StatefulWidget {
   final UserRepository _userRepository;
 
-  const App({required UserRepository userRepository,})
-      : _userRepository = userRepository,
+  const App({
+    required UserRepository userRepository,
+  })  : _userRepository = userRepository,
         super();
 
   @override
@@ -76,9 +84,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   late HomeBloc _homeBloc;
-
 
   @override
   void initState() {
@@ -87,10 +93,17 @@ class _AppState extends State<App> {
     _homeBloc = BlocProvider.of<HomeBloc>(context);
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return 
+      MultiProvider(providers: [
+        StreamProvider<NetworkStatus>(
+          create: (context) =>
+          NetworkStatusService().networkStatusController.stream,
+          initialData: NetworkStatus.Online,
+        ),
+      ],
+  child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: Constants.appTitle,
       theme: ThemeData(
@@ -115,51 +128,74 @@ class _AppState extends State<App> {
       routes: {
         '/fillProfile': (context) => const FillProfileDetails(),
       },
-      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        buildWhen: (previous, current) => (previous != current),
-        builder: (context, state) {
-          if (state is AuthenticationSuccess) {
-            _homeBloc.add(LoadHome(forceRefresh: true,zone: state.zoneResult));
-            return HomeScreen(
-                isGuest: state.isGuest,
-                isLoggedIn: state.isLoggedIn,
-                userName: state.userName
-            );
+      home: BlocListener<InternetBloc, InternetState>(
+        listener: (context, state) {
+          if (state is connectedState) {
+            Center(
+                child: Padding(
+              padding: EdgeInsets.only(
+                  left: SizeConfig.blockSizeHorizontal * 4,
+                  right: SizeConfig.blockSizeHorizontal * 4),
+              child: Container(
+                height: SizeConfig.blockSizeHorizontal * 30,
+                width: MediaQuery.of(context).size.width,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                child: Text('No internet'),
+              ),
+            ));
+          } else {
+            print('connected');
           }
-          if (state is AuthenticationFailure) {
-            // logged out user - redirect to login page
-            return LoginScreen(
-              userRepository: widget._userRepository,
-              message: state.message,
-            );
-          }
-          if (state is AuthenticationGuest) {
-            // guest user - redirect to home screen as guest
-            _homeBloc.add(LoadHome(forceRefresh: true,zone: null));
-            return HomeScreen(isGuest: state.isGuest, isLoggedIn: state.isLoggedIn);
-          }
-          if (state is AuthenticationCompleteProfile) {
-            // complete profile page
-            return const FillProfileDetails();
-          }
-          if (state is AuthenticationShowResult) {
-            // complete profile page
-            return ResultView(
-              fitnessResponse: state.result,
-              resultType: 'BMI',
-              isFromProfile: false,
-              data: state.data,
-            );
-          }
-          if (state is AuthenticationOnLoading) {
-            return const LoadingWidget();
-          }
-          if (state is AuthenticationLoadSplashScreen) {
-            return const SplashScreen();
-          }
-          return const SplashScreen();
         },
+        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          buildWhen: (previous, current) => (previous != current),
+          builder: (context, state) {
+            if (state is AuthenticationSuccess) {
+              _homeBloc
+                  .add(LoadHome(forceRefresh: true, zone: state.zoneResult));
+              return HomeScreen(
+                  isGuest: state.isGuest,
+                  isLoggedIn: state.isLoggedIn,
+                  userName: state.userName);
+            }
+            if (state is AuthenticationFailure) {
+              // logged out user - redirect to login page
+              return LoginScreen(
+                userRepository: widget._userRepository,
+                message: state.message,
+              );
+            }
+            if (state is AuthenticationGuest) {
+              // guest user - redirect to home screen as guest
+              _homeBloc.add(LoadHome(forceRefresh: true, zone: null));
+              return HomeScreen(
+                  isGuest: state.isGuest, isLoggedIn: state.isLoggedIn);
+            }
+            if (state is AuthenticationCompleteProfile) {
+              // complete profile page
+              return const FillProfileDetails();
+            }
+            if (state is AuthenticationShowResult) {
+              // complete profile page
+              return ResultView(
+                fitnessResponse: state.result,
+                resultType: 'BMI',
+                isFromProfile: false,
+                data: state.data,
+              );
+            }
+            if (state is AuthenticationOnLoading) {
+              return const LoadingWidget();
+            }
+            if (state is AuthenticationLoadSplashScreen) {
+              return const SplashScreen();
+            }
+            return const SplashScreen();
+          },
+        ),
       ),
-    );
+    ),
+);
   }
 }
