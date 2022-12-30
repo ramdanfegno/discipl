@@ -5,7 +5,7 @@ class Constants {
 
 
   static const String baseUrl = 'https://blacksquad.dev.fegno.com/api/v1/';
-  //static const String baseUrl = 'https://disciple.uat.fegno.com/api/v1/';
+  // static const String baseUrl = 'https://disciple.uat.fegno.com/api/v1/';
 
 
   static const String appTitle = 'Black Squad';

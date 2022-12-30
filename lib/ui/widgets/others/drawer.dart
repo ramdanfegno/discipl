@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:habitoz_fitness_app/models/user_profile_model.dart';
 import 'package:habitoz_fitness_app/repositories/user_repo.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
@@ -8,16 +9,19 @@ import 'package:habitoz_fitness_app/utils/size_config.dart';
 import 'package:habitoz_fitness_app/bloc/profile_bloc/profile_bloc.dart';
 import 'package:habitoz_fitness_app/ui/screens/bmi/profile_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../../utils/routes.dart';
+import '../../../utils/web_View.dart';
 import '../dialog/custom_dialog.dart';
 
 class CustomDrawer extends StatefulWidget {
   final String? userName;
   final bool isGuest;
   final Function() closeDrawer;
+  
 
   const CustomDrawer(
       {Key? key,
@@ -34,7 +38,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
   late ProfileBloc _profileBloc;
   String? _profileImage, _userName;
   final UserRepository userRepository = UserRepository();
+  final uriFaceBook = Uri.parse('fb://https://www.facebook.com/thediscipl');
 
+  void runWeb(String url) {
+    runWebView(url);
+  }
+
+  
 
   @override
   void initState() {
@@ -94,7 +104,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 8,
                 ),
-                drawerTile(HabitozIcons.fileEarMarkText, 'Terms & Conditions')!,
+                InkWell(
+                  onTap: (){
+                 runWeb('http://wp-habitoz.uat.fegno.com/legal/privacy-policy.pdf');
+                  },
+                    child: drawerTile(HabitozIcons.fileEarMarkText, 'Terms & Conditions')!),
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 8,
                 ),
@@ -137,10 +151,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       Row(
                         children: [
-                          Icon(
-                            HabitozIcons.fb,
-                            size: SizeConfig.blockSizeHorizontal * 5.5,
-                            color: Constants.primaryColor,
+                          InkWell(
+                            child: Icon(
+                              HabitozIcons.fb,
+                              size: SizeConfig.blockSizeHorizontal * 5.5,
+                              color: Constants.primaryColor,
+                            ),
+                            onTap: (){
+                              _launchUrl();
+                            },
                           ),
                           SizedBox(
                             width: SizeConfig.blockSizeHorizontal * 3,
@@ -271,5 +290,28 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   void _closeDrawer() {
     Navigator.of(context).pop();
+  }
+
+  runWebView(String url) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return WebViewScreen(
+          url: url,
+          canPop: true,
+          onBackPressed: (val) {
+            if (val != null) {
+              Fluttertoast.showToast(msg: val, toastLength: Toast.LENGTH_SHORT);
+            }
+          },
+          onWebViewCompleted: (val) async {
+            print('onWebViewCompleted');
+            print(val);
+          });
+    }));
+  }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(uriFaceBook)) {
+      throw 'Could not launch $uriFaceBook';
+    }
   }
 }

@@ -1,4 +1,4 @@
-package com.example.habitoz_fitness_app
+package com.fegno.habitoz_fitness_app
 
 import io.flutter.embedding.android.FlutterActivity
 
