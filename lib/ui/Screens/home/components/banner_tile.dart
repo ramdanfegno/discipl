@@ -13,6 +13,7 @@ class BannerTile extends StatelessWidget {
   final List<ContentContent>? content;
   final FCDetailBloc fcDetailBloc;
   final HomePageModelContent homePageModelContent;
+  final ImageModel imageModel;
 
   const BannerTile(
       {Key? key,
@@ -20,7 +21,7 @@ class BannerTile extends StatelessWidget {
       this.title,
       required this.content,
       required this.fcDetailBloc,
-      required this.homePageModelContent})
+      required this.homePageModelContent, required this.imageModel})
       : super(key: key);
 
   @override
@@ -100,9 +101,7 @@ class BannerTile extends StatelessWidget {
                             borderRadius: BorderRadius.circular(
                                 SizeConfig.blockSizeHorizontal * 3),
                             // Image border
-                          ): ImageCarousel(
-                            imageList: homePageModelContent.map((e)),
-                          ),
+                          ): imageCarouselWidget(imageModel)
                         )
                       ],
                     ),
@@ -118,7 +117,7 @@ class BannerTile extends StatelessWidget {
   }
 
 
-  Widget carouselWidget(List<HomePageModel?> homepageMod){
+  /*Widget carouselWidget(List<HomePageModel?> homepageMod){
     return  Padding(
       padding: EdgeInsets.only(
           left: SizeConfig.blockSizeHorizontal * 2,
@@ -127,14 +126,17 @@ class BannerTile extends StatelessWidget {
       child: Container(
         // margin: const EdgeInsets.symmetric(vertical: 5),
         padding: const EdgeInsets.all(0),
-        child: ImageCarousel(
-          imageList: (!.map((e) => e!.photo)).toList(),
-          titleList: (imageBanners.map((e) => e!.title)).toList(),
-          // productRangeList: (imageBanners.map((e) => e!.productRange)).toList(),
-          aspectRatio: 3,
-          banners: imageBanners,
-        ),
+        child: ,
       ),
+    );
+  }*/
+
+  Widget imageCarouselWidget(List<ImageModel> carousel_image) {
+    print(carousel_image.length);
+    return ImageCarousel(
+      imageList: (content!.map((e) => e.image)).toList(),
+      images: carousel_image,
+      aspectRatio: 1,
     );
   }
 

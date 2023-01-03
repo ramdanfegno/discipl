@@ -138,6 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Stack(
         children: [
           HomeScreenView(
+            imageModel: ,
             homeData: homePageData,
             fcDetailBloc: _fcDetailBloc,
             fcListBloc: _fcListBloc,
