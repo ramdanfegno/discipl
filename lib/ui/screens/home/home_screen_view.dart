@@ -215,6 +215,7 @@ class HomeScreenView extends StatelessWidget {
       title: content!.title != "Type_SP1" ? content.title : null,
       content: content.content,
       fcDetailBloc: fcDetailBloc,
+      homePageModelContent: content,
     );
   }
 
