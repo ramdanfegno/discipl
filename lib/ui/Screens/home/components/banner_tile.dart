@@ -13,7 +13,6 @@ class BannerTile extends StatelessWidget {
   final List<ContentContent>? content;
   final FCDetailBloc fcDetailBloc;
   final HomePageModelContent homePageModelContent;
-  final ImageModel imageModel;
 
   const BannerTile(
       {Key? key,
@@ -21,7 +20,7 @@ class BannerTile extends StatelessWidget {
       this.title,
       required this.content,
       required this.fcDetailBloc,
-      required this.homePageModelContent, required this.imageModel})
+      required this.homePageModelContent})
       : super(key: key);
 
   @override
@@ -96,12 +95,12 @@ class BannerTile extends StatelessWidget {
                               color: Constants.secondaryColor,
                               borderRadius: BorderRadius.circular(
                                   SizeConfig.blockSizeHorizontal * 3)),
-                          child: homePageModelContent.title == 'Type_SP1'?
+                          child:
                           ClipRRect(
                             borderRadius: BorderRadius.circular(
                                 SizeConfig.blockSizeHorizontal * 3),
                             // Image border
-                          ): imageCarouselWidget(imageModel)
+                          )
                         )
                       ],
                     ),

@@ -26,7 +26,6 @@ class HomeScreenView extends StatelessWidget {
   final bool isProfileCompleted;
   final Function(ZoneResult) onLocationChanged;
   final Function() onProfileClicked;
-  final ImageModel imageModel;
 
   final ZoneResult? zoneResult;
 
@@ -38,7 +37,7 @@ class HomeScreenView extends StatelessWidget {
       required this.homeData,
       required this.fcListBloc,
       required this.zoneResult,
-      required this.fcDetailBloc, required this.imageModel})
+      required this.fcDetailBloc})
       : super(key: key);
 
   @override
@@ -212,7 +211,6 @@ class HomeScreenView extends StatelessWidget {
   Widget _buildBannerTiles(
       BuildContext context, HomePageModelContent? content) {
     return BannerTile(
-      imageModel: ,
       hasTitle: false,
       title: content!.title != "Type_SP1" ? content.title : null,
       content: content.content,
