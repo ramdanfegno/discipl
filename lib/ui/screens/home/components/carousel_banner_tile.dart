@@ -7,14 +7,13 @@ import '../../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import '../../../../models/home_page_model.dart';
 import '../../gym/fitnes_center_details/fitness_center_detail_page.dart';
 
-class BannerTile extends StatelessWidget {
+class CarouselBannerTile extends StatelessWidget {
   final bool hasTitle;
   final String? title;
   final List<ContentContent>? content;
   final FCDetailBloc fcDetailBloc;
 
-
-  BannerTile({
+  CarouselBannerTile({
     Key? key,
     required this.hasTitle,
     this.title,
@@ -22,11 +21,9 @@ class BannerTile extends StatelessWidget {
     required this.fcDetailBloc,
   }) : super(key: key);
 
-  List<ContentContent>? image_car = [];
+  List<String>? image_car = [];
 
   @override
-
-
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
@@ -42,14 +39,15 @@ class BannerTile extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 1,
+                itemCount: content!.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, int index) {
-
-                  for(int i = 0; i<=content![index].image!.length;i++ ){
-                    image_car!.add();
-                  }
+                  // for(int i = 0; i<=content!.length;i++ ){
+                  //   print('loopppp');
+                  //   image_car!.add(content![i].image!);
+                  //   print(image_car!.length);
+                  // }
 
                   return InkWell(
                     onTap: () {
@@ -89,19 +87,10 @@ class BannerTile extends StatelessWidget {
                         SizedBox(
                           height: SizeConfig.blockSizeHorizontal * 4,
                         ),
-                        Container(
-                          height: SizeConfig.blockSizeHorizontal * 50,
-                          width: SizeConfig.blockSizeHorizontal * 91,
-                          decoration: BoxDecoration(
-                              color: Constants.secondaryColor,
-                              borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 3)),
-                          child:  ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                SizeConfig.blockSizeHorizontal * 3),
-                            // Image border
-                          ),
-                        ),
+                        SizedBox(
+                            height: SizeConfig.blockSizeHorizontal * 50,
+                            width: SizeConfig.blockSizeHorizontal * 91,
+                            child: ImageCarousel())
                       ],
                     ),
                   );
@@ -115,12 +104,12 @@ class BannerTile extends StatelessWidget {
     );
   }
 
-  Widget imageCarouselWidget(List<ImageModel> carousel_image) {
-    print(carousel_image.length);
-    return ImageCarousel(
-      imageList: (image_car!.map((e) => e.image)).toList(),
-      images: carousel_image,
-      aspectRatio: 1,
-    );
-  }
+// Widget imageCarouselWidget(List<ImageModel> carousel_image) {
+//   print(carousel_image.length);
+//   return ImageCarousel(
+//     imageList: (image_car!.map((e) => e.image)).toList(),
+//     images: carousel_image,
+//     aspectRatio: 1,
+//   );
+// }
 }

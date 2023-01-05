@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ZoneResult? _zone;
   final UserRepository userRepository = UserRepository();
   final ProductRepository productRepository = ProductRepository();
+  final List<ImageModel> imageModel = [];
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 

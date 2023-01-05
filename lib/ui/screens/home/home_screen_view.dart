@@ -4,6 +4,7 @@ import 'package:habitoz_fitness_app/bloc/fc_list_bloc/fc_list_bloc.dart';
 import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import 'package:habitoz_fitness_app/ui/screens/feed/feed_pageview.dart';
+import 'package:habitoz_fitness_app/ui/screens/home/components/carousel_banner_tile.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/components/category_list_tile.dart';
 
 import 'package:habitoz_fitness_app/ui/screens/zone_search/choose_location.dart';
@@ -29,15 +30,14 @@ class HomeScreenView extends StatelessWidget {
 
   final ZoneResult? zoneResult;
 
-  const HomeScreenView(
-      {Key? key,
-      required this.onLocationChanged,
-      required this.onProfileClicked,
-      required this.isProfileCompleted,
-      required this.homeData,
-      required this.fcListBloc,
-      required this.zoneResult,
-      required this.fcDetailBloc})
+  const HomeScreenView({Key? key,
+    required this.onLocationChanged,
+    required this.onProfileClicked,
+    required this.isProfileCompleted,
+    required this.homeData,
+    required this.fcListBloc,
+    required this.zoneResult,
+    required this.fcDetailBloc})
       : super(key: key);
 
   @override
@@ -45,39 +45,39 @@ class HomeScreenView extends StatelessWidget {
     SizeConfig().init(context);
     return (homeData != null)
         ? SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: SizeConfig.blockSizeHorizontal * 4,
-                ),
-                locationWidget(context)!,
-                SizedBox(
-                  height: SizeConfig.blockSizeHorizontal * 4,
-                ),
-                (!isProfileCompleted && homeData!.profilePercentage != null)
-                    ? InkWell(
-                        onTap: () {
-                          onProfileClicked();
-                        },
-                        child: PercentageTile(
-                            value: (homeData!.profilePercentage != null)
-                                ? (homeData!.profilePercentage!).toInt()
-                                : 0),
-                      )
-                    : Container(),
-                _content(context, homeData!.content!),
-                SizedBox(
-                  height: SizeConfig.blockSizeHorizontal * 4,
-                ),
-                const InviteTile(),
-                SizedBox(
-                  height: SizeConfig.blockSizeHorizontal * 6,
-                )
-              ],
-            ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: SizeConfig.blockSizeHorizontal * 4,
+          ),
+          locationWidget(context)!,
+          SizedBox(
+            height: SizeConfig.blockSizeHorizontal * 4,
+          ),
+          (!isProfileCompleted && homeData!.profilePercentage != null)
+              ? InkWell(
+            onTap: () {
+              onProfileClicked();
+            },
+            child: PercentageTile(
+                value: (homeData!.profilePercentage != null)
+                    ? (homeData!.profilePercentage!).toInt()
+                    : 0),
           )
+              : Container(),
+          _content(context, homeData!.content!),
+          SizedBox(
+            height: SizeConfig.blockSizeHorizontal * 4,
+          ),
+          const InviteTile(),
+          SizedBox(
+            height: SizeConfig.blockSizeHorizontal * 6,
+          )
+        ],
+      ),
+    )
         : Container();
   }
 
@@ -129,7 +129,8 @@ class HomeScreenView extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ChooseLocation(
+                    builder: (context) =>
+                        ChooseLocation(
                           onLocationUpdated: (val) {
                             onLocationChanged(val);
                           },
@@ -148,11 +149,11 @@ class HomeScreenView extends StatelessWidget {
                       (zoneResult != null && zoneResult!.name != null)
                           ? zoneResult!.name!
                           : (homeData!.zone != null &&
-                                  homeData!.zone!.name != null)
-                              ? homeData!.zone!.name!
-                              : '',
+                          homeData!.zone!.name != null)
+                          ? homeData!.zone!.name!
+                          : '',
                       style:
-                          const TextStyle(fontFamily: Constants.fontRegular)),
+                      const TextStyle(fontFamily: Constants.fontRegular)),
                 ),
               ),
               SizedBox(
@@ -182,8 +183,8 @@ class HomeScreenView extends StatelessWidget {
     );
   }
 
-  Widget _buildRectangleTiles(
-      BuildContext context, HomePageModelContent? content) {
+  Widget _buildRectangleTiles(BuildContext context,
+      HomePageModelContent? content) {
     return Padding(
       padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 4),
       child: RectangleBannerTile(
@@ -198,7 +199,8 @@ class HomeScreenView extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => FitnessCenterListView(
+                  builder: (context) =>
+                      FitnessCenterListView(
                         title: content.title!.toUpperCase(),
                         slug: 'fc',
                         zone: zoneResult,
@@ -208,18 +210,19 @@ class HomeScreenView extends StatelessWidget {
     );
   }
 
-  Widget _buildBannerTiles(
-      BuildContext context, HomePageModelContent? content) {
-    return BannerTile(
+  Widget _buildBannerTiles(BuildContext context,
+      HomePageModelContent? content) {
+    return content!.slug != 'type-sp1' ? BannerTile(
       hasTitle: false,
-      title: content!.title != "Type_SP1" ? content.title : null,
+      title: content.title != "Type_SP1" ? content.title : null,
       content: content.content,
       fcDetailBloc: fcDetailBloc,
-    );
+    ) : CarouselBannerTile(hasTitle: false, content: content.content,
+         fcDetailBloc: fcDetailBloc);
   }
 
-  Widget _buildSquareTiles(
-      BuildContext context, HomePageModelContent? content) {
+  Widget _buildSquareTiles(BuildContext context,
+      HomePageModelContent? content) {
     return Padding(
       padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal * 3),
       child: SquareBannerTile(
