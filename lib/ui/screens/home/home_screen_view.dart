@@ -4,6 +4,7 @@ import 'package:habitoz_fitness_app/bloc/fc_list_bloc/fc_list_bloc.dart';
 import 'package:habitoz_fitness_app/models/home_page_model.dart';
 import 'package:habitoz_fitness_app/models/zone_list_model.dart';
 import 'package:habitoz_fitness_app/ui/screens/feed/feed_pageview.dart';
+import 'package:habitoz_fitness_app/ui/screens/home/components/carousel_banner_tile.dart';
 import 'package:habitoz_fitness_app/ui/screens/home/components/category_list_tile.dart';
 
 import 'package:habitoz_fitness_app/ui/screens/zone_search/choose_location.dart';
@@ -210,13 +211,27 @@ class HomeScreenView extends StatelessWidget {
 
   Widget _buildBannerTiles(
       BuildContext context, HomePageModelContent? content) {
-    return BannerTile(
-      hasTitle: false,
-      title: content!.title != "Type_SP1" ? content.title : null,
-      content: content.content,
-      fcDetailBloc: fcDetailBloc,
-      homePageModelContent: content,
-    );
+    List<String> imageList = [];
+
+    if (content!.slug == 'type-sp1') {
+      for (int i = 0; i < content.content!.length; i++) {
+        imageList.add(content.content![i].image!);
+      }
+    }
+
+    return content.slug != 'type-sp1'
+        ? BannerTile(
+            hasTitle: false,
+            title: content.title != "Type_SP1" ? content.title : null,
+            content: content.content,
+            fcDetailBloc: fcDetailBloc,
+          )
+        : CarouselBannerTile(
+      imageLength: imageList.length,
+            imgList: imageList,
+            hasTitle: false,
+            content: content.content,
+            fcDetailBloc: fcDetailBloc);
   }
 
   Widget _buildSquareTiles(

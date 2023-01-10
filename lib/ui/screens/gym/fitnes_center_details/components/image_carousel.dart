@@ -58,32 +58,29 @@ class ImageCarouselState extends State<ImageCarousel> {
         },
         children: List.generate(
             widget.imageList!.length,
-            (index) => InkWell(
-                  onTap: () {
-                    Map<String, dynamic>? query = {
-                      "product_range": widget.images![index]!.id
-                    };
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(
-                              SizeConfig.blockSizeHorizontal * 3),
-                          bottomLeft: Radius.circular(
-                              SizeConfig.blockSizeHorizontal * 3)),
-                      child: Image.network(
-                        (widget.imageList![index] != null)
-                            ? widget.imageList![index]!
-                            : 'https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                )),
+            (index) => Container(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                        SizeConfig.blockSizeHorizontal * 3),
+                    topRight: Radius.circular(
+                        SizeConfig.blockSizeHorizontal * 3),
+                    bottomRight: Radius.circular(
+                        SizeConfig.blockSizeHorizontal * 3),
+                    bottomLeft: Radius.circular(
+                        SizeConfig.blockSizeHorizontal * 3)),
+                child: Image.network(
+                  (widget.imageList![index] != null)
+                      ? widget.imageList![index]!
+                      : 'https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            )),
       ),
       Positioned(
           bottom: 15,

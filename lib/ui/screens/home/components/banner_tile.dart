@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:habitoz_fitness_app/ui/screens/gym/fitnes_center_details/components/image_carousel.dart';
 import 'package:habitoz_fitness_app/utils/constants.dart';
 import 'package:habitoz_fitness_app/utils/size_config.dart';
 
 import '../../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import '../../../../models/home_page_model.dart';
-import '../../gym/fitnes_center_details/components/image_carousel.dart';
 import '../../gym/fitnes_center_details/fitness_center_detail_page.dart';
 
 class BannerTile extends StatelessWidget {
@@ -12,18 +12,21 @@ class BannerTile extends StatelessWidget {
   final String? title;
   final List<ContentContent>? content;
   final FCDetailBloc fcDetailBloc;
-  final HomePageModelContent homePageModelContent;
 
-  const BannerTile(
-      {Key? key,
-      required this.hasTitle,
-      this.title,
-      required this.content,
-      required this.fcDetailBloc,
-      required this.homePageModelContent})
-      : super(key: key);
+
+  BannerTile({
+    Key? key,
+    required this.hasTitle,
+    this.title,
+    required this.content,
+    required this.fcDetailBloc,
+  }) : super(key: key);
+
+  List<ContentContent>? image_car = [];
 
   @override
+
+
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
@@ -43,6 +46,11 @@ class BannerTile extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, int index) {
+
+                  // for(int i = 0; i<=content![index].image!.length;i++ ){
+                  //   image_car!.add();
+                  // }
+
                   return InkWell(
                     onTap: () {
                       //route to fitness detail page
@@ -85,23 +93,16 @@ class BannerTile extends StatelessWidget {
                           height: SizeConfig.blockSizeHorizontal * 50,
                           width: SizeConfig.blockSizeHorizontal * 91,
                           decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                    (content![index].image != null)
-                                        ? content![index].image!
-                                        : 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-                                  ),
-                                  fit: BoxFit.fitWidth),
+                            image: DecorationImage(image: NetworkImage(content![index].image != null?content![index].image!:''),fit: BoxFit.fitWidth),
                               color: Constants.secondaryColor,
                               borderRadius: BorderRadius.circular(
                                   SizeConfig.blockSizeHorizontal * 3)),
-                          child:
-                          ClipRRect(
+                          child:  ClipRRect(
                             borderRadius: BorderRadius.circular(
                                 SizeConfig.blockSizeHorizontal * 3),
                             // Image border
-                          )
-                        )
+                          ),
+                        ),
                       ],
                     ),
                   );
@@ -115,28 +116,12 @@ class BannerTile extends StatelessWidget {
     );
   }
 
-
-  /*Widget carouselWidget(List<HomePageModel?> homepageMod){
-    return  Padding(
-      padding: EdgeInsets.only(
-          left: SizeConfig.blockSizeHorizontal * 2,
-          right: SizeConfig.blockSizeHorizontal * 2,
-          top: SizeConfig.blockSizeHorizontal * 8),
-      child: Container(
-        // margin: const EdgeInsets.symmetric(vertical: 5),
-        padding: const EdgeInsets.all(0),
-        child: ,
-      ),
-    );
-  }*/
-
   Widget imageCarouselWidget(List<ImageModel> carousel_image) {
     print(carousel_image.length);
     return ImageCarousel(
-      imageList: (content!.map((e) => e.image)).toList(),
+      imageList: (image_car!.map((e) => e.image)).toList(),
       images: carousel_image,
       aspectRatio: 1,
     );
   }
-
 }

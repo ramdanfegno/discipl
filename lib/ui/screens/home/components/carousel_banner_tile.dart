@@ -7,26 +7,23 @@ import '../../../../bloc/fc_detail_bloc/fc_detail_bloc.dart';
 import '../../../../models/home_page_model.dart';
 import '../../gym/fitnes_center_details/fitness_center_detail_page.dart';
 
-class BannerTile extends StatelessWidget {
+class CarouselBannerTile extends StatelessWidget {
   final bool hasTitle;
   final String? title;
   final List<ContentContent>? content;
   final FCDetailBloc fcDetailBloc;
+  final List<String> imgList;
+  final int imageLength;
 
-
-  BannerTile({
+  CarouselBannerTile({
     Key? key,
     required this.hasTitle,
     this.title,
     required this.content,
-    required this.fcDetailBloc,
+    required this.fcDetailBloc, required this.imgList, required this.imageLength,
   }) : super(key: key);
 
-  List<ContentContent>? image_car = [];
-
   @override
-
-
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
@@ -44,13 +41,9 @@ class BannerTile extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: 1,
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, int index) {
-
-                  // for(int i = 0; i<=content![index].image!.length;i++ ){
-                  //   image_car!.add();
-                  // }
-
+                  print(imageLength);
                   return InkWell(
                     onTap: () {
                       //route to fitness detail page
@@ -90,19 +83,11 @@ class BannerTile extends StatelessWidget {
                           height: SizeConfig.blockSizeHorizontal * 4,
                         ),
                         Container(
-                          height: SizeConfig.blockSizeHorizontal * 50,
-                          width: SizeConfig.blockSizeHorizontal * 91,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(image: NetworkImage(content![index].image != null?content![index].image!:''),fit: BoxFit.fitWidth),
-                              color: Constants.secondaryColor,
-                              borderRadius: BorderRadius.circular(
-                                  SizeConfig.blockSizeHorizontal * 3)),
-                          child:  ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                SizeConfig.blockSizeHorizontal * 3),
-                            // Image border
-                          ),
-                        ),
+                            height: SizeConfig.blockSizeHorizontal * 50,
+                            width: SizeConfig.blockSizeHorizontal * 91,
+                            child: ImageCarousel(
+                              imageList: imgList,
+                            ))
                       ],
                     ),
                   );
@@ -113,15 +98,6 @@ class BannerTile extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget imageCarouselWidget(List<ImageModel> carousel_image) {
-    print(carousel_image.length);
-    return ImageCarousel(
-      imageList: (image_car!.map((e) => e.image)).toList(),
-      images: carousel_image,
-      aspectRatio: 1,
     );
   }
 }

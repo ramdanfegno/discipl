@@ -108,12 +108,13 @@ class RectangleBannerTile extends StatelessWidget {
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                               fit: BoxFit.fill,
-                                              image:
-                                                  (content![index].logo != null)
-                                                      ? NetworkImage(
-                                                          content![index].logo!)
-                                                      : const AssetImage('assets/images/png/rectangle_holder.png')
-                                                          as ImageProvider),
+                                              image: (content![index].logo !=
+                                                      null)
+                                                  ? NetworkImage(
+                                                      content![index].logo!)
+                                                  : const AssetImage(
+                                                          'assets/images/png/rectangle_holder.png')
+                                                      as ImageProvider),
                                           boxShadow: [
                                             BoxShadow(
                                                 color: Colors.black
@@ -177,7 +178,8 @@ class RectangleBannerTile extends StatelessWidget {
                                           Row(
                                             children: [
                                               const Icon(
-                                                DiscipleIcons.location_red_small_size,
+                                                DiscipleIcons
+                                                    .location_red_small_size,
                                                 size: 14,
                                                 color: Colors.white,
                                               ),
@@ -227,10 +229,7 @@ class RectangleBannerTile extends StatelessWidget {
                                                         scrollDirection:
                                                             Axis.horizontal,
                                                         shrinkWrap: true,
-                                                        itemCount:
-                                                            content![index]
-                                                                .category!
-                                                                .length,
+                                                        itemCount: 1,
                                                         itemBuilder:
                                                             (BuildContext
                                                                     context,
@@ -266,7 +265,14 @@ class RectangleBannerTile extends StatelessWidget {
                                                                 width: 1,
                                                                 color: Colors
                                                                     .white,
+                                                              ),
+                                                              content![index].km != null
+                                                                  ? Text(
+                                                                '${content![index].km.toString()} Km',
+                                                                style: const TextStyle(
+                                                                    color: Colors.white),
                                                               )
+                                                                  : Container()
                                                             ],
                                                           );
                                                         }),

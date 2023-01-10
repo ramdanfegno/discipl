@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ZoneResult? _zone;
   final UserRepository userRepository = UserRepository();
   final ProductRepository productRepository = ProductRepository();
+  final List<ImageModel> imageModel = [];
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -267,7 +268,6 @@ class _HomeScreenState extends State<HomeScreen> {
   showDialogIfFirstLoaded(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? isFirstLoaded = prefs.getBool(keyIsFirstLoaded);
-    if (Platform.isAndroid) {
       if (isFirstLoaded == null) {
         showCupertinoModalPopup(
           context: context,
@@ -312,6 +312,5 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
     }
-  }
 
 }
