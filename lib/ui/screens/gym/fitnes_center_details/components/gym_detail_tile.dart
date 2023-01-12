@@ -11,15 +11,14 @@ class GymDetailContainer extends StatelessWidget {
   final String gymName, place, distance, description;
   final List<Amenities> category;
 
-  const GymDetailContainer(
-      {Key? key,
-      required this.gymName,
-      required this.place,
-      required this.distance,
-      required this.description,
-      required this.category,
-      })
-      : super(key: key);
+  const GymDetailContainer({
+    Key? key,
+    required this.gymName,
+    required this.place,
+    required this.distance,
+    required this.description,
+    required this.category,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +58,7 @@ class GymDetailContainer extends StatelessWidget {
                 color: Constants.primaryColor,
               ),
               SizedBox(
-                width: SizeConfig.blockSizeHorizontal*1,
+                width: SizeConfig.blockSizeHorizontal * 1,
               ),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal * 26,
@@ -70,18 +69,21 @@ class GymDetailContainer extends StatelessWidget {
                       fontFamily: Constants.fontMedium),
                 ),
               ),
-              /* SizedBox(
-                width: SizeConfig.blockSizeHorizontal * 15,
-              ),*/
-              /*Row(
+              SizedBox(
+                width: SizeConfig.blockSizeHorizontal * 20,
+              ),
+              Row(
                 children: [
-                  Text('$distance Kms away your location',
+                  Text(
+                      (distance == '1')
+                          ? '$distance Km away your location'
+                          : '$distance Kms away your location',
                       style: const TextStyle(
                           color: Constants.blackLowerShade,
                           fontSize: 13,
                           fontFamily: Constants.fontRegular)),
                 ],
-              ),*/
+              ),
             ],
           ),
           SizedBox(

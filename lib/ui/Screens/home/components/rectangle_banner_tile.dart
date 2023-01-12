@@ -266,19 +266,19 @@ class RectangleBannerTile extends StatelessWidget {
                                                                 color: Colors
                                                                     .white,
                                                               ),
-                                                              content![index].km != null
-                                                                  ? Text(
-                                                                '${content![index].km.toString()} Km',
-                                                                style: const TextStyle(
-                                                                    color: Colors.white),
-                                                              )
-                                                                  : Container()
                                                             ],
                                                           );
                                                         }),
                                                   ),
                                                 ],
-                                              )
+                                              ),
+                                              content![index].km != null
+                                                  ? Text(
+                                                      '${content![index].km.toString()} Km',
+                                                      style: const TextStyle(
+                                                          color: Colors.white),
+                                                    )
+                                                  : Container(),
                                             ],
                                           )
                                         ],

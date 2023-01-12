@@ -30,3 +30,8 @@ class FCDetailFetchFailure extends FCDetailState {
   final String message;
   const FCDetailFetchFailure({required this.message});
 }
+
+class FCDetailUnAuth extends FCDetailState{
+  final Widget dialBox;
+  const FCDetailUnAuth({required this.dialBox});
+}

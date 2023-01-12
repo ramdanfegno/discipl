@@ -32,3 +32,8 @@ class HomeFetchFailure extends HomeState {
   final String message;
   const HomeFetchFailure({required this.message});
 }
+
+class HomeUnAuth extends HomeState{
+  final Widget dialbox;
+  const HomeUnAuth({required this.dialbox});
+}

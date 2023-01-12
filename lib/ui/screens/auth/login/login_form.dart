@@ -78,99 +78,108 @@ class _LoginFormState extends State<LoginForm> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
-        body: MultiBlocListener(
-          listeners: [
-            BlocListener<LoginBloc, LoginState>(
-              listener: (context, state) {
-                if (state.isFailure) {
-                  //show failed state
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(SnackBar(
-                      content: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(state.message!),
-                          const Icon(Icons.error)
-                        ],
-                      ),
-                      backgroundColor: Colors.red,
-                    ));
-                }
-                if (state.isSubmitting) {
-                  //show loading widget
-                }
-                if (state.isSuccess) {
-                  // redirect to otp verification
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: MultiBlocListener(
+            listeners: [
+              BlocListener<LoginBloc, LoginState>(
+                listener: (context, state) {
+                  if (state.isFailure) {
+                    //show failed state
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(SnackBar(
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(state.message!),
+                            const Icon(Icons.error)
+                          ],
+                        ),
+                        backgroundColor: Colors.red,
+                      ));
+                  }
+                  if (state.isSubmitting) {
+                    //show loading widget
+                  }
+                  if (state.isSuccess) {
+                    // redirect to otp verification
 
-                  print('LoginForm isSuccess 3');
+                    print('LoginForm isSuccess 3');
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return VerifyOtpPage(
-                      userRepository: widget._userRepository,
-                      otpResponseModel: state.otpResponseModel,
-                      message: widget.message,
-                    );
-                  }));
-                }
-              },
-            ),
-          ],
-          child: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-            return Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.white,
-              child: Stack(children: [
-                // login form
-                Positioned(
-                    top: SizeConfig.blockSizeVertical * 15,
-                    left: SizeConfig.blockSizeHorizontal * 6,
-                    right: SizeConfig.blockSizeHorizontal * 6,
-                    child: loginForm(state)),
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return VerifyOtpPage(
+                        userRepository: widget._userRepository,
+                        otpResponseModel: state.otpResponseModel,
+                        message: widget.message,
+                      );
+                    }));
+                  }
+                },
+              ),
+            ],
+            child: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.white,
+                child: Stack(children: [
+                  // login form
+                  Positioned(
+                      top: SizeConfig.blockSizeVertical * 15,
+                      left: SizeConfig.blockSizeHorizontal * 6,
+                      right: SizeConfig.blockSizeHorizontal * 6,
+                      child: loginForm(state)),
 
-                //skip button
-                Positioned(
-                    bottom: SizeConfig.blockSizeHorizontal * 7,
-                    right: SizeConfig.blockSizeHorizontal * 7,
-                    child: skipButton()),
-              ]),
-            );
-          }),
+                  //skip button
+                  Positioned(
+                      bottom: SizeConfig.blockSizeHorizontal * 7,
+                      right: SizeConfig.blockSizeHorizontal * 7,
+                      child: skipButton()),
+                ]),
+              );
+            }),
+          ),
         ),
       ),
     );
   }
 
   Widget loginForm(LoginState state) {
-    return Form(
-      key: _formKey,
-      child: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-        child: ScrollConfiguration(
-          behavior: ScrollDefaultBehaviour(),
-          child: ListView(
-            controller: _controller,
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            children: [
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 4),
-              title(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal *   10),
-              logo(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 20),
-              loginText(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
-              mobileTextField(state),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
-              Center(child: loginButton(state)),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
-              termsLine1(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-              termsLine2(),
-              SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
-            ],
+    return Padding(
+      padding:  EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+        child: Form(
+          key: _formKey,
+          child: Container(
+            color: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            child: ScrollConfiguration(
+              behavior: ScrollDefaultBehaviour(),
+              child: ListView(
+                controller: _controller,
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(horizontal: 0),
+                children: [
+                  SizedBox(height: SizeConfig.blockSizeHorizontal * 4),
+                  title(),
+                  SizedBox(height: SizeConfig.blockSizeHorizontal *   10),
+                  logo(),
+                  SizedBox(height: SizeConfig.blockSizeHorizontal * 20),
+                  loginText(),
+                  SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
+                  mobileTextField(state),
+                  SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
+                  Center(child: loginButton(state)),
+                  SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
+                  termsLine1(),
+                  SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
+                  termsLine2(),
+                  SizedBox(height: SizeConfig.blockSizeHorizontal * 10),
+                ],
+              ),
+            ),
           ),
         ),
       ),

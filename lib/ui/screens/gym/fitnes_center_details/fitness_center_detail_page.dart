@@ -119,7 +119,7 @@ class _FitnessCenterDetailPageState extends State<FitnessCenterDetailPage> {
           place: (details.zone != null && details.zone!.name != null)
               ? details.zone!.name!
               : 'Location',
-          distance: '5',
+          distance: (details.km != null) ? details.km.toString():'Null',
         ),
 
         /*=======Gym address Tile========*/
